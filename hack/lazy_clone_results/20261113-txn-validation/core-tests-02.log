@@ -1,0 +1,1107 @@
+=== RUN   TestRedisClient
+2026/11/13 13:39:31.111462 juicefs[15] <WARNING>: AOF is not enabled, you may lose data if Redis is not shutdown properly. [checkRedisInfo@info.go:84]
+2026/11/13 13:39:31.111594 juicefs[15] <INFO>: Ping redis latency: 85.784µs [checkServerConfig@redis.go:4805]
+2026/11/13 13:39:31.123537 juicefs[15] <INFO>: Create session 1 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 13:39:31.124301 juicefs[15] <WARNING>: Session 1 was stale and cleaned up, but now I'm back again [doRefreshSession@redis.go:3127]
+2026/11/13 13:39:32.157750 juicefs[15] <INFO>: flush session 1: [FlushSession@base.go:1051]
+=== RUN   TestRedisClient/SubdirOperations
+2026/11/13 13:39:32.157963 juicefs[15] <INFO>: close session 1: <nil> [CloseSession@base.go:1040]
+2026/11/13 13:39:32.169219 juicefs[15] <INFO>: Update session 1 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 13:39:32.169492 juicefs[15] <INFO>: Quota for inode 18 is deleted [syncQuotaMaps@quota.go:347]
+=== RUN   TestRedisClient/SubdirOperations/CreateMknodMkdir
+=== RUN   TestRedisClient/SubdirOperations/CreateMknodMkdir/volume-root
+=== RUN   TestRedisClient/SubdirOperations/CreateMknodMkdir/subdir-root
+=== RUN   TestRedisClient/SubdirOperations/CreateMknodMkdir/subdir-child
+=== RUN   TestRedisClient/SubdirOperations/LookupReaddirResolve
+=== RUN   TestRedisClient/SubdirOperations/LookupReaddirResolve/volume-root
+=== RUN   TestRedisClient/SubdirOperations/LookupReaddirResolve/subdir-root
+=== RUN   TestRedisClient/SubdirOperations/LookupReaddirResolve/subdir-child
+=== RUN   TestRedisClient/SubdirOperations/AttributesAccess
+=== RUN   TestRedisClient/SubdirOperations/AttributesAccess/volume-root
+=== RUN   TestRedisClient/SubdirOperations/AttributesAccess/subdir-root
+=== RUN   TestRedisClient/SubdirOperations/AttributesAccess/subdir-child
+=== RUN   TestRedisClient/SubdirOperations/Xattr
+=== RUN   TestRedisClient/SubdirOperations/Xattr/volume-root
+=== RUN   TestRedisClient/SubdirOperations/Xattr/subdir-root
+=== RUN   TestRedisClient/SubdirOperations/Xattr/subdir-child
+=== RUN   TestRedisClient/SubdirOperations/ACL
+=== RUN   TestRedisClient/SubdirOperations/ACL/volume-root
+=== RUN   TestRedisClient/SubdirOperations/ACL/subdir-root
+=== RUN   TestRedisClient/SubdirOperations/ACL/subdir-child
+=== RUN   TestRedisClient/SubdirOperations/ReadWriteTruncateFallocate
+=== RUN   TestRedisClient/SubdirOperations/ReadWriteTruncateFallocate/volume-root
+=== RUN   TestRedisClient/SubdirOperations/ReadWriteTruncateFallocate/subdir-root
+=== RUN   TestRedisClient/SubdirOperations/ReadWriteTruncateFallocate/subdir-child
+=== RUN   TestRedisClient/SubdirOperations/SymlinkLinkUnlink
+=== RUN   TestRedisClient/SubdirOperations/SymlinkLinkUnlink/volume-root
+=== RUN   TestRedisClient/SubdirOperations/SymlinkLinkUnlink/subdir-root
+=== RUN   TestRedisClient/SubdirOperations/SymlinkLinkUnlink/subdir-child
+=== RUN   TestRedisClient/SubdirOperations/Rename
+=== RUN   TestRedisClient/SubdirOperations/Rename/volume-root
+=== RUN   TestRedisClient/SubdirOperations/Rename/subdir-root
+=== RUN   TestRedisClient/SubdirOperations/Rename/subdir-child
+=== RUN   TestRedisClient/SubdirOperations/RenameExchange
+=== RUN   TestRedisClient/SubdirOperations/RenameExchange/volume-root
+=== RUN   TestRedisClient/SubdirOperations/RenameExchange/subdir-root
+=== RUN   TestRedisClient/SubdirOperations/RenameExchange/subdir-child
+=== RUN   TestRedisClient/SubdirOperations/BatchUnlink
+=== RUN   TestRedisClient/SubdirOperations/BatchUnlink/volume-root
+=== RUN   TestRedisClient/SubdirOperations/BatchUnlink/subdir-root
+=== RUN   TestRedisClient/SubdirOperations/BatchUnlink/subdir-child
+=== RUN   TestRedisClient/SubdirOperations/RmdirRemove
+=== RUN   TestRedisClient/SubdirOperations/RmdirRemove/volume-root
+=== RUN   TestRedisClient/SubdirOperations/RmdirRemove/subdir-root
+=== RUN   TestRedisClient/SubdirOperations/RmdirRemove/subdir-child
+=== RUN   TestRedisClient/SubdirOperations/CopyFileRangeClone
+=== RUN   TestRedisClient/SubdirOperations/CopyFileRangeClone/volume-root
+=== RUN   TestRedisClient/SubdirOperations/CopyFileRangeClone/subdir-root
+=== RUN   TestRedisClient/SubdirOperations/CopyFileRangeClone/subdir-child
+=== RUN   TestRedisClient/SubdirOperations/DirectoryClone
+=== RUN   TestRedisClient/SubdirOperations/DirectoryClone/volume-root
+=== RUN   TestRedisClient/SubdirOperations/DirectoryClone/subdir-root
+=== RUN   TestRedisClient/SubdirOperations/DirectoryClone/subdir-child
+=== RUN   TestRedisClient/SubdirOperations/TrashName
+=== RUN   TestRedisClient/SubdirOperations/TrashName/volume-root
+=== RUN   TestRedisClient/SubdirOperations/TrashName/subdir-root
+=== RUN   TestRedisClient/SubdirOperations/TrashName/subdir-child
+=== RUN   TestRedisClient/SubdirOperations/SummaryQuotaStatFS
+=== RUN   TestRedisClient/SubdirOperations/SummaryQuotaStatFS/volume-root
+2026/11/13 13:39:32.365891 juicefs[15] <INFO>: Quota for inode 1 is deleted [syncQuotaMaps@quota.go:347]
+=== RUN   TestRedisClient/SubdirOperations/SummaryQuotaStatFS/subdir-root
+2026/11/13 13:39:32.370401 juicefs[15] <INFO>: Quota for inode 208 is deleted [syncQuotaMaps@quota.go:347]
+=== RUN   TestRedisClient/SubdirOperations/SummaryQuotaStatFS/subdir-child
+2026/11/13 13:39:32.375370 juicefs[15] <INFO>: Quota for inode 212 is deleted [syncQuotaMaps@quota.go:347]
+=== RUN   TestRedisClient/SubdirOperations/Locks
+=== RUN   TestRedisClient/SubdirOperations/Locks/volume-root
+=== RUN   TestRedisClient/SubdirOperations/Locks/subdir-root
+=== RUN   TestRedisClient/SubdirOperations/Locks/subdir-child
+=== RUN   TestRedisClient/SubdirOperations/ChrootCreate
+2026/11/13 13:39:32.386576 juicefs[15] <WARNING>: Subdir subdir-chroot not found, creating it [Chroot@base.go:2822]
+2026/11/13 13:39:32.387183 juicefs[15] <WARNING>: Subdir sub not found, creating it [Chroot@base.go:2822]
+2026/11/13 13:39:32.388874 juicefs[15] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 13:39:32.389043 juicefs[15] <INFO>: close session 1: <nil> [CloseSession@base.go:1040]
+2026/11/13 13:39:32.493548 juicefs[15] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 13:39:32.495002 juicefs[15] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 13:39:32.496561 juicefs[15] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 13:39:32.497423 juicefs[15] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 13:39:32.499352 juicefs[15] <WARNING>: File name is too long as a trash entry, truncating it: fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff -> 1-232-fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff [trashEntry@base.go:3174]
+2026/11/13 13:39:32.500790 juicefs[15] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 13:39:32.509281 juicefs[15] <INFO>: cleanup trash: deleted 12 files in 1.870901ms [CleanupTrashBefore@base.go:3279]
+2026/11/13 13:39:34.251215 juicefs[15] <WARNING>: Transaction succeeded after 4 tries (10.309467ms), keys: [sliceRef], method: cleanupZeroRef, last error: redis: transaction failed [txn@redis.go:1219]
+2026/11/13 13:39:34.260100 juicefs[15] <WARNING>: Transaction succeeded after 4 tries (18.869468ms), keys: [sliceRef], method: cleanupZeroRef, last error: redis: transaction failed [txn@redis.go:1219]
+2026/11/13 13:39:34.269125 juicefs[15] <WARNING>: Transaction succeeded after 4 tries (27.508627ms), keys: [sliceRef], method: cleanupZeroRef, last error: redis: transaction failed [txn@redis.go:1219]
+2026/11/13 13:39:34.275051 juicefs[15] <WARNING>: Transaction succeeded after 4 tries (32.705415ms), keys: [sliceRef], method: cleanupZeroRef, last error: redis: transaction failed [txn@redis.go:1219]
+2026/11/13 13:39:34.283027 juicefs[15] <WARNING>: Transaction succeeded after 4 tries (40.082528ms), keys: [sliceRef], method: cleanupZeroRef, last error: redis: transaction failed [txn@redis.go:1219]
+2026/11/13 13:39:34.291060 juicefs[15] <WARNING>: Transaction succeeded after 4 tries (47.716314ms), keys: [sliceRef], method: cleanupZeroRef, last error: redis: transaction failed [txn@redis.go:1219]
+2026/11/13 13:39:34.299097 juicefs[15] <WARNING>: Transaction succeeded after 4 tries (55.464703ms), keys: [sliceRef], method: cleanupZeroRef, last error: redis: transaction failed [txn@redis.go:1219]
+2026/11/13 13:39:34.308195 juicefs[15] <WARNING>: Transaction succeeded after 4 tries (64.29174ms), keys: [sliceRef], method: cleanupZeroRef, last error: redis: transaction failed [txn@redis.go:1219]
+2026/11/13 13:39:34.317239 juicefs[15] <WARNING>: Transaction succeeded after 4 tries (73.025973ms), keys: [sliceRef], method: cleanupZeroRef, last error: redis: transaction failed [txn@redis.go:1219]
+2026/11/13 13:39:34.323198 juicefs[15] <WARNING>: Transaction succeeded after 4 tries (78.708696ms), keys: [sliceRef], method: cleanupZeroRef, last error: redis: transaction failed [txn@redis.go:1219]
+2026/11/13 13:39:34.327338 juicefs[15] <WARNING>: Transaction succeeded after 5 tries (64.466334ms), keys: [sliceRef], method: cleanupZeroRef, last error: redis: transaction failed [txn@redis.go:1219]
+2026/11/13 13:39:34.378339 juicefs[15] <WARNING>: Transaction succeeded after 8 tries (50.596831ms), keys: [c4363_0], method: doCompactChunk, last error: redis: transaction failed [txn@redis.go:1219]
+2026/11/13 13:39:34.524271 juicefs[15] <WARNING>: Transaction succeeded after 10 tries (140.735032ms), keys: [c4363_0], method: doCompactChunk, last error: redis: transaction failed [txn@redis.go:1219]
+2026/11/13 13:39:34.875398 juicefs[15] <WARNING>: Transaction succeeded after 13 tries (350.322426ms), keys: [c4363_0], method: doCompactChunk, last error: redis: transaction failed [txn@redis.go:1219]
+2026/11/13 13:39:35.118396 juicefs[15] <WARNING>: Transaction succeeded after 11 tries (234.179923ms), keys: [c4363_0], method: doCompactChunk, last error: redis: transaction failed [txn@redis.go:1219]
+2026/11/13 13:39:35.408038 juicefs[15] <WARNING>: Transaction succeeded after 13 tries (285.027061ms), keys: [c4363_0], method: doCompactChunk, last error: redis: transaction failed [txn@redis.go:1219]
+2026/11/13 13:39:35.654197 juicefs[15] <WARNING>: Transaction succeeded after 12 tries (242.800352ms), keys: [c4363_0], method: doCompactChunk, last error: redis: transaction failed [txn@redis.go:1219]
+2026/11/13 13:39:35.871660 juicefs[15] <WARNING>: Transaction succeeded after 10 tries (209.957533ms), keys: [c4363_0], method: doCompactChunk, last error: redis: transaction failed [txn@redis.go:1219]
+2026/11/13 13:39:36.119922 juicefs[15] <WARNING>: Transaction succeeded after 11 tries (244.936912ms), keys: [c4363_0], method: doCompactChunk, last error: redis: transaction failed [txn@redis.go:1219]
+2026/11/13 13:39:36.379430 juicefs[15] <WARNING>: Transaction succeeded after 12 tries (251.838978ms), keys: [c4363_0], method: doCompactChunk, last error: redis: transaction failed [txn@redis.go:1219]
+2026/11/13 13:39:36.602481 juicefs[15] <WARNING>: Transaction succeeded after 11 tries (214.485245ms), keys: [c4363_0], method: doCompactChunk, last error: redis: transaction failed [txn@redis.go:1219]
+2026/11/13 13:39:36.864505 juicefs[15] <INFO>: flush session 1: [FlushSession@base.go:1051]
+=== RUN   TestRedisClient/TrashSliceClaim
+2026/11/13 13:39:36.869406 juicefs[15] <INFO>: close session 1: <nil> [CloseSession@base.go:1040]
+2026/11/13 13:39:36.924961 juicefs[15] <WARNING>: Transaction succeeded after 13 tries (319.006351ms), keys: [c4363_0], method: doCompactChunk, last error: redis: transaction failed [txn@redis.go:1219]
+2026/11/13 13:39:37.874605 juicefs[15] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 13:39:37.875089 juicefs[15] <INFO>: close session 1: <nil> [CloseSession@base.go:1040]
+=== RUN   TestRedisClient/SQLExactEdgeCAS
+    base_test.go:2314: SQL transaction invariant
+=== RUN   TestRedisClient/XattrInodeLifecycle
+=== RUN   TestRedisClient/OpenFileKeepsXattrsAfterLastNameRemoved
+=== RUN   TestRedisClient/OpenFileKeepsXattrsAfterLastNameRemoved/Unlink
+=== RUN   TestRedisClient/OpenFileKeepsXattrsAfterLastNameRemoved/RenameOver
+=== RUN   TestRedisClient/OpenFileKeepsXattrsAfterLastNameRemoved/Remove
+2026/11/13 13:39:38.195545 juicefs[15] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 13:39:38.195995 juicefs[15] <INFO>: close session 1: <nil> [CloseSession@base.go:1040]
+2026/11/13 13:39:39.486071 juicefs[15] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 13:39:39.486269 juicefs[15] <INFO>: close session 1: <nil> [CloseSession@base.go:1040]
+2026/11/13 13:39:39.500662 juicefs[15] <INFO>: Create session 2 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 13:39:39.513068 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:39.514133 juicefs[15] <INFO>: close session 2: <nil> [CloseSession@base.go:1040]
+2026/11/13 13:39:39.665672 juicefs[15] <INFO>: Update session 2 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 13:39:44.683835 juicefs[15] <INFO>: Quota for inode 4691 is deleted [syncQuotaMaps@quota.go:347]
+=== RUN   TestRedisClient/SubdirQuota
+=== RUN   TestRedisClient/FlushAfterRmdir
+2026/11/13 13:39:44.688009 juicefs[15] <INFO>: Quota for inode 4698 is deleted [syncQuotaMaps@quota.go:347]
+2026/11/13 13:39:44.690377 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:44.708390 juicefs[15] <INFO>: close session 2: <nil> [CloseSession@base.go:1040]
+2026/11/13 13:39:44.719459 juicefs[15] <INFO>: Update session 2 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 13:39:44.719690 juicefs[15] <INFO>: Quota for inode 4702 is deleted [syncQuotaMaps@quota.go:347]
+2026/11/13 13:39:44.719701 juicefs[15] <INFO>: Quota for inode 4701 is deleted [syncQuotaMaps@quota.go:347]
+=== RUN   TestRedisClient/BasicQuotaOperations
+=== RUN   TestRedisClient/QuotaFileOperations
+2026/11/13 13:39:44.737841 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+=== RUN   TestRedisClient/QuotaErrorCases
+=== RUN   TestRedisClient/QuotaConcurrentOperations
+=== RUN   TestRedisClient/QuotaMixedTypes
+=== RUN   TestRedisClient/QuotaUsageStatistics
+=== RUN   TestRedisClient/CheckQuotaFileOwner
+2026/11/13 13:39:46.755685 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:46.755900 juicefs[15] <INFO>: close session 2: <nil> [CloseSession@base.go:1040]
+=== RUN   TestRedisClient/QuotaEdgeCases
+    base_test.go:5896: Testing inodes-only quota limit...
+    base_test.go:5912: Testing space-only quota limit...
+=== RUN   TestRedisClient/HardlinkQuota
+=== RUN   TestRedisClient/BatchUnlinkWithUserGroupQuota
+2026/11/13 13:39:46.762413 juicefs[15] <INFO>: Quota for inode 4706 is deleted [syncQuotaMaps@quota.go:347]
+=== RUN   TestRedisClient/SustainedInodeQuotaDecrement
+=== RUN   TestRedisClient/SustainedInodeBeforeQuotaEnabled
+2026/11/13 13:39:46.784937 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:46.788399 juicefs[15] <INFO>: close session 2: <nil> [CloseSession@base.go:1040]
+2026/11/13 13:39:52.884091 juicefs[15] <WARNING>: nlink of /check should be 3, but got 0 [Check@base.go:2715]
+2026/11/13 13:39:52.884116 juicefs[15] <WARNING>: Path /check (inode 4755) can be repaired, please re-run with '--path /check --repair' to fix it [Check@base.go:2742]
+2026/11/13 13:39:52.884746 juicefs[15] <WARNING>: nlink of /check should be 3, but got 0 [Check@base.go:2715]
+2026/11/13 13:39:52.885235 juicefs[15] <INFO>: Checked 1 nodes [Check@base.go:2805]
+2026/11/13 13:39:52.886058 juicefs[15] <WARNING>: nlink of /check/d1/d2 should be 3, but got 0 [Check@base.go:2715]
+2026/11/13 13:39:52.886483 juicefs[15] <INFO>: Checked 1 nodes [Check@base.go:2805]
+2026/11/13 13:39:52.915554 juicefs[15] <WARNING>: nlink of /check/d1 should be 3, but got 0 [Check@base.go:2715]
+2026/11/13 13:39:52.915589 juicefs[15] <WARNING>: nlink of /check/d1/d2/d3 should be 3, but got 0 [Check@base.go:2715]
+2026/11/13 13:39:52.915609 juicefs[15] <WARNING>: nlink of /check/d1/d2/d3/d4 should be 2, but got 0 [Check@base.go:2715]
+2026/11/13 13:39:52.916312 juicefs[15] <INFO>: Checked 4146 nodes [Check@base.go:2805]
+2026/11/13 13:39:52.932670 juicefs[15] <INFO>: Update session 2 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 13:39:52.932944 juicefs[15] <INFO>: Quota for inode 4710 is deleted [syncQuotaMaps@quota.go:347]
+2026/11/13 13:39:52.932967 juicefs[15] <INFO>: Quota for inode 4709 is deleted [syncQuotaMaps@quota.go:347]
+2026/11/13 13:39:52.933239 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.933821 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.934274 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.935393 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.935919 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.936603 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.937237 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.937905 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.938040 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.938902 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.939026 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.939577 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.940658 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.941495 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.942430 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.942614 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.944614 juicefs[15] <INFO>: close session 2: <nil> [CloseSession@base.go:1040]
+2026/11/13 13:39:52.961311 juicefs[15] <INFO>: Update session 2 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 13:39:52.961849 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.962073 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.962768 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.963455 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.963678 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.964251 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+=== NAME  TestRedisClient
+    base_test.go:4071: Test 1 passed: cross-dir rename without overwrite
+2026/11/13 13:39:52.964432 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.965099 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.965685 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.966343 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+    base_test.go:4089: Test 2 passed: same-dir rename without overwrite
+2026/11/13 13:39:52.966550 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.967431 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.968066 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.968785 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+    base_test.go:4110: Test 3 passed: same-dir rename with overwrite
+2026/11/13 13:39:52.968971 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.969133 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.970050 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.970217 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.970889 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.971027 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.971536 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.971701 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+    base_test.go:4134: Test 4 passed: cross-dir rename with overwrite
+2026/11/13 13:39:52.971877 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.972824 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.972971 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.973549 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.973738 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.974528 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.974726 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+    base_test.go:4162: Test 5 passed: exchange rename
+2026/11/13 13:39:52.974903 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.975743 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.976248 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.977056 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.977244 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+    base_test.go:4186: Test 6 passed: same-dir exchange rename
+2026/11/13 13:39:52.977453 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.978528 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.978714 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.979423 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.979612 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.980296 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.980490 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.981405 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.981559 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:52.981746 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+    base_test.go:4230: Test 7 passed: rename between hard links
+2026/11/13 13:39:52.984731 juicefs[15] <INFO>: close session 2: <nil> [CloseSession@base.go:1040]
+2026/11/13 13:39:53.001139 juicefs[15] <INFO>: Update session 2 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 13:39:53.001678 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.002589 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.003582 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.004441 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+    base_test.go:4291: Test trash overwrite passed
+2026/11/13 13:39:53.004598 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.004765 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.005638 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.005821 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.006639 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.006818 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.007724 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.008013 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+    base_test.go:4321: Test trash cross-dir overwrite passed
+2026/11/13 13:39:53.008299 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.009409 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.009586 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.010101 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.010266 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.011430 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.011589 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+    base_test.go:4349: Test trash exchange passed
+2026/11/13 13:39:53.012628 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.513901 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.513966 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.514288 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+    base_test.go:4382: Test 7 skipped: rename from trash not allowed (expected for security)
+2026/11/13 13:39:53.515426 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.515601 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.516483 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.516967 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.517994 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+    base_test.go:4411: Test 8 passed: same-dir exchange with trash
+2026/11/13 13:39:53.518143 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.518350 juicefs[15] <INFO>: close session 2: <nil> [CloseSession@base.go:1040]
+=== RUN   TestRedisClient/CloneParentDirStat
+2026/11/13 13:39:53.526113 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+=== RUN   TestRedisClient/CloneParentDirStat/directory
+2026/11/13 13:39:53.529882 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.532871 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+=== RUN   TestRedisClient/CloneParentDirStat/file
+2026/11/13 13:39:53.533643 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.534363 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+=== RUN   TestRedisClient/CloneParentDirStat/symlink
+2026/11/13 13:39:53.535209 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:53.535870 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:54.581711 juicefs[15] <INFO>: Update session 2 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 13:39:54.587981 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:54.589986 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:54.593104 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:54.596655 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:54.597040 juicefs[15] <INFO>: close session 2: <nil> [CloseSession@base.go:1040]
+=== RUN   TestRedisClient/ACLCacheHitWithGaps
+2026/11/13 13:39:54.604646 juicefs[15] <INFO>: Create read-only session OK with version: 1.5.0-dev+unknown [NewSession@base.go:811]
+2026/11/13 13:39:54.604998 juicefs[15] <INFO>: close session 2: <nil> [CloseSession@base.go:1040]
+--- PASS: TestRedisClient (23.49s)
+    --- PASS: TestRedisClient/SubdirOperations (0.23s)
+        --- PASS: TestRedisClient/SubdirOperations/CreateMknodMkdir (0.02s)
+            --- PASS: TestRedisClient/SubdirOperations/CreateMknodMkdir/volume-root (0.01s)
+            --- PASS: TestRedisClient/SubdirOperations/CreateMknodMkdir/subdir-root (0.01s)
+            --- PASS: TestRedisClient/SubdirOperations/CreateMknodMkdir/subdir-child (0.01s)
+        --- PASS: TestRedisClient/SubdirOperations/LookupReaddirResolve (0.01s)
+            --- PASS: TestRedisClient/SubdirOperations/LookupReaddirResolve/volume-root (0.00s)
+            --- PASS: TestRedisClient/SubdirOperations/LookupReaddirResolve/subdir-root (0.00s)
+            --- PASS: TestRedisClient/SubdirOperations/LookupReaddirResolve/subdir-child (0.00s)
+        --- PASS: TestRedisClient/SubdirOperations/AttributesAccess (0.01s)
+            --- PASS: TestRedisClient/SubdirOperations/AttributesAccess/volume-root (0.00s)
+            --- PASS: TestRedisClient/SubdirOperations/AttributesAccess/subdir-root (0.00s)
+            --- PASS: TestRedisClient/SubdirOperations/AttributesAccess/subdir-child (0.00s)
+        --- PASS: TestRedisClient/SubdirOperations/Xattr (0.01s)
+            --- PASS: TestRedisClient/SubdirOperations/Xattr/volume-root (0.00s)
+            --- PASS: TestRedisClient/SubdirOperations/Xattr/subdir-root (0.00s)
+            --- PASS: TestRedisClient/SubdirOperations/Xattr/subdir-child (0.00s)
+        --- PASS: TestRedisClient/SubdirOperations/ACL (0.01s)
+            --- PASS: TestRedisClient/SubdirOperations/ACL/volume-root (0.00s)
+            --- PASS: TestRedisClient/SubdirOperations/ACL/subdir-root (0.00s)
+            --- PASS: TestRedisClient/SubdirOperations/ACL/subdir-child (0.00s)
+        --- PASS: TestRedisClient/SubdirOperations/ReadWriteTruncateFallocate (0.01s)
+            --- PASS: TestRedisClient/SubdirOperations/ReadWriteTruncateFallocate/volume-root (0.00s)
+            --- PASS: TestRedisClient/SubdirOperations/ReadWriteTruncateFallocate/subdir-root (0.00s)
+            --- PASS: TestRedisClient/SubdirOperations/ReadWriteTruncateFallocate/subdir-child (0.00s)
+        --- PASS: TestRedisClient/SubdirOperations/SymlinkLinkUnlink (0.01s)
+            --- PASS: TestRedisClient/SubdirOperations/SymlinkLinkUnlink/volume-root (0.00s)
+            --- PASS: TestRedisClient/SubdirOperations/SymlinkLinkUnlink/subdir-root (0.00s)
+            --- PASS: TestRedisClient/SubdirOperations/SymlinkLinkUnlink/subdir-child (0.00s)
+        --- PASS: TestRedisClient/SubdirOperations/Rename (0.02s)
+            --- PASS: TestRedisClient/SubdirOperations/Rename/volume-root (0.01s)
+            --- PASS: TestRedisClient/SubdirOperations/Rename/subdir-root (0.01s)
+            --- PASS: TestRedisClient/SubdirOperations/Rename/subdir-child (0.01s)
+        --- PASS: TestRedisClient/SubdirOperations/RenameExchange (0.02s)
+            --- PASS: TestRedisClient/SubdirOperations/RenameExchange/volume-root (0.01s)
+            --- PASS: TestRedisClient/SubdirOperations/RenameExchange/subdir-root (0.00s)
+            --- PASS: TestRedisClient/SubdirOperations/RenameExchange/subdir-child (0.01s)
+        --- PASS: TestRedisClient/SubdirOperations/BatchUnlink (0.01s)
+            --- PASS: TestRedisClient/SubdirOperations/BatchUnlink/volume-root (0.00s)
+            --- PASS: TestRedisClient/SubdirOperations/BatchUnlink/subdir-root (0.00s)
+            --- PASS: TestRedisClient/SubdirOperations/BatchUnlink/subdir-child (0.01s)
+        --- PASS: TestRedisClient/SubdirOperations/RmdirRemove (0.02s)
+            --- PASS: TestRedisClient/SubdirOperations/RmdirRemove/volume-root (0.01s)
+            --- PASS: TestRedisClient/SubdirOperations/RmdirRemove/subdir-root (0.01s)
+            --- PASS: TestRedisClient/SubdirOperations/RmdirRemove/subdir-child (0.01s)
+        --- PASS: TestRedisClient/SubdirOperations/CopyFileRangeClone (0.01s)
+            --- PASS: TestRedisClient/SubdirOperations/CopyFileRangeClone/volume-root (0.00s)
+            --- PASS: TestRedisClient/SubdirOperations/CopyFileRangeClone/subdir-root (0.00s)
+            --- PASS: TestRedisClient/SubdirOperations/CopyFileRangeClone/subdir-child (0.00s)
+        --- PASS: TestRedisClient/SubdirOperations/DirectoryClone (0.02s)
+            --- PASS: TestRedisClient/SubdirOperations/DirectoryClone/volume-root (0.01s)
+            --- PASS: TestRedisClient/SubdirOperations/DirectoryClone/subdir-root (0.01s)
+            --- PASS: TestRedisClient/SubdirOperations/DirectoryClone/subdir-child (0.01s)
+        --- PASS: TestRedisClient/SubdirOperations/TrashName (0.01s)
+            --- PASS: TestRedisClient/SubdirOperations/TrashName/volume-root (0.00s)
+            --- PASS: TestRedisClient/SubdirOperations/TrashName/subdir-root (0.00s)
+            --- PASS: TestRedisClient/SubdirOperations/TrashName/subdir-child (0.00s)
+        --- PASS: TestRedisClient/SubdirOperations/SummaryQuotaStatFS (0.01s)
+            --- PASS: TestRedisClient/SubdirOperations/SummaryQuotaStatFS/volume-root (0.00s)
+            --- PASS: TestRedisClient/SubdirOperations/SummaryQuotaStatFS/subdir-root (0.00s)
+            --- PASS: TestRedisClient/SubdirOperations/SummaryQuotaStatFS/subdir-child (0.01s)
+        --- PASS: TestRedisClient/SubdirOperations/Locks (0.01s)
+            --- PASS: TestRedisClient/SubdirOperations/Locks/volume-root (0.00s)
+            --- PASS: TestRedisClient/SubdirOperations/Locks/subdir-root (0.00s)
+            --- PASS: TestRedisClient/SubdirOperations/Locks/subdir-child (0.00s)
+        --- PASS: TestRedisClient/SubdirOperations/ChrootCreate (0.00s)
+    --- PASS: TestRedisClient/TrashSliceClaim (1.01s)
+    --- SKIP: TestRedisClient/SQLExactEdgeCAS (0.00s)
+    --- PASS: TestRedisClient/XattrInodeLifecycle (0.00s)
+    --- PASS: TestRedisClient/OpenFileKeepsXattrsAfterLastNameRemoved (0.01s)
+        --- PASS: TestRedisClient/OpenFileKeepsXattrsAfterLastNameRemoved/Unlink (0.00s)
+        --- PASS: TestRedisClient/OpenFileKeepsXattrsAfterLastNameRemoved/RenameOver (0.01s)
+        --- PASS: TestRedisClient/OpenFileKeepsXattrsAfterLastNameRemoved/Remove (0.00s)
+    --- PASS: TestRedisClient/SubdirQuota (0.00s)
+    --- PASS: TestRedisClient/FlushAfterRmdir (0.00s)
+    --- PASS: TestRedisClient/BasicQuotaOperations (0.02s)
+    --- PASS: TestRedisClient/QuotaFileOperations (2.00s)
+    --- PASS: TestRedisClient/QuotaErrorCases (0.00s)
+    --- PASS: TestRedisClient/QuotaConcurrentOperations (0.00s)
+    --- PASS: TestRedisClient/QuotaMixedTypes (0.01s)
+    --- PASS: TestRedisClient/QuotaUsageStatistics (0.00s)
+    --- PASS: TestRedisClient/CheckQuotaFileOwner (0.00s)
+    --- PASS: TestRedisClient/QuotaEdgeCases (0.00s)
+    --- PASS: TestRedisClient/HardlinkQuota (0.00s)
+    --- PASS: TestRedisClient/BatchUnlinkWithUserGroupQuota (0.01s)
+    --- PASS: TestRedisClient/SustainedInodeQuotaDecrement (0.00s)
+    --- PASS: TestRedisClient/SustainedInodeBeforeQuotaEnabled (0.01s)
+    --- PASS: TestRedisClient/CloneParentDirStat (0.01s)
+        --- PASS: TestRedisClient/CloneParentDirStat/directory (0.01s)
+        --- PASS: TestRedisClient/CloneParentDirStat/file (0.00s)
+        --- PASS: TestRedisClient/CloneParentDirStat/symlink (0.00s)
+    --- PASS: TestRedisClient/ACLCacheHitWithGaps (0.00s)
+=== RUN   TestExpireTime
+--- PASS: TestExpireTime (0.00s)
+=== RUN   TestMergeFacl
+=== RUN   TestMergeFacl/non-member_clears_sgid
+=== RUN   TestMergeFacl/extended_access_uses_mask
+=== RUN   TestMergeFacl/default_keeps_mode
+=== RUN   TestMergeFacl/replay_keeps_source_mode
+--- PASS: TestMergeFacl (0.00s)
+    --- PASS: TestMergeFacl/non-member_clears_sgid (0.00s)
+    --- PASS: TestMergeFacl/extended_access_uses_mask (0.00s)
+    --- PASS: TestMergeFacl/default_keeps_mode (0.00s)
+    --- PASS: TestMergeFacl/replay_keeps_source_mode (0.00s)
+=== RUN   TestMergeAttrReplayMode
+=== RUN   TestMergeAttrReplayMode/root_chgrp_keeps_sgid
+=== RUN   TestMergeAttrReplayMode/replay_chgrp_keeps_source_mode
+=== RUN   TestMergeAttrReplayMode/replay_chown_and_chmod_keep_source_mode
+--- PASS: TestMergeAttrReplayMode (0.00s)
+    --- PASS: TestMergeAttrReplayMode/root_chgrp_keeps_sgid (0.00s)
+    --- PASS: TestMergeAttrReplayMode/replay_chgrp_keeps_source_mode (0.00s)
+    --- PASS: TestMergeAttrReplayMode/replay_chown_and_chmod_keep_source_mode (0.00s)
+=== RUN   TestSymlinkCache
+--- PASS: TestSymlinkCache (0.01s)
+=== RUN   TestTxBatchLock
+--- PASS: TestTxBatchLock (0.00s)
+=== RUN   TestLogEncodeDecode
+--- PASS: TestLogEncodeDecode (0.00s)
+=== RUN   TestLogEncodeDecodeFuzz
+--- PASS: TestLogEncodeDecodeFuzz (0.00s)
+=== RUN   TestLogDecodeInvalid
+--- PASS: TestLogDecodeInvalid (0.00s)
+=== RUN   TestParseChangeEntry
+--- PASS: TestParseChangeEntry (0.00s)
+=== RUN   TestParseChangeEntryTime
+--- PASS: TestParseChangeEntryTime (0.00s)
+=== RUN   TestParseChangeEntryInvalid
+--- PASS: TestParseChangeEntryInvalid (0.00s)
+=== RUN   TestChangeEntryValidate
+--- PASS: TestChangeEntryValidate (0.00s)
+=== RUN   TestChangeEntryAccessors
+--- PASS: TestChangeEntryAccessors (0.00s)
+=== RUN   TestChangeEntryAttrFields
+--- PASS: TestChangeEntryAttrFields (0.00s)
+=== RUN   TestRemoveSecret
+--- PASS: TestRemoveSecret (0.00s)
+=== RUN   TestEncrypt
+=== RUN   TestEncrypt/aes256gcm-rsa
+=== RUN   TestEncrypt/chacha20-rsa
+=== RUN   TestEncrypt/sm4gcm
+--- PASS: TestEncrypt (0.00s)
+    --- PASS: TestEncrypt/aes256gcm-rsa (0.00s)
+    --- PASS: TestEncrypt/chacha20-rsa (0.00s)
+    --- PASS: TestEncrypt/sm4gcm (0.00s)
+=== RUN   TestFormat_Update_KeyConflict
+--- PASS: TestFormat_Update_KeyConflict (0.00s)
+=== RUN   TestKVTxnReturnsEINTRWhenContextAlreadyCanceled
+2026/11/13 13:39:54.613732 juicefs[15] <WARNING>: Transaction TestKVTxnReturnsEINTRWhenContextAlreadyCanceled interrupted after 4.648µs, tried 1, inodes: [] [txn@tkv.go:1212]
+2026/11/13 13:39:54.613773 juicefs[15] <INFO>: Meta address: memkv:// [NewClient@interface.go:687]
+--- PASS: TestKVTxnReturnsEINTRWhenContextAlreadyCanceled (0.00s)
+=== RUN   TestKVReaddirCursorDeleted
+2026/11/13 13:39:54.613824 juicefs[15] <WARNING>: Existing volume will be overwrited: {
+  "Name": "test",
+  "UUID": "",
+  "Storage": "",
+  "Tiers": null,
+  "Bucket": "",
+  "BlockSize": 0,
+  "TrashDays": 0,
+  "DirStats": true,
+  "EnableACL": false
+} [update@config.go:135]
+2026/11/13 13:39:54.624879 juicefs[15] <INFO>: Create session 1 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 13:39:54.625047 juicefs[15] <INFO>: flush session 1: [FlushSession@base.go:1051]
+--- PASS: TestKVReaddirCursorDeleted (0.01s)
+=== RUN   TestOlderThan
+2026/11/13 13:39:54.625100 juicefs[15] <INFO>: close session 1: <nil> [CloseSession@base.go:1040]
+--- PASS: TestOlderThan (0.00s)
+=== RUN   TestParseRedisVersion
+=== RUN   TestParseRedisVersion/Should_return_error_for_invalid_redisVersion
+=== RUN   TestParseRedisVersion/Should_parse_redisVersion
+--- PASS: TestParseRedisVersion (0.00s)
+    --- PASS: TestParseRedisVersion/Should_return_error_for_invalid_redisVersion (0.00s)
+    --- PASS: TestParseRedisVersion/Should_parse_redisVersion (0.00s)
+=== RUN   TestParseRedisInfo
+=== RUN   TestParseRedisInfo/Should_parse_the_fields_we_are_interested_in
+2026/11/13 13:39:54.625209 juicefs[15] <WARNING>: AOF is not enabled, you may lose data if Redis is not shutdown properly. [checkRedisInfo@info.go:84]
+--- PASS: TestParseRedisInfo (0.00s)
+    --- PASS: TestParseRedisInfo/Should_parse_the_fields_we_are_interested_in (0.00s)
+=== RUN   Test_injectPasswordIntoURI
+=== RUN   Test_injectPasswordIntoURI/#00
+=== RUN   Test_injectPasswordIntoURI/#01
+=== RUN   Test_injectPasswordIntoURI/#02
+=== RUN   Test_injectPasswordIntoURI/#03
+=== RUN   Test_injectPasswordIntoURI/#04
+=== RUN   Test_injectPasswordIntoURI/#05
+=== RUN   Test_injectPasswordIntoURI/#06
+=== RUN   Test_injectPasswordIntoURI/#07
+=== RUN   Test_injectPasswordIntoURI/#08
+=== RUN   Test_injectPasswordIntoURI/#09
+=== RUN   Test_injectPasswordIntoURI/#10
+=== RUN   Test_injectPasswordIntoURI/#11
+=== RUN   Test_injectPasswordIntoURI/#12
+--- PASS: Test_injectPasswordIntoURI (0.00s)
+    --- PASS: Test_injectPasswordIntoURI/#00 (0.00s)
+    --- PASS: Test_injectPasswordIntoURI/#01 (0.00s)
+    --- PASS: Test_injectPasswordIntoURI/#02 (0.00s)
+    --- PASS: Test_injectPasswordIntoURI/#03 (0.00s)
+    --- PASS: Test_injectPasswordIntoURI/#04 (0.00s)
+    --- PASS: Test_injectPasswordIntoURI/#05 (0.00s)
+    --- PASS: Test_injectPasswordIntoURI/#06 (0.00s)
+    --- PASS: Test_injectPasswordIntoURI/#07 (0.00s)
+    --- PASS: Test_injectPasswordIntoURI/#08 (0.00s)
+    --- PASS: Test_injectPasswordIntoURI/#09 (0.00s)
+    --- PASS: Test_injectPasswordIntoURI/#10 (0.00s)
+    --- PASS: Test_injectPasswordIntoURI/#11 (0.00s)
+    --- PASS: Test_injectPasswordIntoURI/#12 (0.00s)
+=== RUN   Test_setPasswordFromEnv
+=== RUN   Test_setPasswordFromEnv/META_PASSWORD_only
+=== RUN   Test_setPasswordFromEnv/META_PASSWORD_FILE_only
+=== RUN   Test_setPasswordFromEnv/META_PASSWORD_takes_precedence_over_META_PASSWORD_FILE
+=== RUN   Test_setPasswordFromEnv/neither_environment_variable_set
+=== RUN   Test_setPasswordFromEnv/META_PASSWORD_FILE_points_to_non-existent_file
+--- PASS: Test_setPasswordFromEnv (0.00s)
+    --- PASS: Test_setPasswordFromEnv/META_PASSWORD_only (0.00s)
+    --- PASS: Test_setPasswordFromEnv/META_PASSWORD_FILE_only (0.00s)
+    --- PASS: Test_setPasswordFromEnv/META_PASSWORD_takes_precedence_over_META_PASSWORD_FILE (0.00s)
+    --- PASS: Test_setPasswordFromEnv/neither_environment_variable_set (0.00s)
+    --- PASS: Test_setPasswordFromEnv/META_PASSWORD_FILE_points_to_non-existent_file (0.00s)
+=== RUN   Test_readPasswordFromFile
+=== RUN   Test_readPasswordFromFile/valid_password_file
+=== RUN   Test_readPasswordFromFile/password_with_leading_and_trailing_whitespace
+=== RUN   Test_readPasswordFromFile/empty_file
+=== RUN   Test_readPasswordFromFile/complex_password_with_special_characters
+=== RUN   Test_readPasswordFromFile/file_does_not_exist
+--- PASS: Test_readPasswordFromFile (0.00s)
+    --- PASS: Test_readPasswordFromFile/valid_password_file (0.00s)
+    --- PASS: Test_readPasswordFromFile/password_with_leading_and_trailing_whitespace (0.00s)
+    --- PASS: Test_readPasswordFromFile/empty_file (0.00s)
+    --- PASS: Test_readPasswordFromFile/complex_password_with_special_characters (0.00s)
+    --- PASS: Test_readPasswordFromFile/file_does_not_exist (0.00s)
+=== RUN   TestRedisBatchCloneSharedChunkRefs
+2026/11/13 13:39:54.627018 juicefs[15] <WARNING>: AOF is not enabled, you may lose data if Redis is not shutdown properly. [checkRedisInfo@info.go:84]
+2026/11/13 13:39:54.627095 juicefs[15] <INFO>: Ping redis latency: 50.456µs [checkServerConfig@redis.go:4805]
+--- PASS: TestRedisBatchCloneSharedChunkRefs (0.00s)
+=== RUN   TestRedisBatchCloneMixedFilesAndSymlinks
+2026/11/13 13:39:54.629975 juicefs[15] <WARNING>: AOF is not enabled, you may lose data if Redis is not shutdown properly. [checkRedisInfo@info.go:84]
+2026/11/13 13:39:54.630034 juicefs[15] <INFO>: Ping redis latency: 39.247µs [checkServerConfig@redis.go:4805]
+--- PASS: TestRedisBatchCloneMixedFilesAndSymlinks (0.00s)
+=== RUN   TestRedisBatchCloneDuplicateNamesInBatch
+2026/11/13 13:39:54.632948 juicefs[15] <WARNING>: AOF is not enabled, you may lose data if Redis is not shutdown properly. [checkRedisInfo@info.go:84]
+2026/11/13 13:39:54.633010 juicefs[15] <INFO>: Ping redis latency: 43.926µs [checkServerConfig@redis.go:4805]
+2026/11/13 13:39:54.633952 juicefs[15] <WARNING>: doBatchClone: duplicate name "dup" in batch, skipping [doBatchClone@redis.go:5636]
+--- PASS: TestRedisBatchCloneDuplicateNamesInBatch (0.00s)
+=== RUN   TestRedisBatchCloneSpaceAccounting
+2026/11/13 13:39:54.634843 juicefs[15] <WARNING>: AOF is not enabled, you may lose data if Redis is not shutdown properly. [checkRedisInfo@info.go:84]
+2026/11/13 13:39:54.634914 juicefs[15] <INFO>: Ping redis latency: 52.255µs [checkServerConfig@redis.go:4805]
+    redis_batchclone_test.go:338: space/inode delta verified: usedDelta=24576 inodeDelta=3
+--- PASS: TestRedisBatchCloneSpaceAccounting (0.00s)
+=== RUN   TestRedisBatchCloneMultiChunkFile
+2026/11/13 13:39:54.637419 juicefs[15] <WARNING>: AOF is not enabled, you may lose data if Redis is not shutdown properly. [checkRedisInfo@info.go:84]
+2026/11/13 13:39:54.637486 juicefs[15] <INFO>: Ping redis latency: 48.082µs [checkServerConfig@redis.go:4805]
+--- PASS: TestRedisBatchCloneMultiChunkFile (0.00s)
+=== RUN   TestRedisBatchCloneSkipsDeletedSource
+2026/11/13 13:39:54.639764 juicefs[15] <WARNING>: AOF is not enabled, you may lose data if Redis is not shutdown properly. [checkRedisInfo@info.go:84]
+2026/11/13 13:39:54.639839 juicefs[15] <INFO>: Ping redis latency: 57.703µs [checkServerConfig@redis.go:4805]
+--- PASS: TestRedisBatchCloneSkipsDeletedSource (0.23s)
+=== RUN   TestRedisBatchClonePartialFailureLeavesState
+2026/11/13 13:39:54.872702 juicefs[15] <WARNING>: AOF is not enabled, you may lose data if Redis is not shutdown properly. [checkRedisInfo@info.go:84]
+2026/11/13 13:39:54.872798 juicefs[15] <INFO>: Ping redis latency: 59.784µs [checkServerConfig@redis.go:4805]
+2026/11/13 13:39:54.874865 juicefs[15] <ERROR>: error: WRONGTYPE Operation against a key holding the wrong kind of value
+goroutine 12404 [running]:
+runtime/debug.Stack()
+	/home/hxy/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.1.linux-amd64/src/runtime/debug/stack.go:26 +0x5e
+github.com/juicedata/juicefs/pkg/meta.errno({0x652ecd8, 0x2c2892650db0})
+	/mnt/c/Users/HXY/.cache/juicefs-lazy-fork-20261113/source/pkg/meta/utils.go:164 +0x185
+github.com/juicedata/juicefs/pkg/meta.(*redisMeta).doBatchClone(0x2c289313f770, {0x658a7b8, 0x2c2892e80040}, 0x2c289254c3f0?, 0x3, {0x2c2892e6e1e0, 0x1, 0x1}, 0x2, 0x12, ...)
+	/mnt/c/Users/HXY/.cache/juicefs-lazy-fork-20261113/source/pkg/meta/redis.go:5907 +0xb56
+github.com/juicedata/juicefs/pkg/meta.(*baseMeta).BatchClone(0x2c289233a508, {0x658a7b8, 0x2c2892e80040}, 0x2, 0x3, {0x2c2892e6e1e0, 0x1, 0x1}, 0x2, 0x12, ...)
+	/mnt/c/Users/HXY/.cache/juicefs-lazy-fork-20261113/source/pkg/meta/base.go:1955 +0x117
+github.com/juicedata/juicefs/pkg/meta.TestRedisBatchClonePartialFailureLeavesState(0x2c2891bb2908)
+	/mnt/c/Users/HXY/.cache/juicefs-lazy-fork-20261113/source/pkg/meta/redis_batchclone_test.go:581 +0x8fc
+testing.tRunner(0x2c2891bb2908, 0x659a450)
+	/home/hxy/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.1.linux-amd64/src/testing/testing.go:2193 +0xea
+created by testing.(*T).Run in goroutine 1
+	/home/hxy/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.1.linux-amd64/src/testing/testing.go:2258 +0x4d4 [errno@utils.go:164]
+    redis_batchclone_test.go:608: failed BatchClone left state: status=input/output error leakedIno=5 usedDelta=4096 inodeDelta=1
+--- PASS: TestRedisBatchClonePartialFailureLeavesState (0.00s)
+=== RUN   TestKVTxnOnCommit
+=== RUN   TestKVTxnOnCommit/commit
+2026/11/13 13:39:54.894187 badger[15] <INFO>: All 0 tables opened in 0s [Infof@logger.go:35]
+2026/11/13 13:39:54.897219 badger[15] <INFO>: Discard stats nextEmptySlot: 0 [Infof@logger.go:35]
+2026/11/13 13:39:54.897249 badger[15] <INFO>: Set nextTxnTs to 0 [Infof@logger.go:35]
+2026/11/13 13:39:54.900399 badger[15] <INFO>: Lifetime L0 stalled for: 0s [Infof@logger.go:35]
+2026/11/13 13:39:54.914913 badger[15] <INFO>: 
+Level 0 [ ]: NumTables: 01. Size: 205 B of 0 B. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 64 MiB
+Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level Done [Infof@logger.go:35]
+=== RUN   TestKVTxnOnCommit/body_error
+2026/11/13 13:39:54.933644 badger[15] <INFO>: All 0 tables opened in 0s [Infof@logger.go:35]
+2026/11/13 13:39:54.936036 badger[15] <INFO>: Discard stats nextEmptySlot: 0 [Infof@logger.go:35]
+2026/11/13 13:39:54.936080 badger[15] <INFO>: Set nextTxnTs to 0 [Infof@logger.go:35]
+2026/11/13 13:39:54.938049 badger[15] <INFO>: Lifetime L0 stalled for: 0s [Infof@logger.go:35]
+2026/11/13 13:39:54.947346 badger[15] <INFO>: 
+Level 0 [ ]: NumTables: 00. Size: 0 B of 0 B. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 64 MiB
+Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level Done [Infof@logger.go:35]
+=== RUN   TestKVTxnOnCommit/commit_error
+2026/11/13 13:39:55.017458 badger[15] <INFO>: All 0 tables opened in 0s [Infof@logger.go:35]
+2026/11/13 13:39:55.022002 badger[15] <INFO>: Discard stats nextEmptySlot: 0 [Infof@logger.go:35]
+2026/11/13 13:39:55.022048 badger[15] <INFO>: Set nextTxnTs to 0 [Infof@logger.go:35]
+2026/11/13 13:39:55.026151 badger[15] <INFO>: Lifetime L0 stalled for: 0s [Infof@logger.go:35]
+2026/11/13 13:39:55.032002 badger[15] <INFO>: 
+Level 0 [ ]: NumTables: 00. Size: 0 B of 0 B. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 64 MiB
+Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level Done [Infof@logger.go:35]
+=== RUN   TestKVTxnOnCommit/retry
+2026/11/13 13:39:55.104272 badger[15] <INFO>: All 0 tables opened in 0s [Infof@logger.go:35]
+2026/11/13 13:39:55.106841 badger[15] <INFO>: Discard stats nextEmptySlot: 0 [Infof@logger.go:35]
+2026/11/13 13:39:55.106872 badger[15] <INFO>: Set nextTxnTs to 0 [Infof@logger.go:35]
+2026/11/13 13:39:55.110284 badger[15] <INFO>: Lifetime L0 stalled for: 0s [Infof@logger.go:35]
+2026/11/13 13:39:55.128157 badger[15] <INFO>: 
+Level 0 [ ]: NumTables: 01. Size: 205 B of 0 B. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 64 MiB
+Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level Done [Infof@logger.go:35]
+=== RUN   TestKVTxnOnCommit/driver_retry
+2026/11/13 13:39:55.152434 badger[15] <INFO>: All 0 tables opened in 0s [Infof@logger.go:35]
+2026/11/13 13:39:55.154650 badger[15] <INFO>: Discard stats nextEmptySlot: 0 [Infof@logger.go:35]
+2026/11/13 13:39:55.154676 badger[15] <INFO>: Set nextTxnTs to 0 [Infof@logger.go:35]
+2026/11/13 13:39:55.156703 badger[15] <INFO>: Lifetime L0 stalled for: 0s [Infof@logger.go:35]
+2026/11/13 13:39:55.169894 badger[15] <INFO>: 
+Level 0 [ ]: NumTables: 01. Size: 205 B of 0 B. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 64 MiB
+Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level Done [Infof@logger.go:35]
+--- PASS: TestKVTxnOnCommit (0.30s)
+    --- PASS: TestKVTxnOnCommit/commit (0.04s)
+    --- PASS: TestKVTxnOnCommit/body_error (0.03s)
+    --- PASS: TestKVTxnOnCommit/commit_error (0.08s)
+    --- PASS: TestKVTxnOnCommit/retry (0.10s)
+    --- PASS: TestKVTxnOnCommit/driver_retry (0.04s)
+=== RUN   TestKVACLTransactionRollback
+=== RUN   TestKVACLTransactionRollback/retry
+2026/11/13 13:39:55.192894 badger[15] <INFO>: All 0 tables opened in 0s [Infof@logger.go:35]
+2026/11/13 13:39:55.194703 badger[15] <INFO>: Discard stats nextEmptySlot: 0 [Infof@logger.go:35]
+2026/11/13 13:39:55.194731 badger[15] <INFO>: Set nextTxnTs to 0 [Infof@logger.go:35]
+2026/11/13 13:39:55.196805 badger[15] <INFO>: Lifetime L0 stalled for: 0s [Infof@logger.go:35]
+2026/11/13 13:39:55.212482 badger[15] <INFO>: 
+Level 0 [ ]: NumTables: 01. Size: 762 B of 0 B. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 64 MiB
+Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level Done [Infof@logger.go:35]
+=== RUN   TestKVACLTransactionRollback/driver_retry
+2026/11/13 13:39:55.237371 badger[15] <INFO>: All 0 tables opened in 0s [Infof@logger.go:35]
+2026/11/13 13:39:55.239020 badger[15] <INFO>: Discard stats nextEmptySlot: 0 [Infof@logger.go:35]
+2026/11/13 13:39:55.239052 badger[15] <INFO>: Set nextTxnTs to 0 [Infof@logger.go:35]
+2026/11/13 13:39:55.241510 badger[15] <INFO>: Lifetime L0 stalled for: 0s [Infof@logger.go:35]
+2026/11/13 13:39:55.255858 badger[15] <INFO>: 
+Level 0 [ ]: NumTables: 01. Size: 762 B of 0 B. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 64 MiB
+Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level Done [Infof@logger.go:35]
+=== RUN   TestKVACLTransactionRollback/abort
+2026/11/13 13:39:55.273795 badger[15] <INFO>: All 0 tables opened in 0s [Infof@logger.go:35]
+2026/11/13 13:39:55.277979 badger[15] <INFO>: Discard stats nextEmptySlot: 0 [Infof@logger.go:35]
+2026/11/13 13:39:55.278011 badger[15] <INFO>: Set nextTxnTs to 0 [Infof@logger.go:35]
+2026/11/13 13:39:55.280760 badger[15] <INFO>: Lifetime L0 stalled for: 0s [Infof@logger.go:35]
+2026/11/13 13:39:55.291496 badger[15] <INFO>: 
+Level 0 [ ]: NumTables: 01. Size: 973 B of 0 B. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 64 MiB
+Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level Done [Infof@logger.go:35]
+--- PASS: TestKVACLTransactionRollback (0.12s)
+    --- PASS: TestKVACLTransactionRollback/retry (0.04s)
+    --- PASS: TestKVACLTransactionRollback/driver_retry (0.04s)
+    --- PASS: TestKVACLTransactionRollback/abort (0.04s)
+=== RUN   TestKVACLTransactionCache
+=== RUN   TestKVACLTransactionCache/commit=true
+2026/11/13 13:39:55.315211 badger[15] <INFO>: All 0 tables opened in 0s [Infof@logger.go:35]
+2026/11/13 13:39:55.318555 badger[15] <INFO>: Discard stats nextEmptySlot: 0 [Infof@logger.go:35]
+2026/11/13 13:39:55.318581 badger[15] <INFO>: Set nextTxnTs to 0 [Infof@logger.go:35]
+2026/11/13 13:39:55.321038 badger[15] <INFO>: Lifetime L0 stalled for: 0s [Infof@logger.go:35]
+2026/11/13 13:39:55.332419 badger[15] <INFO>: 
+Level 0 [ ]: NumTables: 01. Size: 511 B of 0 B. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 64 MiB
+Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level Done [Infof@logger.go:35]
+=== RUN   TestKVACLTransactionCache/commit=false
+2026/11/13 13:39:55.377097 badger[15] <INFO>: All 0 tables opened in 0s [Infof@logger.go:35]
+2026/11/13 13:39:55.383140 badger[15] <INFO>: Discard stats nextEmptySlot: 0 [Infof@logger.go:35]
+2026/11/13 13:39:55.383180 badger[15] <INFO>: Set nextTxnTs to 0 [Infof@logger.go:35]
+2026/11/13 13:39:55.386100 badger[15] <INFO>: Lifetime L0 stalled for: 0s [Infof@logger.go:35]
+2026/11/13 13:39:55.398316 badger[15] <INFO>: 
+Level 0 [ ]: NumTables: 01. Size: 494 B of 0 B. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 64 MiB
+Level 1 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 2 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 3 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 4 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 5 [ ]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level 6 [B]: NumTables: 00. Size: 0 B of 10 MiB. Score: 0.00->0.00 StaleData: 0 B Target FileSize: 2.0 MiB
+Level Done [Infof@logger.go:35]
+--- PASS: TestKVACLTransactionCache (0.11s)
+    --- PASS: TestKVACLTransactionCache/commit=true (0.04s)
+    --- PASS: TestKVACLTransactionCache/commit=false (0.06s)
+=== RUN   TestMemKVClient
+2026/11/13 13:39:55.413256 juicefs[15] <INFO>: Create session 1 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 13:39:55.413360 juicefs[15] <WARNING>: Session 1 was stale and cleaned up, but now it comes back again [doRefreshSession@tkv.go:741]
+=== RUN   TestMemKVClient/SubdirOperations
+2026/11/13 13:39:56.420849 juicefs[15] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 13:39:56.420920 juicefs[15] <INFO>: close session 1: <nil> [CloseSession@base.go:1040]
+2026/11/13 13:39:56.425367 juicefs[15] <INFO>: Update session 1 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 13:39:56.425388 juicefs[15] <INFO>: Quota for inode 18 is deleted [syncQuotaMaps@quota.go:347]
+=== RUN   TestMemKVClient/SubdirOperations/CreateMknodMkdir
+=== RUN   TestMemKVClient/SubdirOperations/CreateMknodMkdir/volume-root
+=== RUN   TestMemKVClient/SubdirOperations/CreateMknodMkdir/subdir-root
+=== RUN   TestMemKVClient/SubdirOperations/CreateMknodMkdir/subdir-child
+=== RUN   TestMemKVClient/SubdirOperations/LookupReaddirResolve
+=== RUN   TestMemKVClient/SubdirOperations/LookupReaddirResolve/volume-root
+=== RUN   TestMemKVClient/SubdirOperations/LookupReaddirResolve/subdir-root
+=== RUN   TestMemKVClient/SubdirOperations/LookupReaddirResolve/subdir-child
+=== RUN   TestMemKVClient/SubdirOperations/AttributesAccess
+=== RUN   TestMemKVClient/SubdirOperations/AttributesAccess/volume-root
+=== RUN   TestMemKVClient/SubdirOperations/AttributesAccess/subdir-root
+=== RUN   TestMemKVClient/SubdirOperations/AttributesAccess/subdir-child
+=== RUN   TestMemKVClient/SubdirOperations/Xattr
+=== RUN   TestMemKVClient/SubdirOperations/Xattr/volume-root
+=== RUN   TestMemKVClient/SubdirOperations/Xattr/subdir-root
+=== RUN   TestMemKVClient/SubdirOperations/Xattr/subdir-child
+=== RUN   TestMemKVClient/SubdirOperations/ACL
+=== RUN   TestMemKVClient/SubdirOperations/ACL/volume-root
+=== RUN   TestMemKVClient/SubdirOperations/ACL/subdir-root
+=== RUN   TestMemKVClient/SubdirOperations/ACL/subdir-child
+=== RUN   TestMemKVClient/SubdirOperations/ReadWriteTruncateFallocate
+=== RUN   TestMemKVClient/SubdirOperations/ReadWriteTruncateFallocate/volume-root
+=== RUN   TestMemKVClient/SubdirOperations/ReadWriteTruncateFallocate/subdir-root
+=== RUN   TestMemKVClient/SubdirOperations/ReadWriteTruncateFallocate/subdir-child
+=== RUN   TestMemKVClient/SubdirOperations/SymlinkLinkUnlink
+=== RUN   TestMemKVClient/SubdirOperations/SymlinkLinkUnlink/volume-root
+=== RUN   TestMemKVClient/SubdirOperations/SymlinkLinkUnlink/subdir-root
+=== RUN   TestMemKVClient/SubdirOperations/SymlinkLinkUnlink/subdir-child
+=== RUN   TestMemKVClient/SubdirOperations/Rename
+=== RUN   TestMemKVClient/SubdirOperations/Rename/volume-root
+=== RUN   TestMemKVClient/SubdirOperations/Rename/subdir-root
+=== RUN   TestMemKVClient/SubdirOperations/Rename/subdir-child
+=== RUN   TestMemKVClient/SubdirOperations/RenameExchange
+=== RUN   TestMemKVClient/SubdirOperations/RenameExchange/volume-root
+=== RUN   TestMemKVClient/SubdirOperations/RenameExchange/subdir-root
+=== RUN   TestMemKVClient/SubdirOperations/RenameExchange/subdir-child
+=== RUN   TestMemKVClient/SubdirOperations/BatchUnlink
+=== RUN   TestMemKVClient/SubdirOperations/BatchUnlink/volume-root
+=== RUN   TestMemKVClient/SubdirOperations/BatchUnlink/subdir-root
+=== RUN   TestMemKVClient/SubdirOperations/BatchUnlink/subdir-child
+=== RUN   TestMemKVClient/SubdirOperations/RmdirRemove
+=== RUN   TestMemKVClient/SubdirOperations/RmdirRemove/volume-root
+=== RUN   TestMemKVClient/SubdirOperations/RmdirRemove/subdir-root
+=== RUN   TestMemKVClient/SubdirOperations/RmdirRemove/subdir-child
+=== RUN   TestMemKVClient/SubdirOperations/CopyFileRangeClone
+=== RUN   TestMemKVClient/SubdirOperations/CopyFileRangeClone/volume-root
+=== RUN   TestMemKVClient/SubdirOperations/CopyFileRangeClone/subdir-root
+=== RUN   TestMemKVClient/SubdirOperations/CopyFileRangeClone/subdir-child
+=== RUN   TestMemKVClient/SubdirOperations/DirectoryClone
+=== RUN   TestMemKVClient/SubdirOperations/DirectoryClone/volume-root
+=== RUN   TestMemKVClient/SubdirOperations/DirectoryClone/subdir-root
+=== RUN   TestMemKVClient/SubdirOperations/DirectoryClone/subdir-child
+=== RUN   TestMemKVClient/SubdirOperations/TrashName
+=== RUN   TestMemKVClient/SubdirOperations/TrashName/volume-root
+=== RUN   TestMemKVClient/SubdirOperations/TrashName/subdir-root
+=== RUN   TestMemKVClient/SubdirOperations/TrashName/subdir-child
+=== RUN   TestMemKVClient/SubdirOperations/SummaryQuotaStatFS
+=== RUN   TestMemKVClient/SubdirOperations/SummaryQuotaStatFS/volume-root
+2026/11/13 13:39:56.430108 juicefs[15] <INFO>: Quota for inode 1 is deleted [syncQuotaMaps@quota.go:347]
+=== RUN   TestMemKVClient/SubdirOperations/SummaryQuotaStatFS/subdir-root
+2026/11/13 13:39:56.430243 juicefs[15] <INFO>: Quota for inode 208 is deleted [syncQuotaMaps@quota.go:347]
+=== RUN   TestMemKVClient/SubdirOperations/SummaryQuotaStatFS/subdir-child
+2026/11/13 13:39:56.430399 juicefs[15] <INFO>: Quota for inode 212 is deleted [syncQuotaMaps@quota.go:347]
+=== RUN   TestMemKVClient/SubdirOperations/Locks
+=== RUN   TestMemKVClient/SubdirOperations/Locks/volume-root
+=== RUN   TestMemKVClient/SubdirOperations/Locks/subdir-root
+=== RUN   TestMemKVClient/SubdirOperations/Locks/subdir-child
+=== RUN   TestMemKVClient/SubdirOperations/ChrootCreate
+2026/11/13 13:39:56.430664 juicefs[15] <WARNING>: Subdir subdir-chroot not found, creating it [Chroot@base.go:2822]
+2026/11/13 13:39:56.430693 juicefs[15] <WARNING>: Subdir sub not found, creating it [Chroot@base.go:2822]
+2026/11/13 13:39:56.430735 juicefs[15] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 13:39:56.430752 juicefs[15] <INFO>: close session 1: <nil> [CloseSession@base.go:1040]
+2026/11/13 13:39:56.531489 juicefs[15] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 13:39:56.531570 juicefs[15] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 13:39:56.531599 juicefs[15] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 13:39:56.531628 juicefs[15] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 13:39:56.531664 juicefs[15] <WARNING>: File name is too long as a trash entry, truncating it: fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff -> 1-232-fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff [trashEntry@base.go:3174]
+2026/11/13 13:39:56.531680 juicefs[15] <WARNING>: File name is too long as a trash entry, truncating it: fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff -> 1-232-fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff [trashEntry@base.go:3174]
+2026/11/13 13:39:56.531759 juicefs[15] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 13:39:56.532135 juicefs[15] <INFO>: cleanup trash: deleted 12 files in 170.496µs [CleanupTrashBefore@base.go:3279]
+2026/11/13 13:39:56.716506 juicefs[15] <INFO>: flush session 1: [FlushSession@base.go:1051]
+=== RUN   TestMemKVClient/TrashSliceClaim
+2026/11/13 13:39:56.717309 juicefs[15] <INFO>: close session 1: <nil> [CloseSession@base.go:1040]
+2026/11/13 13:39:56.717828 juicefs[15] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 13:39:56.717857 juicefs[15] <INFO>: close session 1: <nil> [CloseSession@base.go:1040]
+=== RUN   TestMemKVClient/SQLExactEdgeCAS
+    base_test.go:2314: SQL transaction invariant
+=== RUN   TestMemKVClient/XattrInodeLifecycle
+=== RUN   TestMemKVClient/OpenFileKeepsXattrsAfterLastNameRemoved
+=== RUN   TestMemKVClient/OpenFileKeepsXattrsAfterLastNameRemoved/Unlink
+=== RUN   TestMemKVClient/OpenFileKeepsXattrsAfterLastNameRemoved/RenameOver
+=== RUN   TestMemKVClient/OpenFileKeepsXattrsAfterLastNameRemoved/Remove
+2026/11/13 13:39:56.948379 juicefs[15] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 13:39:56.948458 juicefs[15] <INFO>: close session 1: <nil> [CloseSession@base.go:1040]
+2026/11/13 13:39:58.169632 juicefs[15] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 13:39:58.169671 juicefs[15] <INFO>: close session 1: <nil> [CloseSession@base.go:1040]
+2026/11/13 13:39:58.180675 juicefs[15] <INFO>: Create session 2 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 13:39:58.190977 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:39:58.191061 juicefs[15] <INFO>: close session 2: <nil> [CloseSession@base.go:1040]
+2026/11/13 13:39:58.205263 juicefs[15] <INFO>: Update session 2 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 13:40:03.212898 juicefs[15] <INFO>: Quota for inode 4707 is deleted [syncQuotaMaps@quota.go:347]
+=== RUN   TestMemKVClient/SubdirQuota
+=== RUN   TestMemKVClient/FlushAfterRmdir
+2026/11/13 13:40:03.213078 juicefs[15] <INFO>: Quota for inode 4714 is deleted [syncQuotaMaps@quota.go:347]
+2026/11/13 13:40:03.213239 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:03.214249 juicefs[15] <INFO>: close session 2: <nil> [CloseSession@base.go:1040]
+2026/11/13 13:40:03.225110 juicefs[15] <INFO>: Update session 2 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 13:40:03.225141 juicefs[15] <INFO>: Quota for inode 4717 is deleted [syncQuotaMaps@quota.go:347]
+2026/11/13 13:40:03.225147 juicefs[15] <INFO>: Quota for inode 4718 is deleted [syncQuotaMaps@quota.go:347]
+=== RUN   TestMemKVClient/BasicQuotaOperations
+=== RUN   TestMemKVClient/QuotaFileOperations
+2026/11/13 13:40:03.236649 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+=== RUN   TestMemKVClient/QuotaErrorCases
+=== RUN   TestMemKVClient/QuotaConcurrentOperations
+=== RUN   TestMemKVClient/QuotaMixedTypes
+=== RUN   TestMemKVClient/QuotaUsageStatistics
+=== RUN   TestMemKVClient/CheckQuotaFileOwner
+2026/11/13 13:40:05.242612 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:05.242654 juicefs[15] <INFO>: close session 2: <nil> [CloseSession@base.go:1040]
+=== RUN   TestMemKVClient/QuotaEdgeCases
+    base_test.go:5896: Testing inodes-only quota limit...
+    base_test.go:5912: Testing space-only quota limit...
+=== RUN   TestMemKVClient/HardlinkQuota
+2026/11/13 13:40:05.242836 juicefs[15] <INFO>: Quota for inode 4722 is deleted [syncQuotaMaps@quota.go:347]
+=== RUN   TestMemKVClient/BatchUnlinkWithUserGroupQuota
+=== RUN   TestMemKVClient/SustainedInodeQuotaDecrement
+=== RUN   TestMemKVClient/SustainedInodeBeforeQuotaEnabled
+2026/11/13 13:40:05.248227 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:05.248426 juicefs[15] <INFO>: close session 2: <nil> [CloseSession@base.go:1040]
+2026/11/13 13:40:11.300682 juicefs[15] <WARNING>: nlink of /check should be 3, but got 0 [Check@base.go:2715]
+2026/11/13 13:40:11.300720 juicefs[15] <WARNING>: Path /check (inode 4771) can be repaired, please re-run with '--path /check --repair' to fix it [Check@base.go:2742]
+2026/11/13 13:40:11.300913 juicefs[15] <WARNING>: nlink of /check should be 3, but got 0 [Check@base.go:2715]
+2026/11/13 13:40:11.300928 juicefs[15] <INFO>: Checked 1 nodes [Check@base.go:2805]
+2026/11/13 13:40:11.301032 juicefs[15] <WARNING>: nlink of /check/d1/d2 should be 3, but got 0 [Check@base.go:2715]
+2026/11/13 13:40:11.301043 juicefs[15] <INFO>: Checked 1 nodes [Check@base.go:2805]
+2026/11/13 13:40:11.304124 juicefs[15] <WARNING>: nlink of / should be 16, but got 5 [Check@base.go:2715]
+2026/11/13 13:40:11.311094 juicefs[15] <WARNING>: nlink of /check/d1/d2/d3 should be 3, but got 0 [Check@base.go:2715]
+2026/11/13 13:40:11.311095 juicefs[15] <WARNING>: nlink of /check/d1/d2/d3/d4 should be 2, but got 0 [Check@base.go:2715]
+2026/11/13 13:40:11.311140 juicefs[15] <WARNING>: nlink of /check/d1 should be 3, but got 0 [Check@base.go:2715]
+2026/11/13 13:40:11.313260 juicefs[15] <INFO>: Checked 4146 nodes [Check@base.go:2805]
+2026/11/13 13:40:11.325605 juicefs[15] <INFO>: Update session 2 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 13:40:11.325652 juicefs[15] <INFO>: Quota for inode 4725 is deleted [syncQuotaMaps@quota.go:347]
+2026/11/13 13:40:11.325659 juicefs[15] <INFO>: Quota for inode 4726 is deleted [syncQuotaMaps@quota.go:347]
+2026/11/13 13:40:11.325752 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.325796 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.325813 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.325831 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.325841 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.325857 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.325872 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.325892 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.325897 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.325917 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.325922 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.325937 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.325961 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.325982 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.326023 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.326029 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.326107 juicefs[15] <INFO>: close session 2: <nil> [CloseSession@base.go:1040]
+2026/11/13 13:40:11.345891 juicefs[15] <INFO>: Update session 2 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 13:40:11.346005 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346023 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346058 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346082 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346087 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346099 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346119 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+=== NAME  TestMemKVClient
+    base_test.go:4071: Test 1 passed: cross-dir rename without overwrite
+    base_test.go:4089: Test 2 passed: same-dir rename without overwrite
+2026/11/13 13:40:11.346134 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346146 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346156 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346162 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+    base_test.go:4110: Test 3 passed: same-dir rename with overwrite
+2026/11/13 13:40:11.346181 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346195 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346204 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346211 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346215 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346236 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346242 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+    base_test.go:4134: Test 4 passed: cross-dir rename with overwrite
+2026/11/13 13:40:11.346255 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346261 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346271 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346277 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346282 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346300 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346305 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346316 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+    base_test.go:4162: Test 5 passed: exchange rename
+2026/11/13 13:40:11.346320 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346336 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346339 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346345 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346367 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346377 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346389 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346397 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346401 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346422 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346428 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+    base_test.go:4186: Test 6 passed: same-dir exchange rename
+2026/11/13 13:40:11.346439 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346446 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346458 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346463 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346482 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346487 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.346495 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+    base_test.go:4230: Test 7 passed: rename between hard links
+2026/11/13 13:40:11.346691 juicefs[15] <INFO>: close session 2: <nil> [CloseSession@base.go:1040]
+2026/11/13 13:40:11.366108 juicefs[15] <INFO>: Update session 2 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 13:40:11.366227 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.366281 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.366356 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.366388 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.366405 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+    base_test.go:4291: Test trash overwrite passed
+2026/11/13 13:40:11.366410 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.366443 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.366449 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.366495 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.366501 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.366531 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.366542 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.366546 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.366571 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.366575 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.366585 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.366591 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+    base_test.go:4321: Test trash cross-dir overwrite passed
+2026/11/13 13:40:11.366624 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.366630 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+    base_test.go:4349: Test trash exchange passed
+2026/11/13 13:40:11.366655 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.867081 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.867126 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.867158 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+    base_test.go:4382: Test 7 skipped: rename from trash not allowed (expected for security)
+2026/11/13 13:40:11.867305 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.867313 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.867351 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.867378 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.867434 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.867446 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.867470 juicefs[15] <INFO>: close session 2: <nil> [CloseSession@base.go:1040]
+    base_test.go:4411: Test 8 passed: same-dir exchange with trash
+=== RUN   TestMemKVClient/CloneParentDirStat
+=== RUN   TestMemKVClient/CloneParentDirStat/directory
+2026/11/13 13:40:11.869275 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.869482 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+=== RUN   TestMemKVClient/CloneParentDirStat/file
+2026/11/13 13:40:11.869714 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.869776 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.869803 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+=== RUN   TestMemKVClient/CloneParentDirStat/symlink
+2026/11/13 13:40:11.869887 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:11.869914 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:12.883805 juicefs[15] <INFO>: Update session 2 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 13:40:12.885970 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:12.886149 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:12.886360 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:12.886619 juicefs[15] <INFO>: flush session 2: [FlushSession@base.go:1051]
+2026/11/13 13:40:12.886685 juicefs[15] <INFO>: close session 2: <nil> [CloseSession@base.go:1040]
+=== RUN   TestMemKVClient/ACLCacheHitWithGaps
+2026/11/13 13:40:12.888707 juicefs[15] <INFO>: Create read-only session OK with version: 1.5.0-dev+unknown [NewSession@base.go:811]
+2026/11/13 13:40:12.888753 juicefs[15] <INFO>: close session 2: read-only file system [CloseSession@base.go:1040]
+--- PASS: TestMemKVClient (17.49s)
+    --- PASS: TestMemKVClient/SubdirOperations (0.01s)
+        --- PASS: TestMemKVClient/SubdirOperations/CreateMknodMkdir (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/CreateMknodMkdir/volume-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/CreateMknodMkdir/subdir-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/CreateMknodMkdir/subdir-child (0.00s)
+        --- PASS: TestMemKVClient/SubdirOperations/LookupReaddirResolve (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/LookupReaddirResolve/volume-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/LookupReaddirResolve/subdir-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/LookupReaddirResolve/subdir-child (0.00s)
+        --- PASS: TestMemKVClient/SubdirOperations/AttributesAccess (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/AttributesAccess/volume-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/AttributesAccess/subdir-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/AttributesAccess/subdir-child (0.00s)
+        --- PASS: TestMemKVClient/SubdirOperations/Xattr (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/Xattr/volume-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/Xattr/subdir-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/Xattr/subdir-child (0.00s)
+        --- PASS: TestMemKVClient/SubdirOperations/ACL (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/ACL/volume-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/ACL/subdir-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/ACL/subdir-child (0.00s)
+        --- PASS: TestMemKVClient/SubdirOperations/ReadWriteTruncateFallocate (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/ReadWriteTruncateFallocate/volume-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/ReadWriteTruncateFallocate/subdir-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/ReadWriteTruncateFallocate/subdir-child (0.00s)
+        --- PASS: TestMemKVClient/SubdirOperations/SymlinkLinkUnlink (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/SymlinkLinkUnlink/volume-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/SymlinkLinkUnlink/subdir-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/SymlinkLinkUnlink/subdir-child (0.00s)
+        --- PASS: TestMemKVClient/SubdirOperations/Rename (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/Rename/volume-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/Rename/subdir-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/Rename/subdir-child (0.00s)
+        --- PASS: TestMemKVClient/SubdirOperations/RenameExchange (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/RenameExchange/volume-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/RenameExchange/subdir-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/RenameExchange/subdir-child (0.00s)
+        --- PASS: TestMemKVClient/SubdirOperations/BatchUnlink (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/BatchUnlink/volume-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/BatchUnlink/subdir-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/BatchUnlink/subdir-child (0.00s)
+        --- PASS: TestMemKVClient/SubdirOperations/RmdirRemove (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/RmdirRemove/volume-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/RmdirRemove/subdir-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/RmdirRemove/subdir-child (0.00s)
+        --- PASS: TestMemKVClient/SubdirOperations/CopyFileRangeClone (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/CopyFileRangeClone/volume-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/CopyFileRangeClone/subdir-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/CopyFileRangeClone/subdir-child (0.00s)
+        --- PASS: TestMemKVClient/SubdirOperations/DirectoryClone (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/DirectoryClone/volume-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/DirectoryClone/subdir-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/DirectoryClone/subdir-child (0.00s)
+        --- PASS: TestMemKVClient/SubdirOperations/TrashName (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/TrashName/volume-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/TrashName/subdir-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/TrashName/subdir-child (0.00s)
+        --- PASS: TestMemKVClient/SubdirOperations/SummaryQuotaStatFS (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/SummaryQuotaStatFS/volume-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/SummaryQuotaStatFS/subdir-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/SummaryQuotaStatFS/subdir-child (0.00s)
+        --- PASS: TestMemKVClient/SubdirOperations/Locks (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/Locks/volume-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/Locks/subdir-root (0.00s)
+            --- PASS: TestMemKVClient/SubdirOperations/Locks/subdir-child (0.00s)
+        --- PASS: TestMemKVClient/SubdirOperations/ChrootCreate (0.00s)
+    --- PASS: TestMemKVClient/TrashSliceClaim (0.00s)
+    --- SKIP: TestMemKVClient/SQLExactEdgeCAS (0.00s)
+    --- PASS: TestMemKVClient/XattrInodeLifecycle (0.00s)
+    --- PASS: TestMemKVClient/OpenFileKeepsXattrsAfterLastNameRemoved (0.00s)
+        --- PASS: TestMemKVClient/OpenFileKeepsXattrsAfterLastNameRemoved/Unlink (0.00s)
+        --- PASS: TestMemKVClient/OpenFileKeepsXattrsAfterLastNameRemoved/RenameOver (0.00s)
+        --- PASS: TestMemKVClient/OpenFileKeepsXattrsAfterLastNameRemoved/Remove (0.00s)
+    --- PASS: TestMemKVClient/SubdirQuota (0.00s)
+    --- PASS: TestMemKVClient/FlushAfterRmdir (0.00s)
+    --- PASS: TestMemKVClient/BasicQuotaOperations (0.01s)
+    --- PASS: TestMemKVClient/QuotaFileOperations (2.00s)
+    --- PASS: TestMemKVClient/QuotaErrorCases (0.00s)
+    --- PASS: TestMemKVClient/QuotaConcurrentOperations (0.00s)
+    --- PASS: TestMemKVClient/QuotaMixedTypes (0.00s)
+    --- PASS: TestMemKVClient/QuotaUsageStatistics (0.00s)
+    --- PASS: TestMemKVClient/CheckQuotaFileOwner (0.00s)
+    --- PASS: TestMemKVClient/QuotaEdgeCases (0.00s)
+    --- PASS: TestMemKVClient/HardlinkQuota (0.00s)
+    --- PASS: TestMemKVClient/BatchUnlinkWithUserGroupQuota (0.00s)
+    --- PASS: TestMemKVClient/SustainedInodeQuotaDecrement (0.00s)
+    --- PASS: TestMemKVClient/SustainedInodeBeforeQuotaEnabled (0.00s)
+    --- PASS: TestMemKVClient/CloneParentDirStat (0.00s)
+        --- PASS: TestMemKVClient/CloneParentDirStat/directory (0.00s)
+        --- PASS: TestMemKVClient/CloneParentDirStat/file (0.00s)
+        --- PASS: TestMemKVClient/CloneParentDirStat/symlink (0.00s)
+    --- PASS: TestMemKVClient/ACLCacheHitWithGaps (0.00s)
+PASS
