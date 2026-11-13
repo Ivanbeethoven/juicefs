@@ -67,4 +67,3 @@ docker exec -e GOMAXPROCS=4 "$REDIS_CONTAINER" /tmp/meta-static.test \
   -test.run '^(TestRedisClient|TestRedisBatchClone.*|TestExpireTime|TestMergeFacl|TestMergeAttrReplayMode|TestLog.*|TestParseChangeEntry.*|TestChangeEntry.*|TestRemoveSecret|TestEncrypt|TestFormat_Update_KeyConflict|TestOlderThan|TestParseRedis.*|Test_injectPasswordIntoURI|Test_setPasswordFromEnv|Test_readPasswordFromFile|TestSymlinkCache|TestTxBatchLock)$' \
   -test.v -test.timeout 6m
 ```
-

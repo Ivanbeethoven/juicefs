@@ -1,4 +1,4 @@
 # Preserve raw evidence bytes, including CSV line endings, for SHA-256 checks.
-*.json -text
-*.csv -text
-*.txt -text
+*.json -text whitespace=cr-at-eol
+*.csv -text whitespace=cr-at-eol
+*.txt -text whitespace=cr-at-eol
