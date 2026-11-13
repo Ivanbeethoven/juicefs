@@ -20,6 +20,7 @@ import (
 	"container/list"
 	"sync"
 	"sync/atomic"
+	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
 )
@@ -133,6 +134,7 @@ func (tx *forkRedisTxn) remember(key forkCacheKey, value forkCacheValue) {
 }
 
 func (tx *forkRedisTxn) publishReads() {
+	defer tx.c.phases[forkPhasePublish].observe(time.Now())
 	// Called only after remote snapshot/commit validation. An expired or failed
 	// reader must not publish a false absence after its old versions were pruned.
 	for key, value := range tx.pending {
@@ -141,6 +143,7 @@ func (tx *forkRedisTxn) publishReads() {
 }
 
 func (c *forkRedisClient) initMetrics(reg prometheus.Registerer) {
+	c.initTimingMetrics(reg)
 	for kind, name := range []string{"record", "range"} {
 		reg.MustRegister(prometheus.NewCounterFunc(prometheus.CounterOpts{
 			Name: "forkredis_cache_hits_total", Help: "Versioned read cache hits.",

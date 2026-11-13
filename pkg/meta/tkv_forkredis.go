@@ -62,6 +62,7 @@ type forkRedisClient struct {
 	parents     []forkLayer
 	cache       *forkReadCache
 	readBatches atomic.Uint64
+	phases      [forkPhaseCount]forkPhaseMetric
 }
 
 func (c *forkRedisClient) head(name string) string  { return c.prefix + "head:" + name }
@@ -252,7 +253,10 @@ func (tx *forkRedisTxn) readBatch(keys [][]byte) [][]byte {
 	}
 	if pipe.Len() > 0 {
 		tx.c.readBatches.Add(1)
-		if _, err := pipe.Exec(tx.ctx); err != nil && !errors.Is(err, redis.Nil) {
+		started := time.Now()
+		_, err := pipe.Exec(tx.ctx)
+		tx.c.phases[forkPhaseDataIO].observe(started)
+		if err != nil && !errors.Is(err, redis.Nil) {
 			panic(err)
 		}
 	}
@@ -325,7 +329,10 @@ func (tx *forkRedisTxn) scan(begin, end []byte, keysOnly bool, handler func(k, v
 	}
 	if pipe.Len() > 0 {
 		tx.c.readBatches.Add(1)
-		if _, err := pipe.Exec(tx.ctx); err != nil {
+		started := time.Now()
+		_, err := pipe.Exec(tx.ctx)
+		tx.c.phases[forkPhaseDataIO].observe(started)
+		if err != nil {
 			panic(err)
 		}
 	}
@@ -419,7 +426,9 @@ func (tx *forkRedisTxn) incrBy(key []byte, value int64) int64 {
 		}
 		// Reservation is global across siblings. Aborted transactions can leave
 		// holes; allocated IDs must never be reused by another child.
+		started := time.Now()
 		n, err := tx.c.rdb.IncrBy(tx.ctx, tx.c.prefix+"slice-id", value).Result()
+		tx.c.phases[forkPhaseDataIO].observe(started)
 		if err != nil {
 			panic(err)
 		}
@@ -497,6 +506,7 @@ redis.call('ZREM',KEYS[4],ARGV[3])
 return revision`)
 
 func (c *forkRedisClient) transaction(ctx context.Context, f func(*kvTxn) error, retry int, readOnly bool) (err error) {
+	defer c.phases[forkPhaseTotal].observe(time.Now())
 	defer func() {
 		if p := recover(); p != nil {
 			if e, ok := p.(error); ok {
@@ -509,13 +519,16 @@ func (c *forkRedisClient) transaction(ctx context.Context, f func(*kvTxn) error,
 	ctx, cancel := context.WithTimeout(ctx, forkTransactionTTL)
 	defer cancel()
 	token := rand.Text()
+	started := time.Now()
 	values, err := forkBegin.Run(ctx, c.rdb, []string{c.head(c.branch), c.readers(), c.readerExpiry()}, token, forkTransactionTTL.Milliseconds()).StringSlice()
+	c.phases[forkPhaseBegin].observe(started)
 	if err != nil {
 		return err
 	}
 	active := true
 	defer func() {
 		if active {
+			defer c.phases[forkPhaseCleanup].observe(time.Now())
 			cleanup, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 			defer cancel()
 			_ = forkEnd.Run(cleanup, c.rdb, []string{c.readers(), c.readerExpiry()}, token).Err()
@@ -531,11 +544,17 @@ func (c *forkRedisClient) transaction(ctx context.Context, f func(*kvTxn) error,
 	head := forkLayer{name: c.branch, revision: revision, sealed: values[1] == "1"}
 	layers := append([]forkLayer{head}, c.parents...)
 	tx := &forkRedisTxn{c: c, ctx: ctx, layers: layers, buffer: make(map[string][]byte), readOnly: readOnly}
-	if err = f(&kvTxn{kvtxn: tx, retry: retry}); err != nil {
+	err = func() error {
+		defer c.phases[forkPhaseBody].observe(time.Now())
+		return f(&kvTxn{kvtxn: tx, retry: retry})
+	}()
+	if err != nil {
 		return err
 	}
 	if len(tx.buffer) == 0 {
+		started := time.Now()
 		valid, err := forkEnd.Run(ctx, c.rdb, []string{c.readers(), c.readerExpiry()}, token).Int()
+		c.phases[forkPhaseEnd].observe(started)
 		if err != nil {
 			return err
 		}
@@ -567,7 +586,9 @@ func (c *forkRedisClient) transaction(ctx context.Context, f func(*kvTxn) error,
 		keys = append(keys, c.record(c.branch, []byte(k)))
 		args = append(args, k, record)
 	}
+	started = time.Now()
 	result, err := forkCommit.Run(ctx, c.rdb, keys, args...).Int64()
+	c.phases[forkPhaseCommit].observe(started)
 	if err != nil {
 		return err
 	}
