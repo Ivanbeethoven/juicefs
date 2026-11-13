@@ -1,0 +1,313 @@
+{
+  "passed": true,
+  "volume": "fork-d3bce904c84f",
+  "source_url": "forkredis://127.0.0.1:51287/0?volume=fork-d3bce904c84f&branch=main",
+  "binary_sha256": "f732f71bdf9b8032a9f9fc1266ec3d928d40bdac809386b2893cb4b827d546ce",
+  "commands": [
+    {
+      "argv": [
+        "format",
+        "--storage",
+        "file",
+        "--bucket",
+        "/srv/juicefs-forkredis-opt-20261113/fuse-validation/smoke/objects",
+        "--trash-days",
+        "0",
+        "forkredis://127.0.0.1:51287/0?volume=fork-d3bce904c84f&branch=main",
+        "fork-d3bce904c84f"
+      ],
+      "returncode": 0,
+      "elapsed_ns": 24872171,
+      "stdout": "",
+      "stderr": "2026/11/13 20:42:03.182040 juicefs[126103] <INFO>: Meta address: forkredis://127.0.0.1:51287/0?volume=fork-d3bce904c84f&branch=main [NewClient@interface.go:687]\n2026/11/13 20:42:03.185709 juicefs[126103] <INFO>: Data use file:///srv/juicefs-forkredis-opt-20261113/fuse-validation/smoke/objects/fork-d3bce904c84f/ [format@format.go:604]\n2026/11/13 20:42:03.188891 juicefs[126103] <INFO>: Volume is formatted as {\n  \"Name\": \"fork-d3bce904c84f\",\n  \"UUID\": \"cc893da9-3c02-4299-8cd3-be0ada3cb290\",\n  \"Storage\": \"file\",\n  \"Tiers\": {\n    \"0\": {\n      \"ID\": 0,\n      \"StorageClass\": \"\",\n      \"Tag\": \"\"\n    }\n  },\n  \"Bucket\": \"/srv/juicefs-forkredis-opt-20261113/fuse-validation/smoke/objects/\",\n  \"BlockSize\": 4096,\n  \"Compression\": \"none\",\n  \"EncryptAlgo\": \"aes256gcm-rsa\",\n  \"TrashDays\": 0,\n  \"MetaVersion\": 1,\n  \"MinClientVersion\": \"1.1.0-A\",\n  \"DirStats\": true,\n  \"EnableACL\": false\n} [format@format.go:641]\n"
+    },
+    {
+      "argv": [
+        "mount",
+        "--no-usage-report",
+        "--no-bgjob",
+        "--backup-meta",
+        "0",
+        "--cache-dir",
+        "memory",
+        "--cache-size",
+        "64",
+        "--attr-cache",
+        "0",
+        "--entry-cache",
+        "0",
+        "--dir-entry-cache",
+        "0",
+        "--no-syslog",
+        "--enable-xattr",
+        "--metrics",
+        "127.0.0.1:0",
+        "forkredis://127.0.0.1:51287/0?volume=fork-d3bce904c84f&branch=main",
+        "/srv/juicefs-forkredis-opt-20261113/fuse-validation/smoke/source"
+      ],
+      "pid": 126110
+    },
+    {
+      "argv": [
+        "clone",
+        "--seal",
+        "forkredis://127.0.0.1:51287/0?volume=fork-d3bce904c84f&branch=main"
+      ],
+      "returncode": 1,
+      "elapsed_ns": 17737422,
+      "stdout": "",
+      "stderr": "2026/11/13 20:42:03.346247 juicefs[126134] <FATAL>: unmount and close source sessions before sealing: device or resource busy [main@main.go:31]\n"
+    },
+    {
+      "argv": [
+        "umount",
+        "/srv/juicefs-forkredis-opt-20261113/fuse-validation/smoke/source"
+      ],
+      "returncode": 0,
+      "elapsed_ns": 18011930,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "clone",
+        "--seal",
+        "forkredis://127.0.0.1:51287/0?volume=fork-d3bce904c84f&branch=main"
+      ],
+      "returncode": 0,
+      "elapsed_ns": 20359561,
+      "stdout": "Sealed read-only workspace: forkredis://127.0.0.1:51287/0?volume=fork-d3bce904c84f&branch=main\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "clone",
+        "--lazy",
+        "forkredis://127.0.0.1:51287/0?volume=fork-d3bce904c84f&branch=main",
+        "child1"
+      ],
+      "returncode": 0,
+      "elapsed_ns": 15745532,
+      "stdout": "forkredis://127.0.0.1:51287/0?branch=child1&volume=fork-d3bce904c84f\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "clone",
+        "--lazy",
+        "forkredis://127.0.0.1:51287/0?volume=fork-d3bce904c84f&branch=main",
+        "child2"
+      ],
+      "returncode": 0,
+      "elapsed_ns": 18290718,
+      "stdout": "forkredis://127.0.0.1:51287/0?branch=child2&volume=fork-d3bce904c84f\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "mount",
+        "--no-usage-report",
+        "--no-bgjob",
+        "--backup-meta",
+        "0",
+        "--cache-dir",
+        "memory",
+        "--cache-size",
+        "64",
+        "--attr-cache",
+        "0",
+        "--entry-cache",
+        "0",
+        "--dir-entry-cache",
+        "0",
+        "--no-syslog",
+        "--enable-xattr",
+        "--metrics",
+        "127.0.0.1:0",
+        "forkredis://127.0.0.1:51287/0?volume=fork-d3bce904c84f&branch=main",
+        "/srv/juicefs-forkredis-opt-20261113/fuse-validation/smoke/source"
+      ],
+      "pid": 126172
+    },
+    {
+      "argv": [
+        "mount",
+        "--no-usage-report",
+        "--no-bgjob",
+        "--backup-meta",
+        "0",
+        "--cache-dir",
+        "memory",
+        "--cache-size",
+        "64",
+        "--attr-cache",
+        "0",
+        "--entry-cache",
+        "0",
+        "--dir-entry-cache",
+        "0",
+        "--no-syslog",
+        "--enable-xattr",
+        "--metrics",
+        "127.0.0.1:0",
+        "forkredis://127.0.0.1:51287/0?branch=child1&volume=fork-d3bce904c84f",
+        "/srv/juicefs-forkredis-opt-20261113/fuse-validation/smoke/child1"
+      ],
+      "pid": 126194
+    },
+    {
+      "argv": [
+        "mount",
+        "--no-usage-report",
+        "--no-bgjob",
+        "--backup-meta",
+        "0",
+        "--cache-dir",
+        "memory",
+        "--cache-size",
+        "64",
+        "--attr-cache",
+        "0",
+        "--entry-cache",
+        "0",
+        "--dir-entry-cache",
+        "0",
+        "--no-syslog",
+        "--enable-xattr",
+        "--metrics",
+        "127.0.0.1:0",
+        "forkredis://127.0.0.1:51287/0?branch=child2&volume=fork-d3bce904c84f",
+        "/srv/juicefs-forkredis-opt-20261113/fuse-validation/smoke/child2"
+      ],
+      "pid": 126215
+    },
+    {
+      "argv": [
+        "umount",
+        "/srv/juicefs-forkredis-opt-20261113/fuse-validation/smoke/child1"
+      ],
+      "returncode": 0,
+      "elapsed_ns": 17422769,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "mount",
+        "--no-usage-report",
+        "--no-bgjob",
+        "--backup-meta",
+        "0",
+        "--cache-dir",
+        "memory",
+        "--cache-size",
+        "64",
+        "--attr-cache",
+        "0",
+        "--entry-cache",
+        "0",
+        "--dir-entry-cache",
+        "0",
+        "--no-syslog",
+        "--enable-xattr",
+        "--metrics",
+        "127.0.0.1:0",
+        "forkredis://127.0.0.1:51287/0?branch=child1&volume=fork-d3bce904c84f",
+        "/srv/juicefs-forkredis-opt-20261113/fuse-validation/smoke/child1"
+      ],
+      "pid": 126260
+    },
+    {
+      "argv": [
+        "gc",
+        "--delete",
+        "forkredis://127.0.0.1:51287/0?branch=child1&volume=fork-d3bce904c84f"
+      ],
+      "returncode": 1,
+      "elapsed_ns": 17499612,
+      "stdout": "",
+      "stderr": "2026/11/13 20:42:03.910630 juicefs[126283] <INFO>: Meta address: forkredis://127.0.0.1:51287/0?branch=child1&volume=fork-d3bce904c84f [NewClient@interface.go:687]\n2026/11/13 20:42:03.913241 juicefs[126283] <FATAL>: gc is unsupported for forkredis: object data is shared by sealed layers [main@main.go:31]\n"
+    },
+    {
+      "argv": [
+        "destroy",
+        "--force",
+        "forkredis://127.0.0.1:51287/0?branch=child1&volume=fork-d3bce904c84f",
+        "not-a-real-uuid"
+      ],
+      "returncode": 1,
+      "elapsed_ns": 17827219,
+      "stdout": "",
+      "stderr": "2026/11/13 20:42:03.928799 juicefs[126293] <INFO>: Meta address: forkredis://127.0.0.1:51287/0?branch=child1&volume=fork-d3bce904c84f [NewClient@interface.go:687]\n2026/11/13 20:42:03.930974 juicefs[126293] <FATAL>: destroy is unsupported for forkredis: object data is shared by sealed layers [main@main.go:31]\n"
+    },
+    {
+      "argv": [
+        "umount",
+        "/srv/juicefs-forkredis-opt-20261113/fuse-validation/smoke/source"
+      ],
+      "returncode": 0,
+      "elapsed_ns": 19046157,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "umount",
+        "/srv/juicefs-forkredis-opt-20261113/fuse-validation/smoke/child2"
+      ],
+      "returncode": 0,
+      "elapsed_ns": 18787117,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "umount",
+        "/srv/juicefs-forkredis-opt-20261113/fuse-validation/smoke/child1"
+      ],
+      "returncode": 0,
+      "elapsed_ns": 17476590,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "forks": [
+    {
+      "name": "child1",
+      "wall_ns": 15752885,
+      "added_keys": [
+        "{jfs-fork:fork-d3bce904c84f}:head:child1"
+      ],
+      "upper_records": 0,
+      "redis_before": "# Commandstats\r\ncmdstat_zrangebylex:calls=10,usec=60,usec_per_call=6.00,rejected_calls=0,failed_calls=0\r\ncmdstat_evalsha:calls=186,usec=7112,usec_per_call=38.24,rejected_calls=0,failed_calls=3\r\ncmdstat_eval:calls=9,usec=865,usec_per_call=96.11,rejected_calls=0,failed_calls=0\r\ncmdstat_hset:calls=18,usec=51,usec_per_call=2.83,rejected_calls=0,failed_calls=0\r\ncmdstat_zrangebyscore:calls=93,usec=166,usec_per_call=1.78,rejected_calls=0,failed_calls=0\r\ncmdstat_time:calls=186,usec=166,usec_per_call=0.89,rejected_calls=0,failed_calls=0\r\ncmdstat_hmget:calls=93,usec=187,usec_per_call=2.01,rejected_calls=0,failed_calls=0\r\ncmdstat_exists:calls=5,usec=22,usec_per_call=4.40,rejected_calls=0,failed_calls=0\r\ncmdstat_hget:calls=34,usec=30,usec_per_call=0.88,rejected_calls=0,failed_calls=0\r\ncmdstat_zrem:calls=186,usec=277,usec_per_call=1.49,rejected_calls=0,failed_calls=0\r\ncmdstat_hgetall:calls=10,usec=73,usec_per_call=7.30,rejected_calls=0,failed_calls=0\r\ncmdstat_zrange:calls=16,usec=50,usec_per_call=3.12,rejected_calls=0,failed_calls=0\r\ncmdstat_zscore:calls=93,usec=340,usec_per_call=3.66,rejected_calls=0,failed_calls=0\r\ncmdstat_incrby:calls=2,usec=3,usec_per_call=1.50,rejected_calls=0,failed_calls=0\r\ncmdstat_hello:calls=6,usec=75,usec_per_call=12.50,rejected_calls=0,failed_calls=0\r\ncmdstat_zrevrangebyscore:calls=97,usec=317,usec_per_call=3.27,rejected_calls=0,failed_calls=0\r\ncmdstat_zremrangebyscore:calls=7,usec=11,usec_per_call=1.57,rejected_calls=0,failed_calls=0\r\ncmdstat_keys:calls=1,usec=38,usec_per_call=38.00,rejected_calls=0,failed_calls=0\r\ncmdstat_zadd:calls=246,usec=745,usec_per_call=3.03,rejected_calls=0,failed_calls=0\r\ncmdstat_type:calls=46,usec=20,usec_per_call=0.43,rejected_calls=0,failed_calls=0\r\n",
+      "redis_after": "# Commandstats\r\ncmdstat_zrangebylex:calls=10,usec=60,usec_per_call=6.00,rejected_calls=0,failed_calls=0\r\ncmdstat_evalsha:calls=186,usec=7112,usec_per_call=38.24,rejected_calls=0,failed_calls=3\r\ncmdstat_eval:calls=11,usec=1040,usec_per_call=94.55,rejected_calls=0,failed_calls=0\r\ncmdstat_hset:calls=19,usec=59,usec_per_call=3.11,rejected_calls=0,failed_calls=0\r\ncmdstat_zrangebyscore:calls=93,usec=166,usec_per_call=1.78,rejected_calls=0,failed_calls=0\r\ncmdstat_time:calls=186,usec=166,usec_per_call=0.89,rejected_calls=0,failed_calls=0\r\ncmdstat_hmget:calls=93,usec=187,usec_per_call=2.01,rejected_calls=0,failed_calls=0\r\ncmdstat_exists:calls=7,usec=24,usec_per_call=3.43,rejected_calls=0,failed_calls=0\r\ncmdstat_hget:calls=37,usec=35,usec_per_call=0.95,rejected_calls=0,failed_calls=0\r\ncmdstat_zrem:calls=186,usec=277,usec_per_call=1.49,rejected_calls=0,failed_calls=0\r\ncmdstat_hgetall:calls=11,usec=81,usec_per_call=7.36,rejected_calls=0,failed_calls=0\r\ncmdstat_zrange:calls=16,usec=50,usec_per_call=3.12,rejected_calls=0,failed_calls=0\r\ncmdstat_zscore:calls=93,usec=340,usec_per_call=3.66,rejected_calls=0,failed_calls=0\r\ncmdstat_incrby:calls=2,usec=3,usec_per_call=1.50,rejected_calls=0,failed_calls=0\r\ncmdstat_hello:calls=7,usec=80,usec_per_call=11.43,rejected_calls=0,failed_calls=0\r\ncmdstat_zrevrangebyscore:calls=97,usec=317,usec_per_call=3.27,rejected_calls=0,failed_calls=0\r\ncmdstat_zremrangebyscore:calls=7,usec=11,usec_per_call=1.57,rejected_calls=0,failed_calls=0\r\ncmdstat_keys:calls=1,usec=38,usec_per_call=38.00,rejected_calls=0,failed_calls=0\r\ncmdstat_zadd:calls=246,usec=745,usec_per_call=3.03,rejected_calls=0,failed_calls=0\r\ncmdstat_type:calls=46,usec=20,usec_per_call=0.43,rejected_calls=0,failed_calls=0\r\ncmdstat_info:calls=1,usec=124,usec_per_call=124.00,rejected_calls=0,failed_calls=0\r\ncmdstat_hincrby:calls=1,usec=3,usec_per_call=3.00,rejected_calls=0,failed_calls=0\r\n"
+    },
+    {
+      "name": "child2",
+      "wall_ns": 18298412,
+      "added_keys": [
+        "{jfs-fork:fork-d3bce904c84f}:head:child2"
+      ],
+      "upper_records": 0,
+      "redis_before": "# Commandstats\r\ncmdstat_zrangebylex:calls=10,usec=60,usec_per_call=6.00,rejected_calls=0,failed_calls=0\r\ncmdstat_evalsha:calls=186,usec=7112,usec_per_call=38.24,rejected_calls=0,failed_calls=3\r\ncmdstat_eval:calls=11,usec=1040,usec_per_call=94.55,rejected_calls=0,failed_calls=0\r\ncmdstat_hset:calls=19,usec=59,usec_per_call=3.11,rejected_calls=0,failed_calls=0\r\ncmdstat_zrangebyscore:calls=93,usec=166,usec_per_call=1.78,rejected_calls=0,failed_calls=0\r\ncmdstat_time:calls=186,usec=166,usec_per_call=0.89,rejected_calls=0,failed_calls=0\r\ncmdstat_hmget:calls=93,usec=187,usec_per_call=2.01,rejected_calls=0,failed_calls=0\r\ncmdstat_exists:calls=7,usec=24,usec_per_call=3.43,rejected_calls=0,failed_calls=0\r\ncmdstat_hget:calls=37,usec=35,usec_per_call=0.95,rejected_calls=0,failed_calls=0\r\ncmdstat_zrem:calls=186,usec=277,usec_per_call=1.49,rejected_calls=0,failed_calls=0\r\ncmdstat_hgetall:calls=11,usec=81,usec_per_call=7.36,rejected_calls=0,failed_calls=0\r\ncmdstat_zrange:calls=16,usec=50,usec_per_call=3.12,rejected_calls=0,failed_calls=0\r\ncmdstat_zscore:calls=93,usec=340,usec_per_call=3.66,rejected_calls=0,failed_calls=0\r\ncmdstat_incrby:calls=2,usec=3,usec_per_call=1.50,rejected_calls=0,failed_calls=0\r\ncmdstat_hello:calls=7,usec=80,usec_per_call=11.43,rejected_calls=0,failed_calls=0\r\ncmdstat_zrevrangebyscore:calls=97,usec=317,usec_per_call=3.27,rejected_calls=0,failed_calls=0\r\ncmdstat_zremrangebyscore:calls=7,usec=11,usec_per_call=1.57,rejected_calls=0,failed_calls=0\r\ncmdstat_keys:calls=3,usec=77,usec_per_call=25.67,rejected_calls=0,failed_calls=0\r\ncmdstat_zadd:calls=246,usec=745,usec_per_call=3.03,rejected_calls=0,failed_calls=0\r\ncmdstat_type:calls=46,usec=20,usec_per_call=0.43,rejected_calls=0,failed_calls=0\r\ncmdstat_zcard:calls=1,usec=1,usec_per_call=1.00,rejected_calls=0,failed_calls=0\r\ncmdstat_info:calls=2,usec=223,usec_per_call=111.50,rejected_calls=0,failed_calls=0\r\ncmdstat_hincrby:calls=1,usec=3,usec_per_call=3.00,rejected_calls=0,failed_calls=0\r\n",
+      "redis_after": "# Commandstats\r\ncmdstat_zrangebylex:calls=10,usec=60,usec_per_call=6.00,rejected_calls=0,failed_calls=0\r\ncmdstat_evalsha:calls=186,usec=7112,usec_per_call=38.24,rejected_calls=0,failed_calls=3\r\ncmdstat_eval:calls=13,usec=1116,usec_per_call=85.85,rejected_calls=0,failed_calls=0\r\ncmdstat_hset:calls=20,usec=66,usec_per_call=3.30,rejected_calls=0,failed_calls=0\r\ncmdstat_zrangebyscore:calls=93,usec=166,usec_per_call=1.78,rejected_calls=0,failed_calls=0\r\ncmdstat_time:calls=186,usec=166,usec_per_call=0.89,rejected_calls=0,failed_calls=0\r\ncmdstat_hmget:calls=93,usec=187,usec_per_call=2.01,rejected_calls=0,failed_calls=0\r\ncmdstat_exists:calls=9,usec=28,usec_per_call=3.11,rejected_calls=0,failed_calls=0\r\ncmdstat_hget:calls=40,usec=38,usec_per_call=0.95,rejected_calls=0,failed_calls=0\r\ncmdstat_zrem:calls=186,usec=277,usec_per_call=1.49,rejected_calls=0,failed_calls=0\r\ncmdstat_hgetall:calls=12,usec=89,usec_per_call=7.42,rejected_calls=0,failed_calls=0\r\ncmdstat_zrange:calls=16,usec=50,usec_per_call=3.12,rejected_calls=0,failed_calls=0\r\ncmdstat_zscore:calls=93,usec=340,usec_per_call=3.66,rejected_calls=0,failed_calls=0\r\ncmdstat_incrby:calls=2,usec=3,usec_per_call=1.50,rejected_calls=0,failed_calls=0\r\ncmdstat_hello:calls=8,usec=86,usec_per_call=10.75,rejected_calls=0,failed_calls=0\r\ncmdstat_zrevrangebyscore:calls=97,usec=317,usec_per_call=3.27,rejected_calls=0,failed_calls=0\r\ncmdstat_zremrangebyscore:calls=7,usec=11,usec_per_call=1.57,rejected_calls=0,failed_calls=0\r\ncmdstat_keys:calls=3,usec=77,usec_per_call=25.67,rejected_calls=0,failed_calls=0\r\ncmdstat_zadd:calls=246,usec=745,usec_per_call=3.03,rejected_calls=0,failed_calls=0\r\ncmdstat_type:calls=46,usec=20,usec_per_call=0.43,rejected_calls=0,failed_calls=0\r\ncmdstat_zcard:calls=1,usec=1,usec_per_call=1.00,rejected_calls=0,failed_calls=0\r\ncmdstat_info:calls=3,usec=276,usec_per_call=92.00,rejected_calls=0,failed_calls=0\r\ncmdstat_hincrby:calls=2,usec=4,usec_per_call=2.00,rejected_calls=0,failed_calls=0\r\n"
+    }
+  ],
+  "mounts_closed": true,
+  "source_sha256": "59f410ae5e17962412e2aed4f815918f634932f2abf084f00bb638c4db017850",
+  "child_sha256": "9e095fa9678410f555da7239ad949f21dd918d74468dd35794841d6a19ee19ce",
+  "checks": [
+    "readonly lower",
+    "no metadata copy at fork",
+    "siblings isolated",
+    "write",
+    "truncate and holes",
+    "unlink",
+    "rename",
+    "hardlink",
+    "symlink",
+    "xattr",
+    "fresh process remount",
+    "gc/destroy refused"
+  ]
+}

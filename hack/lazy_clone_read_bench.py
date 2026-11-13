@@ -129,15 +129,25 @@ def main():
     parser.add_argument('--binary', type=Path, required=True)
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--source-commit', required=True)
+    parser.add_argument('--compare-binary', type=Path)
+    parser.add_argument('--compare-commit')
+    parser.add_argument('--compare-cache-bytes', type=int)
     parser.add_argument('--redis-server', default='redis-server')
     parser.add_argument('--pairs', type=int, default=3)
     parser.add_argument('--client-cpus', default='8-11')
     parser.add_argument('--redis-cpu', type=int, default=12)
     parser.add_argument('--driver-cpu', type=int, default=13)
     parser.add_argument('--quick', action='store_true')
+    parser.add_argument('--profile', choices=['both', 'default', 'diagnostic'], default='both')
+    parser.add_argument('--fixture', choices=['all', 'tiny2', 'small128', 'blocks8'], default='all')
     args = parser.parse_args()
+    assert bool(args.compare_binary) == bool(args.compare_commit)
+    assert args.compare_cache_bytes is None or (args.compare_binary and args.compare_cache_bytes >= 0)
     assert args.pairs > 0 and Path('/dev/fuse').exists()
     binary, root = args.binary.resolve(), args.out.resolve()
+    binaries = {'before': binary}
+    if args.compare_binary:
+        binaries['after'] = args.compare_binary.resolve()
     root.mkdir(parents=True, exist_ok=False)
     assert args.driver_cpu in os.sched_getaffinity(0)
     os.sched_setaffinity(0, {args.driver_cpu})
@@ -148,6 +158,9 @@ def main():
               'commands': [], 'cells': [], 'host_before': host_sample(),
               'scope': 'hot local file object store; local Redis; O_DIRECT at kernel; writable empty upper',
               'mounts_closed': False, 'redis_stopped': False}
+    result['binaries'] = {name: {'path': str(path), 'sha256': sha(path),
+                                'source_commit': args.source_commit if name == 'before' else args.compare_commit}
+                          for name, path in binaries.items()}
     save(root/'run.json', result)
     redis_process = None
     redis = None
@@ -232,6 +245,9 @@ def main():
         lower_uri = f'forkredis://127.0.0.1:{redis_port}/0?volume={token}&branch=main'
         native_uri = f'redis://127.0.0.1:{redis_port}/1'
         specs = fixture_specs(args.quick)
+        if args.fixture != 'all':
+            specs = [spec for spec in specs if spec[0] == args.fixture]
+        assert specs, 'fixture unavailable in quick mode'
         fixture = {}
         for name, sizes, block, rounds in specs:
             fixture[name] = {f'f{index:04d}': hashlib.shake_256(f'{name}/{index}'.encode()).digest(size)
@@ -260,6 +276,8 @@ def main():
         assert child_uri.startswith('forkredis://')
         uris = {'lower': lower_uri, 'overlay': child_uri, 'native': native_uri}
         profiles = ['diagnostic'] if args.quick else ['default', 'diagnostic']
+        if args.profile != 'both':
+            profiles = [args.profile]
         orders = list(itertools.permutations(['lower', 'overlay', 'native']))
         # First two pairs reverse the primary comparison; all six orders can be used.
         orders = [orders[i] for i in [0, 5, 2, 3, 1, 4]]
@@ -267,11 +285,18 @@ def main():
             for name, sizes, block, rounds in specs:
                 files = fixture[name]
                 for pair in range(args.pairs):
-                    for arm in orders[pair % len(orders)]:
+                    variants = list(binaries) if pair % 2 == 0 else list(reversed(binaries))
+                    for arm, variant in itertools.product(orders[pair % len(orders)], variants):
+                        binary = binaries[variant]
                         label = f'{profile}-{name}-p{pair+1}-{arm}'
+                        if args.compare_binary:
+                            label = variant+'-'+label
                         directory = root/'cells'/label
                         directory.mkdir(parents=True)
-                        point, process, port = mount(uris[arm], label, profile, readonly=(arm == 'native'))
+                        uri = uris[arm]
+                        if variant == 'after' and args.compare_cache_bytes is not None and arm != 'native':
+                            uri += '&fork_cache_bytes='+str(args.compare_cache_bytes)
+                        point, process, port = mount(uri, label, profile, readonly=(arm == 'native'))
                         config_path = point/'.jfs.config'
                         if not config_path.exists():
                             config_path = point/'.config'
@@ -330,11 +355,14 @@ def main():
                                     'blockcache_hit_bytes': total(delta, 'blockcache_hit_bytes'),
                                     'blockcache_misses': total(delta, 'blockcache_miss'),
                                     'meta_ops': total(delta, 'meta_ops_durations_histogram_seconds_count')}
+                        for suffix in ['forkredis_cache_hits_total', 'forkredis_cache_misses_total', 'forkredis_read_batches_total']:
+                            observed[suffix] = total(delta, suffix)
+                        observed['forkredis_cache_bytes'] = total(after_metrics, 'forkredis_cache_bytes')
                         valid = (observed['object_gets'] == observed['object_get_bytes'] == 0
                                  and observed['fuse_read_ops'] == read_ops
                                  and observed['fuse_read_bytes'] == read_bytes)
                         redis_delta = difference(command_counts(after_redis), command_counts(before_redis))
-                        cell = {'label': label, 'arm': arm, 'profile': profile, 'fixture': name, 'pair': pair, 'valid': valid,
+                        cell = {'label': label, 'arm': arm, 'variant': variant, 'profile': profile, 'fixture': name, 'pair': pair, 'valid': valid,
                                 'wall_ns': elapsed, 'read_ops': read_ops, 'read_bytes': read_bytes,
                                 'observed': observed, 'redis_commands': redis_delta,
                                 'fuse_cpu_seconds': (after_process['cpu_ticks']-before_process['cpu_ticks'])/os.sysconf('SC_CLK_TCK'),

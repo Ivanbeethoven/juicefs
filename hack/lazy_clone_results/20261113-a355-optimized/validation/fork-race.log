@@ -1,0 +1,111 @@
+=== RUN   TestForkRedisLayers
+--- PASS: TestForkRedisLayers (0.04s)
+=== RUN   TestForkRedisTransactionSnapshot
+--- PASS: TestForkRedisTransactionSnapshot (0.01s)
+=== RUN   TestForkRedisGuardsAndPrivateRecords
+--- PASS: TestForkRedisGuardsAndPrivateRecords (0.02s)
+=== RUN   TestForkRedisMetadataIsolation
+2026/11/13 20:28:40.305866 juicefs[928] <INFO>: Create session 1 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 20:28:40.325693 juicefs[928] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 20:28:40.328493 juicefs[928] <INFO>: close session 1: <nil> [CloseSession@base.go:1040]
+2026/11/13 20:28:40.409049 juicefs[928] <INFO>: Create session 1 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 20:28:40.483686 juicefs[928] <INFO>: Create session 1 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 20:28:40.603185 juicefs[928] <WARNING>: Delete data blocks of slice 1 (1024 bytes): forkredis retains shared object data; collection is not implemented [deleteSlice_@base.go:3098]
+2026/11/13 20:28:40.603282 juicefs[928] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 20:28:40.606938 juicefs[928] <INFO>: close session 1: <nil> [CloseSession@base.go:1040]
+2026/11/13 20:28:40.609664 juicefs[928] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 20:28:40.612981 juicefs[928] <INFO>: close session 1: <nil> [CloseSession@base.go:1040]
+--- PASS: TestForkRedisMetadataIsolation (0.37s)
+=== RUN   TestForkRedisSealFencesInflightWriter
+--- PASS: TestForkRedisSealFencesInflightWriter (0.01s)
+=== RUN   TestForkRedisForkDoesNotCopyRecords
+=== RUN   TestForkRedisForkDoesNotCopyRecords/10
+=== RUN   TestForkRedisForkDoesNotCopyRecords/1000
+--- PASS: TestForkRedisForkDoesNotCopyRecords (0.04s)
+    --- PASS: TestForkRedisForkDoesNotCopyRecords/10 (0.01s)
+    --- PASS: TestForkRedisForkDoesNotCopyRecords/1000 (0.02s)
+=== RUN   TestForkRedisSharedOperations
+=== RUN   TestForkRedisSharedOperations/xattr
+2026/11/13 20:28:40.738567 juicefs[928] <INFO>: Create session 1 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+=== RUN   TestForkRedisSharedOperations/xattr/XattrInodeLifecycle
+=== RUN   TestForkRedisSharedOperations/xattr/OpenFileKeepsXattrsAfterLastNameRemoved
+=== RUN   TestForkRedisSharedOperations/xattr/OpenFileKeepsXattrsAfterLastNameRemoved/Unlink
+=== RUN   TestForkRedisSharedOperations/xattr/OpenFileKeepsXattrsAfterLastNameRemoved/RenameOver
+=== RUN   TestForkRedisSharedOperations/xattr/OpenFileKeepsXattrsAfterLastNameRemoved/Remove
+2026/11/13 20:28:40.786727 juicefs[928] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 20:28:40.790395 juicefs[928] <INFO>: close session 1: <nil> [CloseSession@base.go:1040]
+=== RUN   TestForkRedisSharedOperations/chown
+2026/11/13 20:28:40.860265 juicefs[928] <INFO>: Create session 1 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 20:28:40.875358 juicefs[928] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 20:28:40.880846 juicefs[928] <INFO>: close session 1: <nil> [CloseSession@base.go:1040]
+=== RUN   TestForkRedisSharedOperations/sticky
+2026/11/13 20:28:40.962961 juicefs[928] <INFO>: Create session 1 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 20:28:40.980179 juicefs[928] <WARNING>: delete chunks of inode 2: redis: client is closed [doDeleteFileData@tkv.go:3140]
+2026/11/13 20:28:41.004942 juicefs[928] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 20:28:41.010192 juicefs[928] <INFO>: close session 1: <nil> [CloseSession@base.go:1040]
+=== RUN   TestForkRedisSharedOperations/locks
+2026/11/13 20:28:41.091261 juicefs[928] <INFO>: Create session 1 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 20:28:41.095320 juicefs[928] <WARNING>: delete chunks of inode 4: redis: client is closed [doDeleteFileData@tkv.go:3140]
+2026/11/13 20:28:45.552180 juicefs[928] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 20:28:45.557475 juicefs[928] <INFO>: close session 1: <nil> [CloseSession@base.go:1040]
+=== RUN   TestForkRedisSharedOperations/resolve
+2026/11/13 20:28:45.588076 juicefs[928] <WARNING>: delete chunks of inode 2: redis: client is closed [doDeleteFileData@tkv.go:3140]
+2026/11/13 20:28:45.635861 juicefs[928] <INFO>: Create session 1 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 20:28:45.646674 juicefs[928] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 20:28:45.651709 juicefs[928] <INFO>: close session 1: <nil> [CloseSession@base.go:1040]
+=== RUN   TestForkRedisSharedOperations/copy_file_range
+2026/11/13 20:28:45.712984 juicefs[928] <WARNING>: delete chunks of inode 3: redis: client is closed [doDeleteFileData@tkv.go:3140]
+2026/11/13 20:28:45.721481 juicefs[928] <INFO>: Create session 1 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 20:28:45.740094 juicefs[928] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 20:28:45.745368 juicefs[928] <INFO>: close session 1: <nil> [CloseSession@base.go:1040]
+=== RUN   TestForkRedisSharedOperations/concurrent_write
+2026/11/13 20:28:45.765246 juicefs[928] <WARNING>: delete chunks of inode 2: redis: client is closed [doDeleteFileData@tkv.go:3140]
+2026/11/13 20:28:45.846325 juicefs[928] <WARNING>: delete chunks of inode 3: redis: client is closed [doDeleteFileData@tkv.go:3140]
+2026/11/13 20:28:46.773082 juicefs[928] <WARNING>: Transaction succeeded after 4 tries (12.237378ms), inodes: [], method: incrCounter:usedSpace, error: redis: transaction failed [txn@tkv.go:1192]
+2026/11/13 20:28:46.779337 juicefs[928] <WARNING>: Transaction succeeded after 3 tries (7.180397ms), inodes: [2], method: doWrite, error: redis: transaction failed [txn@tkv.go:1192]
+2026/11/13 20:29:28.197865 juicefs[928] <INFO>: flush session 0: [FlushSession@base.go:1051]
+2026/11/13 20:29:28.197983 juicefs[928] <INFO>: close session 0: <nil> [CloseSession@base.go:1040]
+=== RUN   TestForkRedisSharedOperations/batch_clone
+2026/11/13 20:29:28.217403 juicefs[928] <WARNING>: delete chunk 2:0: redis: client is closed [doDeleteFileData@tkv.go:3147]
+2026/11/13 20:29:28.318760 juicefs[928] <INFO>: Create session 1 OK with version: 1.5.0-dev+unknown [NewSession@base.go:830]
+2026/11/13 20:29:28.373446 juicefs[928] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 20:29:28.399536 juicefs[928] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 20:29:28.421125 juicefs[928] <WARNING>: Transaction succeeded after 3 tries (13.61539ms), inodes: [36], method: doBatchClone, error: redis: transaction failed [txn@tkv.go:1192]
+2026/11/13 20:29:28.440681 juicefs[928] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 20:29:28.486380 juicefs[928] <INFO>: flush session 1: [FlushSession@base.go:1051]
+2026/11/13 20:29:28.490662 juicefs[928] <INFO>: close session 1: <nil> [CloseSession@base.go:1040]
+--- PASS: TestForkRedisSharedOperations (47.83s)
+    --- PASS: TestForkRedisSharedOperations/xattr (0.13s)
+        --- PASS: TestForkRedisSharedOperations/xattr/XattrInodeLifecycle (0.01s)
+        --- PASS: TestForkRedisSharedOperations/xattr/OpenFileKeepsXattrsAfterLastNameRemoved (0.04s)
+            --- PASS: TestForkRedisSharedOperations/xattr/OpenFileKeepsXattrsAfterLastNameRemoved/Unlink (0.01s)
+            --- PASS: TestForkRedisSharedOperations/xattr/OpenFileKeepsXattrsAfterLastNameRemoved/RenameOver (0.01s)
+            --- PASS: TestForkRedisSharedOperations/xattr/OpenFileKeepsXattrsAfterLastNameRemoved/Remove (0.02s)
+    --- PASS: TestForkRedisSharedOperations/chown (0.09s)
+    --- PASS: TestForkRedisSharedOperations/sticky (0.13s)
+    --- PASS: TestForkRedisSharedOperations/locks (4.55s)
+    --- PASS: TestForkRedisSharedOperations/resolve (0.09s)
+    --- PASS: TestForkRedisSharedOperations/copy_file_range (0.09s)
+    --- PASS: TestForkRedisSharedOperations/concurrent_write (42.45s)
+    --- PASS: TestForkRedisSharedOperations/batch_clone (0.29s)
+=== RUN   TestForkRedisPrunesOnlyUnusedVersions
+2026/11/13 20:29:28.496438 juicefs[928] <WARNING>: delete chunk 7:0: redis: client is closed [doDeleteFileData@tkv.go:3147]
+--- PASS: TestForkRedisPrunesOnlyUnusedVersions (0.02s)
+=== RUN   TestForkRedisExpiredSnapshotCannotSucceed
+=== RUN   TestForkRedisExpiredSnapshotCannotSucceed/true
+2026/11/13 20:29:28.512582 juicefs[928] <WARNING>: delete chunks of inode 28: redis: client is closed [doDeleteFileData@tkv.go:3140]
+=== RUN   TestForkRedisExpiredSnapshotCannotSucceed/false
+--- PASS: TestForkRedisExpiredSnapshotCannotSucceed (0.01s)
+    --- PASS: TestForkRedisExpiredSnapshotCannotSucceed/true (0.01s)
+    --- PASS: TestForkRedisExpiredSnapshotCannotSucceed/false (0.01s)
+=== RUN   TestForkRedisReadCacheConsistency
+--- PASS: TestForkRedisReadCacheConsistency (0.03s)
+=== RUN   TestForkRedisBatchAndCacheLimits
+--- PASS: TestForkRedisBatchAndCacheLimits (0.02s)
+=== RUN   TestForkRedisFailedReadsDoNotPublishCache
+--- PASS: TestForkRedisFailedReadsDoNotPublishCache (0.01s)
+=== RUN   TestForkRedisScaling
+    tkv_forkredis_test.go:531: set JFS_FORK_BENCH_OUTPUT to record the opt-in scaling experiment
+--- SKIP: TestForkRedisScaling (0.00s)
+PASS
+ok  	github.com/juicedata/juicefs/pkg/meta	49.474s

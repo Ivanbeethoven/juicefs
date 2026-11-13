@@ -2,6 +2,8 @@
 
 [A355 的 54 项实测结果与原始记录](lazy_clone_results/20261113-a355-hot-read/README.zh.md)。
 
+[优化前后 108 项对照、18 项消融及一致性检查](lazy_clone_results/20261113-a355-optimized/README.zh.md)。
+
 ## 对照
 
 | 名称 | 元数据引擎 | 挂载方式 | 用途 |
@@ -45,6 +47,8 @@ python3 hack/lazy_clone_read_report.py /srv/jfs-read-run-01
 
 CPU 编号需要按机器实际情况选择。客户端、Redis 和负载进程使用不同 CPU；亲和性不等于独占 CPU，`host.json` 保留宿主负载及压力信息。先用 `--quick --pairs 1` 运行 tiny2 预检，再使用新的输出目录执行正式测量。
 
+新旧版本比较时，用 `--binary OLD --source-commit OLD_COMMIT --compare-binary NEW --compare-commit NEW_COMMIT`。每个对照内交替新旧二进制顺序，二者共享同一份初始数据，每次独立挂载和预热；默认共 108 项。`--profile default --fixture small128` 可只跑一档一负载。加 `--compare-cache-bytes 0` 关闭新版元数据缓存，测合批本身的效果。旧二进制的 URL 不增加新参数。原生 Redis 也使用两个二进制复测，用于检查环境波动。
+
 ## 输出
 
 - `RESULTS.zh.md`、`summary.json`、`cell-summary.csv`：每轮总耗时、配对开销、各类操作的总耗时及 p50/p99、Redis 命令数和客户端/Redis CPU 时间。
@@ -53,6 +57,8 @@ CPU 编号需要按机器实际情况选择。客户端、Redis 和负载进程�
 - `cells/*/redis-before.txt`、`redis-after.txt`：Redis commandstats 原文。包含 Lua 内部命令，不等于网络往返次数。
 - `cells/*/warm.json`、`mount-config.json`、`process.json`、`host.json`：预热证明、实际配置和资源使用。
 - `run.json`：二进制/脚本 SHA、源码提交、输入 SHA、所有命令及退出状态。
+
+新版 `run.json` 中的 `binaries` 分别记录优化前后提交和二进制 SHA；每项结果带 `variant`，汇总不会混合两个版本。缓存命中、未命中、读请求批次数和实际缓存占用也保存到结果；原始 Prometheus 保留按记录/范围区分的指标。元数据缓存预算与数据缓存预算分别披露。
 
 正常退出和异常退出都会卸载本脚本的挂载并停止自己启动的 Redis。保留目录和数据用于核查，不改其他挂载，不执行宿主 drop_caches。
 

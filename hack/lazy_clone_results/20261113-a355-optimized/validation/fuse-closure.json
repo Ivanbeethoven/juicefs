@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "redis_argv": [
+    "redis-server",
+    "--bind",
+    "127.0.0.1",
+    "--port",
+    "51287",
+    "--protected-mode",
+    "yes",
+    "--save",
+    "",
+    "--appendonly",
+    "no",
+    "--maxmemory",
+    "256mb",
+    "--maxmemory-policy",
+    "noeviction",
+    "--dir",
+    "/srv/juicefs-forkredis-opt-20261113/fuse-validation",
+    "--logfile",
+    "/srv/juicefs-forkredis-opt-20261113/fuse-validation/redis.log"
+  ],
+  "redis_stopped": true,
+  "smoke_argv": [
+    "python3",
+    "/srv/juicefs-forkredis-opt-20261113/scripts/lazy_clone_smoke.py",
+    "--binary",
+    "/srv/juicefs-forkredis-opt-20261113/bin/juicefs-after",
+    "--redis",
+    "127.0.0.1:51287",
+    "--out",
+    "/srv/juicefs-forkredis-opt-20261113/fuse-validation/smoke"
+  ],
+  "smoke_sha256": "7c5fcf132e3cfe06e74da8b16f375071e1860855d20053348793b04af3ab057b"
+}

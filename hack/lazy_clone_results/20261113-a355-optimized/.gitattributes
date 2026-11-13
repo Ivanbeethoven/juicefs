@@ -1,0 +1,5 @@
+# Preserve raw evidence and checksum bytes on all platforms.
+* -text whitespace=cr-at-eol
+# Raw tool output includes intentional tabs and trailing whitespace.
+validation/build-info.txt -whitespace
+validation/*.log -whitespace
