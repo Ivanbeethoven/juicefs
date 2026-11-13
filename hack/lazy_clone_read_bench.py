@@ -269,11 +269,16 @@ def main():
             for name, files in fixture.items():
                 directory = point/name
                 directory.mkdir()
-                for filename, content in files.items():
+                for index, (filename, content) in enumerate(files.items(), 1):
                     with (directory/filename).open('wb') as stream:
                         stream.write(content)
                         stream.flush()
                         os.fsync(stream.fileno())
+                    if len(files) >= 1000 and index % 1000 == 0:
+                        progress = {'stage': 'seed', 'arm': arm, 'fixture': name,
+                                    'files_written': index, 'files_total': len(files)}
+                        save(root/'progress.json', progress)
+                        print(json.dumps(progress), flush=True)
             unmount(point)
         run(binary, 'clone', '--seal', lower_uri)
         child_uri = run(binary, 'clone', '--lazy', lower_uri, 'child').stdout.strip()
