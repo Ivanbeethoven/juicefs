@@ -1,0 +1,1 @@
+Own local Redis container stopped and removed; no task FUSE mounts remain. A355 state unverified while SSH is unavailable.

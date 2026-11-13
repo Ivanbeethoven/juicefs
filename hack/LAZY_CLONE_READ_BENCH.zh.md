@@ -4,6 +4,8 @@
 
 [优化前后 108 项对照、18 项消融及一致性检查](lazy_clone_results/20261113-a355-optimized/README.zh.md)。
 
+[事务往返优化的代码与本地验证、A355 续跑命令](lazy_clone_results/20261113-txn-validation/README.zh.md)。该轮 A355 新旧耗时尚待完成。
+
 ## 对照
 
 | 名称 | 元数据引擎 | 挂载方式 | 用途 |

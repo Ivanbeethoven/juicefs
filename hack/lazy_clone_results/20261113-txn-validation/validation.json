@@ -1,0 +1,18 @@
+{
+  "fork-tests-01.log": {
+    "top_level_pass": 14,
+    "all_pass": 31,
+    "all_skip": 1
+  },
+  "core-tests-02.log": {
+    "top_level_pass": 37,
+    "all_pass": 265,
+    "all_skip": 2
+  },
+  "fuse": {
+    "passed": true,
+    "mounts_closed": true,
+    "binary_sha256": "28149916f1406395cff4a6b063def26936fea7d5f66720944627b17060a5aeb3"
+  },
+  "a355_comparison": "pending: SSH connection closed during handshake; no new performance conclusion"
+}
