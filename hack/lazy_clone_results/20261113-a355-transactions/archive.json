@@ -1,0 +1,11 @@
+{
+  "archive": "/srv/juicefs-txn-opt-20261113/a355-txn-results.tar.gz",
+  "bytes": 6209731,
+  "sha256": "d562ffbc5528cede1934929525738486f06e4e669ac563e0c3e8a148fc8afc2b",
+  "files": 1525,
+  "checks": {
+    "calibration-02": 18,
+    "quick-01": 6,
+    "full-01": 108
+  }
+}

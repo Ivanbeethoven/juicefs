@@ -4,7 +4,7 @@
 
 [优化前后 108 项对照、18 项消融及一致性检查](lazy_clone_results/20261113-a355-optimized/README.zh.md)。
 
-[事务往返优化的代码与本地验证、A355 续跑命令](lazy_clone_results/20261113-txn-validation/README.zh.md)。该轮 A355 新旧耗时尚待完成。
+[事务往返优化：A355 的 162 项对照、分段计时和原始数据](lazy_clone_results/20261113-a355-transactions/README.zh.md)。默认档合计 6 对，优化后相对原生 Redis 为 1.07–1.10 倍；[本地正确性验证](lazy_clone_results/20261113-txn-validation/README.zh.md)保留。
 
 ## 对照
 

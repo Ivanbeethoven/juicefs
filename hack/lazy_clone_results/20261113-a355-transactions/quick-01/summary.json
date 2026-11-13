@@ -1,0 +1,266 @@
+{
+  "source_commit": "943e569cfb838f93ae64cc2df4b4d86bd78400a7",
+  "binary_sha256": "ba6ec8a5c48693144971b8d2e3a7593c2c54a8bd4a8f4725c511a0295ba0f151",
+  "script_sha256": "3dcfe86fc3adff286d37b8532dedc76aa416b313e36babc96109f2bcbc021863",
+  "host": "A355",
+  "cells": 6,
+  "all_cells_hot": true,
+  "all_reads_reached_fuse": true,
+  "groups": [
+    {
+      "variant": "after",
+      "profile": "diagnostic",
+      "fixture": "tiny2",
+      "pairs": 1,
+      "paired_overhead_percent": [
+        0.057459712384555495
+      ],
+      "median_overhead_percent": 0.057459712384555495,
+      "overlay_vs_native_ratios": [
+        1.0793991360161574
+      ],
+      "median_overlay_vs_native_ratio": 1.0793991360161574,
+      "arms": {
+        "lower": {
+          "read_ops": 256,
+          "read_bytes": 9856,
+          "wall_ms": 530.221937,
+          "fuse_cpu_seconds": 0.4,
+          "redis_cpu_seconds": 0.13,
+          "redis_commands_including_lua": 3474,
+          "redis_zrangebylex": 0,
+          "redis_zrevrangebyscore": 1,
+          "forkredis_cache_hits_total": 4741.0,
+          "forkredis_cache_misses_total": 2.0,
+          "forkredis_read_batches_total": 1.0,
+          "forkredis_cache_bytes": 3927.0,
+          "open_list_total_ms": 147.770415,
+          "open_list_p50_us": 1160.7805,
+          "open_list_p99_us": 1654.134,
+          "stat_total_ms": 94.448101,
+          "stat_p50_us": 740.3415,
+          "stat_p99_us": 958.576,
+          "open_total_ms": 220.004114,
+          "open_p50_us": 864.6515,
+          "open_p99_us": 1038.313,
+          "pread_total_ms": 54.135397,
+          "pread_p50_us": 209.778,
+          "pread_p99_us": 275.971,
+          "close_total_ms": 10.093062,
+          "close_p50_us": 39.549,
+          "close_p99_us": 53.94
+        },
+        "overlay": {
+          "read_ops": 256,
+          "read_bytes": 9856,
+          "wall_ms": 530.526601,
+          "fuse_cpu_seconds": 0.42000000000000004,
+          "redis_cpu_seconds": 0.13,
+          "redis_commands_including_lua": 3475,
+          "redis_zrangebylex": 0,
+          "redis_zrevrangebyscore": 2,
+          "forkredis_cache_hits_total": 9482.0,
+          "forkredis_cache_misses_total": 3.0,
+          "forkredis_read_batches_total": 1.0,
+          "forkredis_cache_bytes": 7763.0,
+          "open_list_total_ms": 147.600627,
+          "open_list_p50_us": 1190.5305,
+          "open_list_p99_us": 1374.897,
+          "stat_total_ms": 94.030404,
+          "stat_p50_us": 755.349,
+          "stat_p99_us": 913.492,
+          "open_total_ms": 221.140427,
+          "open_p50_us": 877.7755,
+          "open_p99_us": 1405.123,
+          "pread_total_ms": 53.40835,
+          "pread_p50_us": 213.701,
+          "pread_p99_us": 258.589,
+          "close_total_ms": 10.554828,
+          "close_p50_us": 39.7535,
+          "close_p99_us": 54.741
+        },
+        "native": {
+          "read_ops": 256,
+          "read_bytes": 9856,
+          "wall_ms": 491.501784,
+          "fuse_cpu_seconds": 0.32999999999999996,
+          "redis_cpu_seconds": 0.16,
+          "redis_commands_including_lua": 4360,
+          "redis_zrangebylex": 0,
+          "redis_zrevrangebyscore": 0,
+          "forkredis_cache_hits_total": 0,
+          "forkredis_cache_misses_total": 0,
+          "forkredis_read_batches_total": 0,
+          "forkredis_cache_bytes": 0,
+          "open_list_total_ms": 126.863989,
+          "open_list_p50_us": 1080.4765,
+          "open_list_p99_us": 1325.806,
+          "stat_total_ms": 93.184199,
+          "stat_p50_us": 788.4905,
+          "stat_p99_us": 955.61,
+          "open_total_ms": 214.302384,
+          "open_p50_us": 904.736,
+          "open_p99_us": 1093.927,
+          "pread_total_ms": 44.362824,
+          "pread_p50_us": 187.447,
+          "pread_p99_us": 280.259,
+          "close_total_ms": 9.103326,
+          "close_p50_us": 37.5445,
+          "close_p99_us": 45.414
+        }
+      }
+    },
+    {
+      "variant": "before",
+      "profile": "diagnostic",
+      "fixture": "tiny2",
+      "pairs": 1,
+      "paired_overhead_percent": [
+        1.3172047854020263
+      ],
+      "median_overhead_percent": 1.3172047854020263,
+      "overlay_vs_native_ratios": [
+        1.8032892180103521
+      ],
+      "median_overlay_vs_native_ratio": 1.8032892180103521,
+      "arms": {
+        "lower": {
+          "read_ops": 256,
+          "read_bytes": 9856,
+          "wall_ms": 1025.755991,
+          "fuse_cpu_seconds": 0.6399999999999999,
+          "redis_cpu_seconds": 0.44,
+          "redis_commands_including_lua": 38084,
+          "redis_zrangebylex": 0,
+          "redis_zrevrangebyscore": 1,
+          "forkredis_cache_hits_total": 4741.0,
+          "forkredis_cache_misses_total": 1.0,
+          "forkredis_read_batches_total": 1.0,
+          "forkredis_cache_bytes": 3927.0,
+          "open_list_total_ms": 292.894085,
+          "open_list_p50_us": 2275.2495,
+          "open_list_p99_us": 2719.187,
+          "stat_total_ms": 184.045488,
+          "stat_p50_us": 1437.8535,
+          "stat_p99_us": 1600.976,
+          "open_total_ms": 442.718522,
+          "open_p50_us": 1704.7575,
+          "open_p99_us": 2745.465,
+          "pread_total_ms": 91.312767,
+          "pread_p50_us": 352.323,
+          "pread_p99_us": 436.629,
+          "close_total_ms": 10.943507,
+          "close_p50_us": 42.398,
+          "close_p99_us": 61.223
+        },
+        "overlay": {
+          "read_ops": 256,
+          "read_bytes": 9856,
+          "wall_ms": 1039.267298,
+          "fuse_cpu_seconds": 0.6499999999999999,
+          "redis_cpu_seconds": 0.43,
+          "redis_commands_including_lua": 38085,
+          "redis_zrangebylex": 0,
+          "redis_zrevrangebyscore": 2,
+          "forkredis_cache_hits_total": 9482.0,
+          "forkredis_cache_misses_total": 2.0,
+          "forkredis_read_batches_total": 1.0,
+          "forkredis_cache_bytes": 7746.0,
+          "open_list_total_ms": 294.130529,
+          "open_list_p50_us": 2285.6335,
+          "open_list_p99_us": 2993.365,
+          "stat_total_ms": 199.490627,
+          "stat_p50_us": 1435.534,
+          "stat_p99_us": 1700.44,
+          "open_total_ms": 439.768664,
+          "open_p50_us": 1715.929,
+          "open_p99_us": 2132.611,
+          "pread_total_ms": 91.346906,
+          "pread_p50_us": 353.625,
+          "pread_p99_us": 423.595,
+          "close_total_ms": 10.777561,
+          "close_p50_us": 42.033,
+          "close_p99_us": 54.631
+        },
+        "native": {
+          "read_ops": 256,
+          "read_bytes": 9856,
+          "wall_ms": 576.317591,
+          "fuse_cpu_seconds": 0.4,
+          "redis_cpu_seconds": 0.16,
+          "redis_commands_including_lua": 4360,
+          "redis_zrangebylex": 0,
+          "redis_zrevrangebyscore": 0,
+          "forkredis_cache_hits_total": 0,
+          "forkredis_cache_misses_total": 0,
+          "forkredis_read_batches_total": 0,
+          "forkredis_cache_bytes": 0,
+          "open_list_total_ms": 142.572434,
+          "open_list_p50_us": 1109.3045,
+          "open_list_p99_us": 1225.831,
+          "stat_total_ms": 118.385301,
+          "stat_p50_us": 810.7725,
+          "stat_p99_us": 1148.748,
+          "open_total_ms": 250.952672,
+          "open_p50_us": 926.7415,
+          "open_p99_us": 1371.551,
+          "pread_total_ms": 50.691738,
+          "pread_p50_us": 196.87,
+          "pread_p99_us": 265.582,
+          "close_total_ms": 10.08734,
+          "close_p50_us": 39.368,
+          "close_p99_us": 48.269
+        }
+      }
+    }
+  ],
+  "version_comparisons": [
+    {
+      "profile": "diagnostic",
+      "fixture": "tiny2",
+      "arm": "lower",
+      "before_ms": 1025.755991,
+      "after_ms": 530.221937,
+      "paired_time_reduction_percent": [
+        48.30915523261125
+      ],
+      "median_time_reduction_percent": 48.30915523261125
+    },
+    {
+      "profile": "diagnostic",
+      "fixture": "tiny2",
+      "arm": "native",
+      "before_ms": 576.317591,
+      "after_ms": 491.501784,
+      "paired_time_reduction_percent": [
+        14.716852014326243
+      ],
+      "median_time_reduction_percent": 14.716852014326243
+    },
+    {
+      "profile": "diagnostic",
+      "fixture": "tiny2",
+      "arm": "overlay",
+      "before_ms": 1039.267298,
+      "after_ms": 530.526601,
+      "paired_time_reduction_percent": [
+        48.951862334072985
+      ],
+      "median_time_reduction_percent": 48.951862334072985
+    }
+  ],
+  "scope": "hot local file object store; local Redis; O_DIRECT at kernel; writable empty upper",
+  "binaries": {
+    "before": {
+      "path": "/srv/juicefs-txn-opt-20261113/bin/juicefs-before",
+      "sha256": "ba6ec8a5c48693144971b8d2e3a7593c2c54a8bd4a8f4725c511a0295ba0f151",
+      "source_commit": "943e569cfb838f93ae64cc2df4b4d86bd78400a7"
+    },
+    "after": {
+      "path": "/srv/juicefs-txn-opt-20261113/bin/juicefs-after",
+      "sha256": "28149916f1406395cff4a6b063def26936fea7d5f66720944627b17060a5aeb3",
+      "source_commit": "4f5a0ea25547e1becfbbb316dd9d6ca0537d6c00"
+    }
+  },
+  "fuse_cpu_source": "saved before/after.prom process_cpu_seconds_total; raw result.json may contain supervisor CPU"
+}
