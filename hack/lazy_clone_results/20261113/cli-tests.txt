@@ -1,0 +1,4 @@
+=== RUN   TestCloneWorkspaceArguments
+--- PASS: TestCloneWorkspaceArguments (0.00s)
+PASS
+ok  	github.com/juicedata/juicefs/cmd	0.024s

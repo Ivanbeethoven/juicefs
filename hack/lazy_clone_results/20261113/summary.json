@@ -1,0 +1,49 @@
+{
+  "source_commit": "7aaafbe3c40b1b377accffd00755a7259f4f44e9",
+  "upstream": "f086a159e2a4649999d3b611b7f0fe8bd586ea83",
+  "binary_sha256": "644c5a86ba1e7eff9efced22fa65138b881fdbe7eb9fd2e1e77d46462d01f9a7",
+  "summary": [
+    {
+      "files": 100,
+      "fork_median_ms": 1.642569,
+      "fork_min_ms": 1.610434,
+      "fork_max_ms": 10.155234,
+      "recursive_median_ms": 236.031135,
+      "recursive_upper_records": [
+        209,
+        209,
+        209
+      ]
+    },
+    {
+      "files": 1000,
+      "fork_median_ms": 1.723613,
+      "fork_min_ms": 1.715765,
+      "fork_max_ms": 1.965909,
+      "recursive_median_ms": 3004.193142,
+      "recursive_upper_records": [
+        2011,
+        2011,
+        2011
+      ]
+    },
+    {
+      "files": 10000,
+      "fork_median_ms": 2.013921,
+      "fork_min_ms": 1.772752,
+      "fork_max_ms": 2.081164,
+      "recursive_median_ms": 34724.241043,
+      "recursive_upper_records": [
+        20011,
+        20011,
+        20011
+      ]
+    }
+  ],
+  "fuse_fork_cli_ms": [
+    10.123273,
+    10.112224
+  ],
+  "file_record_queries_during_lazy_fork": 0,
+  "lazy_upper_records": 0
+}

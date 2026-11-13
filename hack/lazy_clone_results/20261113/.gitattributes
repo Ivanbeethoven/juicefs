@@ -1,0 +1,4 @@
+# Preserve raw evidence bytes, including CSV line endings, for SHA-256 checks.
+*.json -text
+*.csv -text
+*.txt -text

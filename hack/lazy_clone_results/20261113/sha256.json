@@ -1,0 +1,12 @@
+{
+  "build.txt": "9d39cdd7554b5a21e16b3f2c14d518622af41c835007fd424d68a9cf7753aff8",
+  "cli-tests.txt": "6a6d46cf200c083482304878a3516833037a6e67e14c337864a2686fd6da0400",
+  "extra-race.txt": "d899ad40001c352e26805ff3db6b9bf9d2d80b7edf10dd607e02fd8daab93d63",
+  "fuse-result.json": "6a968fb49c9cbec7bab4edc46dd33bba5287c3495ae8a29dbed17c74a1af4aea",
+  "meta-race.txt": "4ac976ef8b27789345c7e58056d893884fe3e5741090beb4a8b0c86995e3657a",
+  "README.zh.md": "0dd52fd57646a29e7b16cae90f97f4eebde3469fce491745878b607ba4b1cf00",
+  "scaling-01.json": "92b032de98f02fbba9926aad3b7f8f8ceb61824cefa69a6123f6cc9576ce535c",
+  "scaling-rows.csv": "dee204b2b350ec88a09b9862c8961e245fd3cde8cb1db41e46e9629e67bb4a45",
+  "summary.json": "95e629aa55db06ef2d56b3c8e7150c748b807f76a88335d1e7b9119582087a94",
+  "upstream-redis.txt": "05d7937b385883fa83bb4171d68cb27d23be096827d906288619cc5e393ffca3"
+}

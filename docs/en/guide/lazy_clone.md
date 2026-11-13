@@ -43,6 +43,8 @@ configuration determines database persistence.
 
 Run local tests against a dedicated Redis (Linux, Go, Python 3 and FUSE required):
 
+[Local results and raw evidence (2026-11-13, Chinese)](../../../hack/lazy_clone_results/20261113/README.zh.md).
+
 ```bash
 JFS_FORK_REDIS_TEST_ADDR=127.0.0.1:6379 \
   bash hack/lazy_clone_check.sh /tmp/jfs-fork-check-01

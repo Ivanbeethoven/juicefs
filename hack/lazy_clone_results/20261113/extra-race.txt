@@ -1,0 +1,6 @@
+=== RUN   TestForkRedisTransactionSnapshot
+--- PASS: TestForkRedisTransactionSnapshot (0.01s)
+=== RUN   TestForkRedisGuardsAndPrivateRecords
+--- PASS: TestForkRedisGuardsAndPrivateRecords (0.02s)
+PASS
+ok  	github.com/juicedata/juicefs/pkg/meta	1.111s
