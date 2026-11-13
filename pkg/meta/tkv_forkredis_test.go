@@ -21,6 +21,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"runtime"
@@ -384,6 +385,142 @@ func TestForkRedisExpiredSnapshotCannotSucceed(t *testing.T) {
 			require.Empty(t, forkGet(t, c, "Ab"))
 		})
 	}
+}
+
+func TestForkRedisReadCacheConsistency(t *testing.T) {
+	c, uri := forkRedisFixture(t)
+	for key, value := range map[string]string{"setting": `{"Name":"cache"}`, "Aa": "lower", "Ab": "delete", "Aempty": ""} {
+		forkPut(t, c, key, value)
+	}
+	require.NoError(t, SealWorkspace(Background(), uri))
+	childURI, err := ForkWorkspace(Background(), uri, "child")
+	require.NoError(t, err)
+	child, err := newForkRedisClient(childURI)
+	require.NoError(t, err)
+	defer child.close()
+	writer, err := newForkRedisClient(childURI)
+	require.NoError(t, err)
+	defer writer.close()
+	read := func(client *forkRedisClient) map[string]string {
+		got := make(map[string]string)
+		require.NoError(t, client.scan([]byte("A"), func(k, v []byte) bool { got[string(k)] = string(v); return true }))
+		return got
+	}
+	require.Equal(t, map[string]string{"Aa": "lower", "Ab": "delete", "Aempty": ""}, read(child))
+	before := child.readBatches.Load()
+	require.Equal(t, map[string]string{"Aa": "lower", "Ab": "delete", "Aempty": ""}, read(child))
+	require.Equal(t, before, child.readBatches.Load(), "hot range and records need no Redis read pipeline")
+	require.NoError(t, child.simpleTxn(Background(), func(tx *kvTxn) error {
+		v := tx.get([]byte("Aa"))
+		v[0] = 'X'
+		require.Equal(t, "lower", string(tx.get([]byte("Aa"))), "returned bytes must not alias cached values")
+		require.NotNil(t, tx.get([]byte("Aempty")))
+		require.Nil(t, tx.get([]byte("Amissing")))
+		var count int
+		tx.scan([]byte("Z"), []byte("ZZ"), false, func(k, v []byte) bool { count++; return true })
+		require.Zero(t, count) // cache the empty upper range too
+		return nil
+	}, 0))
+	// A separate client changes keys and directories after this reader's snapshot.
+	require.NoError(t, child.simpleTxn(Background(), func(tx *kvTxn) error {
+		require.NoError(t, writer.txn(Background(), func(w *kvTxn) error {
+			w.set([]byte("Aa"), []byte("upper"))
+			w.delete([]byte("Ab"))
+			w.set([]byte("Amissing"), []byte("created"))
+			w.set([]byte("Za"), []byte("new entry"))
+			return nil
+		}, 0))
+		require.Equal(t, "lower", string(tx.get([]byte("Aa"))))
+		require.Equal(t, "delete", string(tx.get([]byte("Ab"))))
+		require.Nil(t, tx.get([]byte("Amissing")))
+		return nil
+	}, 0))
+	require.Equal(t, map[string]string{"Aa": "upper", "Aempty": "", "Amissing": "created"}, read(child))
+	require.Equal(t, "new entry", forkGet(t, child, "Za"))
+	var names []string
+	require.NoError(t, child.scan([]byte("Z"), func(k, v []byte) bool { names = append(names, string(k)); return true }))
+	require.Equal(t, []string{"Za"}, names)
+	require.Equal(t, "lower", forkGet(t, c, "Aa"))
+	// A warmed old child cannot write after another client seals it.
+	require.NoError(t, SealWorkspace(Background(), childURI))
+	require.ErrorIs(t, child.txn(Background(), func(tx *kvTxn) error { tx.set([]byte("Aa"), []byte("stale")); return nil }, 0), syscall.EROFS)
+}
+
+func TestForkRedisBatchAndCacheLimits(t *testing.T) {
+	c, uri := forkRedisFixture(t)
+	batch, err := newForkRedisClient(uri + "&fork_cache_bytes=0")
+	require.NoError(t, err)
+	defer batch.close()
+	keys := make([][]byte, forkReadBatchKeys*2+1)
+	require.NoError(t, c.txn(Background(), func(tx *kvTxn) error {
+		for i := range keys {
+			keys[i] = []byte(fmt.Sprintf("A%04d", i))
+			tx.set(keys[i], keys[i])
+		}
+		return nil
+	}, 0))
+	before := batch.readBatches.Load()
+	require.NoError(t, batch.simpleTxn(Background(), func(tx *kvTxn) error {
+		require.Equal(t, keys, tx.gets(keys...))
+		return nil
+	}, 0))
+	require.Equal(t, uint64(3), batch.readBatches.Load()-before)
+	require.Empty(t, batch.cache.entries)
+	require.NoError(t, c.txn(Background(), func(tx *kvTxn) error {
+		tx.scan(keys[0], nextKey(keys[len(keys)-1]), false, func(k, v []byte) bool {
+			if string(k) == string(keys[0]) {
+				tx.set(keys[1], []byte("in-transaction"))
+				tx.delete(keys[2])
+			}
+			if string(k) == string(keys[1]) {
+				require.Equal(t, "in-transaction", string(v))
+			}
+			require.NotEqual(t, string(keys[2]), string(k), "batch scan must see callback deletes")
+			return true
+		})
+		return nil
+	}, 0))
+	for _, option := range []string{"-1", "oops", "1073741825"} {
+		_, _, _, _, err := parseForkURL(uri + "&fork_cache_bytes=" + option)
+		require.Error(t, err)
+	}
+	cache := newForkReadCache(600)
+	a, b, d := forkCacheKey{begin: "a"}, forkCacheKey{begin: "b"}, forkCacheKey{begin: "d"}
+	cache.put(a, forkCacheValue{})
+	cache.put(b, forkCacheValue{})
+	_, ok := cache.get(a)
+	require.True(t, ok)
+	cache.put(d, forkCacheValue{})
+	_, ok = cache.get(b)
+	require.False(t, ok, "evict least recently used entry")
+	cache.put(forkCacheKey{begin: "oversize"}, forkCacheValue{data: make([]byte, 601)})
+	require.LessOrEqual(t, cache.used, cache.limit)
+	require.Len(t, cache.entries, 2)
+}
+
+func TestForkRedisFailedReadsDoNotPublishCache(t *testing.T) {
+	c, _ := forkRedisFixture(t)
+	forkPut(t, c, "Aa", "old")
+	var key forkCacheKey
+	err := c.simpleTxn(Background(), func(tx *kvTxn) error {
+		key = forkCacheKey{layer: c.branch, revision: tx.id(), begin: "Aa"}
+		require.Equal(t, "old", string(tx.get([]byte("Aa"))))
+		return errors.New("abort")
+	}, 0)
+	require.ErrorContains(t, err, "abort")
+	_, ok := c.cache.get(key)
+	require.False(t, ok)
+	err = c.simpleTxn(Background(), func(tx *kvTxn) error {
+		tokens, err := c.rdb.ZRange(Background(), c.readers(), 0, -1).Result()
+		require.NoError(t, err)
+		require.Len(t, tokens, 1)
+		require.NoError(t, c.rdb.ZAdd(Background(), c.readerExpiry(), redis.Z{Score: 0, Member: tokens[0]}).Err())
+		require.Equal(t, "old", string(tx.get([]byte("Aa"))))
+		return nil
+	}, 0)
+	require.ErrorIs(t, err, context.DeadlineExceeded)
+	_, ok = c.cache.get(key)
+	require.False(t, ok, "expired reads cannot populate the shared cache")
 }
 
 // Opt-in metadata-only measurement. Both paths use this experimental engine;

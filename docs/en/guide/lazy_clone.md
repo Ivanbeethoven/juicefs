@@ -7,6 +7,23 @@ dentries, xattrs, or chunk metadata. The source must be cleanly unmounted and
 sealed with `juicefs clone --seal META-URL` first. Sealing is permanent.
 
 This opt-in engine uses `forkredis://host:port/db?volume=NAME&branch=main`.
+
+Each client defaults to a 16 MiB versioned metadata read cache. Add
+`&fork_cache_bytes=0` to disable it, or specify a byte budget up to 1 GiB.
+Cache keys include the layer, pinned revision and exact key or index range;
+absent records, empty ranges and tombstones are cached distinctly. Transactions
+still pin their revision in Redis and validate expiry on completion. Writes
+retain revision, expiry and seal checks. Only successfully validated reads enter
+the shared cache, and in-transaction writes always take precedence. A commit by
+another client changes the revision, preventing reuse of old upper-layer results.
+
+The byte-accounted LRU includes key/value and entry overhead. Each active
+transaction may additionally retain up to the same budget of pending results.
+Reads pipeline at most 128 keys across their layers per batch; directory scans
+also fetch values in batches. The persisted format is unchanged and remains
+compatible with earlier clients on this branch. Metrics expose cache hits,
+misses, accounted bytes and read pipeline executions under `forkredis_cache_*`
+and `forkredis_read_batches_total`; pipeline counts exclude transaction validation.
 It reuses JuiceFS KV metadata operations, FUSE and chunk storage. It is a new
 format, **not an in-place upgrade of an existing Redis volume**. Ordinary
 `redis://` volumes and path-based `clone SRC DST` retain their behavior.

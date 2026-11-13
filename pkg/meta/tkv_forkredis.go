@@ -30,6 +30,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"sync/atomic"
 	"syscall"
 	"time"
 
@@ -55,10 +56,12 @@ type forkLayer struct {
 // Live read snapshots pin versions; commits prune older, unneeded versions.
 // Shared layer/object collection is deliberately unsupported in this prototype.
 type forkRedisClient struct {
-	rdb     *redis.Client
-	prefix  string
-	branch  string
-	parents []forkLayer
+	rdb         *redis.Client
+	prefix      string
+	branch      string
+	parents     []forkLayer
+	cache       *forkReadCache
+	readBatches atomic.Uint64
 }
 
 func (c *forkRedisClient) head(name string) string  { return c.prefix + "head:" + name }
@@ -89,8 +92,15 @@ func parseForkURL(raw string) (*url.URL, *redis.Options, string, string, error) 
 		return nil, nil, "", "", fmt.Errorf("volume and branch must be 1-64 letters, digits, underscores or hyphens")
 	}
 	original := *u
+	if value := q.Get("fork_cache_bytes"); value != "" {
+		n, err := strconv.ParseUint(value, 10, 31)
+		if err != nil || n > 1<<30 {
+			return nil, nil, "", "", fmt.Errorf("fork_cache_bytes must be between 0 and 1073741824")
+		}
+	}
 	q.Del("volume")
 	q.Del("branch")
+	q.Del("fork_cache_bytes")
 	u.Scheme, u.RawQuery = "redis", q.Encode()
 	options, err := redis.ParseURL(u.String())
 	if err != nil {
@@ -103,11 +113,16 @@ func parseForkURL(raw string) (*url.URL, *redis.Options, string, string, error) 
 }
 
 func newForkRedisClient(addr string) (*forkRedisClient, error) {
-	_, options, volume, branch, err := parseForkURL(addr)
+	u, options, volume, branch, err := parseForkURL(addr)
 	if err != nil {
 		return nil, err
 	}
-	c := &forkRedisClient{rdb: redis.NewClient(options), prefix: "{jfs-fork:" + volume + "}:", branch: branch}
+	cacheBytes := forkDefaultCacheBytes
+	if value := u.Query().Get("fork_cache_bytes"); value != "" {
+		cacheBytes, _ = strconv.Atoi(value) // validated by parseForkURL
+	}
+	c := &forkRedisClient{rdb: redis.NewClient(options), prefix: "{jfs-fork:" + volume + "}:", branch: branch,
+		cache: newForkReadCache(cacheBytes)}
 	ctx := context.Background()
 	if branch == "main" {
 		// Only the initial volume can be initialized implicitly. A misspelled
@@ -174,57 +189,115 @@ func forkPrivateKey(key []byte) bool {
 }
 
 type forkRedisTxn struct {
-	c        *forkRedisClient
-	ctx      context.Context
-	layers   []forkLayer
-	buffer   map[string][]byte
-	readOnly bool
+	c            *forkRedisClient
+	ctx          context.Context
+	layers       []forkLayer
+	buffer       map[string][]byte
+	readOnly     bool
+	pending      map[forkCacheKey]forkCacheValue
+	pendingBytes int
 }
 
 func (tx *forkRedisTxn) id() uint64 { return tx.layers[0].revision }
 
 func (tx *forkRedisTxn) get(key []byte) []byte {
-	if v, ok := tx.buffer[string(key)]; ok {
-		return bytes.Clone(v)
-	}
-	if bytes.Equal(key, []byte("CnextChunk")) {
-		n, err := tx.c.rdb.Get(tx.ctx, tx.c.prefix+"slice-id").Int64()
-		if err != nil && !errors.Is(err, redis.Nil) {
-			panic(err)
-		}
-		return packCounter(n)
-	}
-	for i, layer := range tx.layers {
-		if i > 0 && forkPrivateKey(key) {
-			break
-		}
-		values, err := tx.c.rdb.ZRevRangeByScore(tx.ctx, tx.c.record(layer.name, key), &redis.ZRangeBy{
-			Min: "-inf", Max: strconv.FormatUint(layer.revision, 10), Offset: 0, Count: 1,
-		}).Result()
-		if err != nil {
-			panic(err)
-		}
-		if len(values) == 0 {
-			continue
-		}
-		b := []byte(values[0])
-		if len(b) < 9 || binary.BigEndian.Uint64(b[:8]) > layer.revision || b[8] > 1 {
-			panic(fmt.Errorf("corrupt fork record"))
-		}
-		if b[8] == 0 {
-			return nil
-		}
-		value := make([]byte, len(b)-9)
-		copy(value, b[9:])
-		return value
-	}
-	return nil
+	return tx.gets(key)[0]
 }
 
 func (tx *forkRedisTxn) gets(keys ...[]byte) [][]byte {
+	values := make([][]byte, 0, len(keys))
+	for start := 0; start < len(keys); start += forkReadBatchKeys {
+		values = append(values, tx.readBatch(keys[start:min(start+forkReadBatchKeys, len(keys))])...)
+	}
+	return values
+}
+
+func (tx *forkRedisTxn) readBatch(keys [][]byte) [][]byte {
+	pipe := tx.c.rdb.Pipeline()
+	records := make(map[forkCacheKey][]byte)
+	requests := make(map[forkCacheKey]*redis.StringSliceCmd)
+	var allocator *redis.StringCmd
+	for _, key := range keys {
+		if _, ok := tx.buffer[string(key)]; ok {
+			continue
+		}
+		if bytes.Equal(key, []byte("CnextChunk")) {
+			if allocator == nil {
+				allocator = pipe.Get(tx.ctx, tx.c.prefix+"slice-id")
+			}
+			continue // global allocator is not tied to a branch revision
+		}
+		for i, layer := range tx.layers {
+			if i > 0 && forkPrivateKey(key) {
+				break
+			}
+			ck := forkCacheKey{layer: layer.name, revision: layer.revision, begin: string(key)}
+			if data, ok := records[ck]; ok {
+				if data != nil {
+					break
+				}
+				continue
+			}
+			if value, ok := tx.cached(ck); ok {
+				records[ck] = value.data
+				if value.data != nil {
+					break
+				} // includes tombstones
+			} else if requests[ck] == nil {
+				requests[ck] = pipe.ZRevRangeByScore(tx.ctx, tx.c.record(layer.name, key), &redis.ZRangeBy{
+					Min: "-inf", Max: strconv.FormatUint(layer.revision, 10), Offset: 0, Count: 1,
+				})
+			}
+		}
+	}
+	if pipe.Len() > 0 {
+		tx.c.readBatches.Add(1)
+		if _, err := pipe.Exec(tx.ctx); err != nil && !errors.Is(err, redis.Nil) {
+			panic(err)
+		}
+	}
+	for key, cmd := range requests {
+		values, err := cmd.Result()
+		if err != nil {
+			panic(err)
+		}
+		var data []byte
+		if len(values) > 0 {
+			data = []byte(values[0])
+			if len(data) < 9 || binary.BigEndian.Uint64(data[:8]) > key.revision || data[8] > 1 {
+				panic(fmt.Errorf("corrupt fork record"))
+			}
+		}
+		records[key] = data
+		tx.remember(key, forkCacheValue{data: data})
+	}
 	values := make([][]byte, len(keys))
-	for i, k := range keys {
-		values[i] = tx.get(k)
+	for n, key := range keys {
+		if value, ok := tx.buffer[string(key)]; ok {
+			values[n] = bytes.Clone(value)
+			continue
+		}
+		if bytes.Equal(key, []byte("CnextChunk")) {
+			num, err := allocator.Int64()
+			if err != nil && !errors.Is(err, redis.Nil) {
+				panic(err)
+			}
+			values[n] = packCounter(num)
+			continue
+		}
+		for i, layer := range tx.layers {
+			if i > 0 && forkPrivateKey(key) {
+				break
+			}
+			data := records[forkCacheKey{layer: layer.name, revision: layer.revision, begin: string(key)}]
+			if data == nil {
+				continue
+			}
+			if data[8] != 0 {
+				values[n] = bytes.Clone(data[9:])
+			}
+			break
+		}
 	}
 	return values
 }
@@ -238,12 +311,34 @@ func (tx *forkRedisTxn) scan(begin, end []byte, keysOnly bool, handler func(k, v
 		max = "(" + string(end)
 	}
 	keys := make(map[string]bool)
+	pipe := tx.c.rdb.Pipeline()
+	ranges := make([]forkCacheValue, len(tx.layers))
+	requests := make(map[int]*redis.StringSliceCmd)
+	cacheKeys := make([]forkCacheKey, len(tx.layers))
 	for i, layer := range tx.layers {
-		names, err := tx.c.rdb.ZRangeByLex(tx.ctx, tx.c.index(layer.name), &redis.ZRangeBy{Min: min, Max: max}).Result()
+		cacheKeys[i] = forkCacheKey{layer: layer.name, revision: layer.revision, kind: 1, begin: min, end: max}
+		if value, ok := tx.cached(cacheKeys[i]); ok {
+			ranges[i] = value
+		} else {
+			requests[i] = pipe.ZRangeByLex(tx.ctx, tx.c.index(layer.name), &redis.ZRangeBy{Min: min, Max: max})
+		}
+	}
+	if pipe.Len() > 0 {
+		tx.c.readBatches.Add(1)
+		if _, err := pipe.Exec(tx.ctx); err != nil {
+			panic(err)
+		}
+	}
+	for i, cmd := range requests {
+		names, err := cmd.Result()
 		if err != nil {
 			panic(err)
 		}
-		for _, k := range names {
+		ranges[i] = forkCacheValue{names: names}
+		tx.remember(cacheKeys[i], ranges[i])
+	}
+	for i, value := range ranges {
+		for _, k := range value.names {
 			if i == 0 || !forkPrivateKey([]byte(k)) {
 				keys[k] = true
 			}
@@ -265,16 +360,31 @@ func (tx *forkRedisTxn) scan(begin, end []byte, keysOnly bool, handler func(k, v
 		ordered = append(ordered, k)
 	}
 	sort.Strings(ordered)
-	for _, k := range ordered {
-		v := tx.get([]byte(k))
-		if v == nil {
-			continue
+	for start := 0; start < len(ordered); start += forkReadBatchKeys {
+		end := start + forkReadBatchKeys
+		if end > len(ordered) {
+			end = len(ordered)
 		}
-		if keysOnly {
-			v = nil
+		batch := make([][]byte, end-start)
+		for i, key := range ordered[start:end] {
+			batch[i] = []byte(key)
 		}
-		if !handler([]byte(k), v) {
-			break
+		values := tx.gets(batch...)
+		for i, key := range batch {
+			v := values[i]
+			// A scan callback may write a subsequent key in the same transaction.
+			if updated, ok := tx.buffer[string(key)]; ok {
+				v = bytes.Clone(updated)
+			}
+			if v == nil {
+				continue
+			}
+			if keysOnly {
+				v = nil
+			}
+			if !handler(key, v) {
+				return
+			}
 		}
 	}
 }
@@ -382,6 +492,8 @@ for i=1,n do
   if #keep>0 then redis.call('ZREMRANGEBYSCORE',key,'-inf','('..keep[2]) end
 end
 redis.call('HSET',KEYS[1],'revision',revision)
+redis.call('ZREM',KEYS[3],ARGV[3])
+redis.call('ZREM',KEYS[4],ARGV[3])
 return revision`)
 
 func (c *forkRedisClient) transaction(ctx context.Context, f func(*kvTxn) error, retry int, readOnly bool) (err error) {
@@ -431,6 +543,7 @@ func (c *forkRedisClient) transaction(ctx context.Context, f func(*kvTxn) error,
 		if valid == 0 {
 			return fmt.Errorf("fork read snapshot expired: %w", context.DeadlineExceeded)
 		}
+		tx.publishReads()
 		return nil
 	}
 	if head.revision >= forkMaxRevision {
@@ -467,6 +580,8 @@ func (c *forkRedisClient) transaction(ctx context.Context, f func(*kvTxn) error,
 	if result == -3 {
 		return fmt.Errorf("fork write snapshot expired: %w", context.DeadlineExceeded)
 	}
+	active = false // commit atomically released this transaction's snapshot
+	tx.publishReads()
 	return nil
 }
 
