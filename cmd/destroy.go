@@ -116,6 +116,10 @@ func destroy(ctx *cli.Context) error {
 	}
 	removePassword(uri)
 	m := meta.NewClient(uri, meta.DefaultConf())
+	if m.Name() == "forkredis" {
+		defer m.Shutdown()
+		return fmt.Errorf("destroy is unsupported for forkredis: object data is shared by sealed layers")
+	}
 
 	format, err := m.Load(true)
 	if err != nil {

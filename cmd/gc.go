@@ -89,6 +89,10 @@ func gc(ctx *cli.Context) error {
 	metaConf.MaxDeletes = ctx.Int("threads")
 	metaConf.NoBGJob = true
 	m := meta.NewClient(ctx.Args().Get(0), metaConf)
+	if m.Name() == "forkredis" {
+		defer m.Shutdown()
+		return errors.New("gc is unsupported for forkredis: object data is shared by sealed layers")
+	}
 	format, err := m.Load(true)
 	if err != nil {
 		logger.Fatalf("load setting: %s", err)

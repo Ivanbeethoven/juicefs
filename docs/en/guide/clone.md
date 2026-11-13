@@ -4,6 +4,9 @@ sidebar_position: 6
 description: Learn how to use the juicefs clone command to efficiently clone files or directories by creating a metadata-only copy. 
 ---
 
+This branch also provides an experimental [lazy workspace fork](lazy_clone.md):
+independent writable mounts over a sealed lower, without copying the full metadata tree.
+
 Cloning specific data does not involve copying the actual object storage data but only copies metadata. Therefore, cloning is very fast regardless of the size of the file or directory. For JuiceFS, this command is a better alternative to `cp`. Moreover, for Linux clients using kernels with [`copy_file_range`](https://man7.org/linux/man-pages/man2/copy_file_range.2.html) support, using `cp` effectively performs the same metadata copy and is very fast.
 
 ![clone](../images/juicefs-clone.svg)

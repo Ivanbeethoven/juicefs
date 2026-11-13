@@ -3,6 +3,8 @@ title: 克隆文件或目录
 sidebar_position: 6
 ---
 
+本分支另有实验性的[工作区 fork](lazy_clone.md)：父层只读、子层独立挂载，创建时不复制整棵元数据树。
+
 对指定数据进行克隆，创建克隆时不会实际拷贝对象存储数据，而是仅拷贝元数据，因此不论对多大的文件或目录进行克隆，都非常快。对于 JuiceFS，这个命令是 `cp` 更好的替代，甚至对于 Linux 客户端来说，如果所使用的内核支持 [`copy_file_range`](https://man7.org/linux/man-pages/man2/copy_file_range.2.html)，那么调用 `cp` 时，实际发生的也是同样的元数据拷贝，调用将会格外迅速。
 
 ![clone](../images/juicefs-clone.svg)

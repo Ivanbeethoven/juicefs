@@ -46,8 +46,20 @@ $ juicefs clone /mnt/jfs/file1 /mnt/jfs/file2
 $ juicefs clone /mnt/jfs/dir1 /mnt/jfs/dir2
 
 # Clone with preserving the uid, gid, and mode of the file
-$ juicefs clone -p /mnt/jfs/file1 /mnt/jfs/file2`,
+$ juicefs clone -p /mnt/jfs/file1 /mnt/jfs/file2
+
+# Experimental: seal an unmounted workspace, then create a writable child
+$ juicefs clone --seal 'forkredis://localhost/0?volume=demo&branch=main'
+$ juicefs clone --lazy 'forkredis://localhost/0?volume=demo&branch=main' child1`,
 		Flags: []cli.Flag{
+			&cli.BoolFlag{
+				Name:  "lazy",
+				Usage: "EXPERIMENTAL: fork a sealed forkredis META-URL into a separately mounted CHILD workspace",
+			},
+			&cli.BoolFlag{
+				Name:  "seal",
+				Usage: "EXPERIMENTAL: permanently freeze an unmounted forkredis META-URL as a read-only lower",
+			},
 			&cli.BoolFlag{
 				Name:    "preserve",
 				Aliases: []string{"p"},
@@ -63,6 +75,9 @@ $ juicefs clone -p /mnt/jfs/file1 /mnt/jfs/file2`,
 }
 
 func clone(ctx *cli.Context) error {
+	if ctx.Bool("lazy") || ctx.Bool("seal") {
+		return cloneWorkspace(ctx)
+	}
 	setup(ctx, 2)
 	srcPath := ctx.Args().Get(0)
 	srcAbsPath, err := filepath.Abs(srcPath)
