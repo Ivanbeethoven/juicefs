@@ -23,6 +23,7 @@
 | tiny2 | 13 B、64 B 两个文件 | 512 | 整文件 | 39,424 B / 1,024 次 |
 | small128 | 128 × 4 KiB | 16 | 4 KiB | 8 MiB / 2,048 次 |
 | blocks8 | 8 × 1 MiB | 256 | 64 KiB，固定偏移序列 | 128 MiB / 2,048 次 |
+| many10000（单独指定） | 10,000 × 4 KiB，同一目录 | 2 | 4 KiB | 78.125 MiB / 20,000 次 |
 
 每轮打开并枚举目录、查询一个文件属性，再逐文件打开、pread、关闭。每次读取检查实际内容。文件由固定种子生成，SHA 保存到 `run.json`。tiny2 仅用于定位，不代表真实 Agent 任务。
 
@@ -50,6 +51,10 @@ python3 hack/lazy_clone_read_report.py /srv/jfs-read-run-01
 CPU 编号需要按机器实际情况选择。客户端、Redis 和负载进程使用不同 CPU；亲和性不等于独占 CPU，`host.json` 保留宿主负载及压力信息。先用 `--quick --pairs 1` 运行 tiny2 预检，再使用新的输出目录执行正式测量。
 
 新旧版本比较时，用 `--binary OLD --source-commit OLD_COMMIT --compare-binary NEW --compare-commit NEW_COMMIT`。每个对照内交替新旧二进制顺序，二者共享同一份初始数据，每次独立挂载和预热；默认共 108 项。`--profile default --fixture small128` 可只跑一档一负载。加 `--compare-cache-bytes 0` 关闭新版元数据缓存，测合批本身的效果。旧二进制的 URL 不增加新参数。原生 Redis 也使用两个二进制复测，用于检查环境波动。
+
+1 万文件使用 `--fixture many10000 --profile default --pairs 3`，单目录会跨越 4096 项分页。用 `--metadata-cache-bytes 16777216` 或 `67108864` 分别测试 16 / 64 MiB；此参数同时作用于新旧版本，原生引擎不使用 forkredis 缓存。每个容量单独输出、单独汇总，不混为同一组。
+
+[A355 打开文件、目录合并优化及 1 万文件结果](lazy_clone_results/20261113-a355-open-dir/README.zh.md)保留 90 项性能对照、原始逐次耗时、事务分段和可复测命令。
 
 ## 输出
 

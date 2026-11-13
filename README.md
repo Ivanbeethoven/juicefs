@@ -1,4 +1,7 @@
 <p align="center"><a href="https://github.com/juicedata/juicefs"><img alt="JuiceFS Logo" src="docs/en/images/juicefs-logo-new.svg" width="50%" /></a></p>
+
+This branch contains the experimental **lazy workspace fork**: a sealed read-only parent and independently mounted writable children, without copying the metadata tree. Start with the [usage guide](docs/en/guide/lazy_clone.md), [BrewFS implementation notes](docs/zh_cn/guide/brewfs-cache-reference.md), and [A355 hot-read results including 10,000 files](hack/lazy_clone_results/20261113-a355-open-dir/README.zh.md). This uses a separate `forkredis://` metadata format; ordinary `redis://` volumes retain the upstream implementation.
+
 <p align="center">
     <a href="https://github.com/juicedata/juicefs/releases/latest"><img alt="Latest Stable Release" src="https://img.shields.io/github/v/release/juicedata/juicefs" /></a>
     <a href="https://github.com/juicedata/juicefs/actions/workflows/unittests.yml"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/juicedata/juicefs/unittests.yml?branch=main&label=Unit%20Testing" /></a>

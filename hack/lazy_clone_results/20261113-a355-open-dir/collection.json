@@ -1,0 +1,20 @@
+{
+  "host": {
+    "system": "Linux",
+    "node": "A355",
+    "release": "6.8.0-149-generic",
+    "version": "#149-Ubuntu SMP PREEMPT_DYNAMIC Fri Oct 23 13:21:10 UTC 2026",
+    "machine": "x86_64",
+    "processor": "x86_64"
+  },
+  "unix_seconds": 1794584821.1729214,
+  "checks": {
+    "small-01": 54,
+    "large16-01": 18,
+    "large64-01": 18
+  },
+  "fuse_passed": true,
+  "task_mounts_remaining": [],
+  "task_binary_processes_remaining": [],
+  "excluded": "binaries, generated objects and Redis persistence; file input reproducible from fixed seeds"
+}

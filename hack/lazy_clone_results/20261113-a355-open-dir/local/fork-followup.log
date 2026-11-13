@@ -1,0 +1,10 @@
+=== RUN   TestForkRedisReadCacheConsistency
+--- PASS: TestForkRedisReadCacheConsistency (0.03s)
+=== RUN   TestForkRedisBatchAndCacheLimits
+--- PASS: TestForkRedisBatchAndCacheLimits (0.02s)
+=== RUN   TestForkRedisCachedReadValidation
+--- PASS: TestForkRedisCachedReadValidation (0.01s)
+=== RUN   TestForkRedisDirectoryCachedRead
+--- PASS: TestForkRedisDirectoryCachedRead (0.03s)
+PASS
+ok  	github.com/juicedata/juicefs/pkg/meta	1.200s

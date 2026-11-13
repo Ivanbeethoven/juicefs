@@ -1,4 +1,7 @@
 <p align="center"><a href="https://github.com/juicedata/juicefs"><img alt="JuiceFS Logo" src="docs/zh_cn/images/juicefs-logo-new.svg" width="50%" /></a></p>
+
+本分支实现实验性的 **lazy workspace fork**：父层封存只读，子层独立挂载、可写，fork 不复制元数据树。入口：[使用方法](docs/zh_cn/guide/lazy_clone.md) · [给 BrewFS 的代码参考](docs/zh_cn/guide/brewfs-cache-reference.md) · [A355 热读优化与 1 万文件结果](hack/lazy_clone_results/20261113-a355-open-dir/README.zh.md)。功能使用独立的 `forkredis://` 格式，普通 `redis://` 卷仍走上游实现。
+
 <p align="center">
     <a href="https://github.com/juicedata/juicefs/actions/workflows/unittests.yml"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/juicedata/juicefs/unittests.yml?branch=main&label=Unit%20Testing" /></a>
     <a href="https://github.com/juicedata/juicefs/actions/workflows/integrationtests.yml"><img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/juicedata/juicefs/integrationtests.yml?branch=main&label=Integration%20Testing" /></a>
