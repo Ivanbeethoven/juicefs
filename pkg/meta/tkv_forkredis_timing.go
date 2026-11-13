@@ -32,10 +32,13 @@ const (
 	forkPhaseCommit
 	forkPhaseCleanup
 	forkPhasePublish
+	forkPhaseCachedTotal
+	forkPhaseCachedPrepare
+	forkPhaseCachedValidate
 	forkPhaseCount
 )
 
-var forkPhaseNames = [...]string{"transaction", "begin", "body", "data_io", "end", "commit", "cleanup", "publish"}
+var forkPhaseNames = [...]string{"transaction", "begin", "body", "data_io", "end", "commit", "cleanup", "publish", "cached_total", "cached_prepare", "cached_validate"}
 
 type forkPhaseMetric struct {
 	calls atomic.Uint64

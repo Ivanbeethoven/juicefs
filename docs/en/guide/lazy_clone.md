@@ -11,8 +11,8 @@ This opt-in engine uses `forkredis://host:port/db?volume=NAME&branch=main`.
 Each client defaults to a 16 MiB versioned metadata read cache. Add
 `&fork_cache_bytes=0` to disable it, or specify a byte budget up to 1 GiB.
 Cache keys include the layer, pinned revision and exact key or index range;
-absent records, empty ranges and tombstones are cached distinctly. Transactions
-still pin their revision in Redis and validate expiry on completion. Writes
+absent records, empty ranges and tombstones are cached distinctly. Reads that
+need uncached data pin their revision in Redis and validate expiry on completion. Writes
 retain revision, expiry and seal checks. Only successfully validated reads enter
 the shared cache, and in-transaction writes always take precedence. A commit by
 another client changes the revision, preventing reuse of old upper-layer results.
@@ -24,6 +24,19 @@ also fetch values in batches. The persisted format is unchanged and remains
 compatible with earlier clients on this branch. Metrics expose cache hits,
 misses, accounted bytes and read pipeline executions under `forkredis_cache_*`
 and `forkredis_read_batches_total`; pipeline counts exclude transaction validation.
+For pure point reads, lookups with open-cache disabled, and unfiltered directory
+scans, a fully cached result is collected privately at one revision and then
+validated with one Redis `HMGET` of the head revision and seal. A mismatch or
+cache miss discards the temporary result and uses the pinned transaction.
+No speculative attributes or directory entries are published before validation.
+Uncached reads and all writes retain the original pin, expiry and commit checks;
+the optimization does not replay arbitrary transaction callbacks. The cache
+budget remains 16 MiB by default and setting it to zero disables this path.
+`forkredis_phase_seconds_total{phase=...}` and `forkredis_phase_calls_total`
+separate begin, data I/O, end, commit and cached validation. These are cumulative
+client timings, not Redis CPU time: body includes data I/O and transaction includes
+its phases. `forkredis_cached_read_hits_total` and `forkredis_cached_read_fallbacks_total`
+count validated local results and fallbacks.
 It reuses JuiceFS KV metadata operations, FUSE and chunk storage. It is a new
 format, **not an in-place upgrade of an existing Redis volume**. Ordinary
 `redis://` volumes and path-based `clone SRC DST` retain their behavior.
@@ -46,7 +59,7 @@ Upper records override inherited records; tombstones hide deleted entries.
 Writes change only affected keys. Slice IDs are allocated across the volume to
 prevent object-name collisions between siblings. Commit scripts check the head
 revision and sealed flag, including writes from clients opened before sealing.
-Read transactions pin record versions for at most 60 seconds. Commits prune
+Uncached read transactions pin record versions for at most 60 seconds. Commits prune
 versions older than those still needed; expired transactions fail. No callback
 is silently rerun by the driver. Ancestry is limited to 64 layers.
 

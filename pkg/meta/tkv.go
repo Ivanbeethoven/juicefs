@@ -85,6 +85,12 @@ type tkvMetricsClient interface {
 	initMetrics(prometheus.Registerer)
 }
 
+// Only use for collectors that retain private output until handled is true.
+// A false result must not publish speculative attributes or directory entries.
+type tkvCachedReader interface {
+	cachedRead(context.Context, func(*kvTxn) error) (handled bool, err error)
+}
+
 type kvTxn struct {
 	kvtxn
 	retry    int
@@ -456,12 +462,27 @@ func (m *kvMeta) parseQuota(buf []byte) *Quota {
 }
 
 func (m *kvMeta) get(key []byte) ([]byte, error) {
-	var value []byte
-	err := m.client.simpleTxn(Background(), func(tx *kvTxn) error {
-		value = tx.get(key)
+	values, err := m.readValues(Background(), key)
+	if err != nil {
+		return nil, err
+	}
+	return values[0], nil
+}
+
+func (m *kvMeta) readValues(ctx context.Context, keys ...[]byte) ([][]byte, error) {
+	if cached, ok := m.client.(tkvCachedReader); ok {
+		var values [][]byte
+		handled, err := cached.cachedRead(ctx, func(tx *kvTxn) error { values = tx.gets(keys...); return nil })
+		if handled {
+			return values, err
+		}
+	}
+	var values [][]byte
+	err := m.client.simpleTxn(ctx, func(tx *kvTxn) error {
+		values = tx.gets(keys...)
 		return nil
 	}, 0)
-	return value, err
+	return values, err
 }
 
 func (m *kvMeta) scanKeys(ctx context.Context, prefix []byte) ([][]byte, error) {
@@ -481,6 +502,19 @@ func (m *kvMeta) scanValues(ctx context.Context, prefix []byte, limit int, filte
 		return nil, nil
 	}
 	values := make(map[string][]byte)
+	if cached, ok := m.client.(tkvCachedReader); ok && filter == nil {
+		speculative := make(map[string][]byte)
+		handled, err := cached.cachedRead(ctx, func(tx *kvTxn) error {
+			tx.scan(prefix, nextKey(prefix), false, func(k, v []byte) bool {
+				speculative[string(k)] = v
+				return limit < 0 || len(speculative) < limit
+			})
+			return nil
+		})
+		if handled {
+			return speculative, err
+		}
+	}
 	err := m.client.txn(ctx, func(tx *kvTxn) error {
 		var c int
 		tx.scan(prefix, nextKey(prefix), false, func(k, v []byte) bool {
@@ -498,6 +532,19 @@ func (m *kvMeta) scanValues(ctx context.Context, prefix []byte, limit int, filte
 func (m *kvMeta) scan(startKey, endKey []byte, limit int, filter func(k, v []byte) bool) ([][]byte, [][]byte, error) {
 	if limit == 0 {
 		return nil, nil, nil
+	}
+	if cached, ok := m.client.(tkvCachedReader); ok && filter == nil {
+		var keys, vals [][]byte
+		handled, err := cached.cachedRead(Background(), func(tx *kvTxn) error {
+			tx.scan(startKey, endKey, false, func(k, v []byte) bool {
+				keys, vals = append(keys, k), append(vals, v)
+				return limit < 0 || len(keys) < limit
+			})
+			return nil
+		})
+		if handled {
+			return keys, vals, err
+		}
 	}
 	var keys, vals [][]byte
 	err := m.client.txn(Background(), func(tx *kvTxn) error {
@@ -1251,6 +1298,37 @@ func (m *kvMeta) deleteKeys(keys ...[]byte) error {
 }
 
 func (m *kvMeta) doLookup(ctx Context, parent Ino, name string, inode *Ino, attr *Attr) syscall.Errno {
+	if cached, ok := m.client.(tkvCachedReader); ok && m.conf.OpenCache == 0 {
+		var entry, attributes []byte
+		handled, err := cached.cachedRead(ctx, func(tx *kvTxn) error {
+			entry = tx.get(m.entryKey(parent, name))
+			if entry == nil {
+				return syscall.ENOENT
+			}
+			if attr != nil {
+				_, found := m.parseEntry(entry)
+				attributes = tx.get(m.inodeKey(found))
+			}
+			return nil
+		})
+		if handled {
+			if err != nil {
+				return errno(err)
+			}
+			typ, found := m.parseEntry(entry)
+			*inode = found
+			if attr != nil {
+				if attributes != nil {
+					m.parseAttr(attributes, attr)
+					m.of.Update(found, attr)
+				} else {
+					logger.Warnf("no attribute for inode %d (%d, %s)", found, parent, name)
+					*attr = Attr{Typ: typ}
+				}
+			}
+			return 0
+		}
+	}
 	return errno(m.client.simpleTxn(ctx, func(tx *kvTxn) error {
 		buf := tx.get(m.entryKey(parent, name))
 		if buf == nil {
@@ -1277,14 +1355,15 @@ func (m *kvMeta) doLookup(ctx Context, parent Ino, name string, inode *Ino, attr
 }
 
 func (m *kvMeta) doGetAttr(ctx Context, inode Ino, attr *Attr) syscall.Errno {
-	return errno(m.client.simpleTxn(ctx, func(tx *kvTxn) error {
-		val := tx.get(m.inodeKey(inode))
-		if val == nil {
-			return syscall.ENOENT
-		}
-		m.parseAttr(val, attr)
-		return nil
-	}, 0))
+	values, err := m.readValues(ctx, m.inodeKey(inode))
+	if err != nil {
+		return errno(err)
+	}
+	if values[0] == nil {
+		return syscall.ENOENT
+	}
+	m.parseAttr(values[0], attr)
+	return 0
 }
 
 func (m *kvMeta) doSetAttr(ctx Context, inode Ino, set uint16, sugidclearmode uint8, attr *Attr, oldAttr *Attr) syscall.Errno {
@@ -2601,11 +2680,7 @@ func (m *kvMeta) fillAttr(entries []*Entry) (err error) {
 	for i, e := range entries {
 		keys[i] = m.inodeKey(e.Inode)
 	}
-	var rs [][]byte
-	err = m.client.simpleTxn(Background(), func(tx *kvTxn) error {
-		rs = tx.gets(keys...)
-		return nil
-	}, 0)
+	rs, err := m.readValues(Background(), keys...)
 	if err != nil {
 		return err
 	}

@@ -523,6 +523,129 @@ func TestForkRedisFailedReadsDoNotPublishCache(t *testing.T) {
 	require.False(t, ok, "expired reads cannot populate the shared cache")
 }
 
+func TestForkRedisCachedReadValidation(t *testing.T) {
+	c, uri := forkRedisFixture(t)
+	forkPut(t, c, "Aa", "old-a")
+	forkPut(t, c, "Ab", "old-b")
+	require.NoError(t, c.simpleTxn(Background(), func(tx *kvTxn) error {
+		tx.scan([]byte("A"), []byte("B"), false, func(k, v []byte) bool { return true })
+		require.Nil(t, tx.get([]byte("missing")))
+		return nil
+	}, 0))
+	begin, end := c.phases[forkPhaseBegin].calls.Load(), c.phases[forkPhaseEnd].calls.Load()
+	checks := c.phases[forkPhaseCachedValidate].calls.Load()
+	var got []string
+	handled, err := c.cachedRead(Background(), func(tx *kvTxn) error {
+		tx.scan([]byte("A"), []byte("B"), false, func(k, v []byte) bool { got = append(got, string(k)+"="+string(v)); return true })
+		require.Nil(t, tx.get([]byte("missing")))
+		return nil
+	})
+	require.NoError(t, err)
+	require.True(t, handled)
+	require.Equal(t, []string{"Aa=old-a", "Ab=old-b"}, got)
+	require.Equal(t, checks+1, c.phases[forkPhaseCachedValidate].calls.Load())
+	require.Equal(t, begin, c.phases[forkPhaseBegin].calls.Load())
+	require.Equal(t, end, c.phases[forkPhaseEnd].calls.Load())
+	n, err := c.rdb.ZCard(Background(), c.readers()).Result()
+	require.NoError(t, err)
+	require.Zero(t, n, "complete local results require no Redis retention pin")
+	// A new revision between collection and validation must discard the result.
+	writer, err := newForkRedisClient(uri)
+	require.NoError(t, err)
+	defer writer.close()
+	handled, err = c.cachedRead(Background(), func(tx *kvTxn) error {
+		require.Equal(t, "old-a", string(tx.get([]byte("Aa"))))
+		forkPut(t, writer, "Aa", "new-a")
+		return nil
+	})
+	require.NoError(t, err)
+	require.False(t, handled)
+	require.Equal(t, "new-a", forkGet(t, c, "Aa"))
+	checks = c.phases[forkPhaseCachedValidate].calls.Load()
+	handled, err = c.cachedRead(Background(), func(tx *kvTxn) error {
+		_ = tx.get([]byte("Aa"))
+		_ = tx.get([]byte("not-cached"))
+		return nil
+	})
+	require.NoError(t, err)
+	require.False(t, handled)
+	require.Equal(t, checks, c.phases[forkPhaseCachedValidate].calls.Load(), "cache miss must do no speculative Redis I/O")
+	for _, expired := range []bool{false, true} {
+		ctx, cancel := context.WithCancel(context.Background())
+		if expired {
+			cancel()
+			ctx, cancel = context.WithTimeout(context.Background(), time.Millisecond)
+		}
+		handled, err = c.cachedRead(ctx, func(tx *kvTxn) error {
+			_ = tx.get([]byte("Aa"))
+			if expired {
+				time.Sleep(3 * time.Millisecond)
+			} else {
+				cancel()
+			}
+			return nil
+		})
+		cancel()
+		require.True(t, handled)
+		if expired {
+			require.ErrorIs(t, err, context.DeadlineExceeded)
+		} else {
+			require.ErrorIs(t, err, context.Canceled)
+		}
+	}
+	handled, err = c.cachedRead(Background(), func(tx *kvTxn) error { tx.set([]byte("Aa"), []byte("not allowed")); return nil })
+	require.True(t, handled)
+	require.ErrorIs(t, err, syscall.EROFS)
+	require.Equal(t, "new-a", forkGet(t, c, "Aa"))
+}
+
+func TestForkRedisCachedMetadataFallback(t *testing.T) {
+	_, uri := forkRedisFixture(t)
+	m := forkOpenMeta(t, uri, false)
+	require.NoError(t, m.Init(testFormat(), false))
+	fork := m.(*forkMeta)
+	c := fork.client.(*forkRedisClient)
+	ctx := Background()
+	var inode Ino
+	require.Zero(t, m.Mknod(ctx, RootInode, "old", TypeFile, 0644, 0, 0, "", &inode, nil))
+	// Warm exact point/range paths using the normal API.
+	var attr Attr
+	var found Ino
+	for i := 0; i < 2; i++ {
+		require.Zero(t, m.Lookup(ctx, RootInode, "old", &found, &attr, false))
+		require.Zero(t, m.GetAttr(ctx, inode, &attr))
+	}
+	writer := forkOpenMeta(t, uri, true)
+	require.Zero(t, writer.Truncate(ctx, inode, 0, 123, nil, false))
+	require.Zero(t, m.GetAttr(ctx, inode, &attr))
+	require.Equal(t, uint64(123), attr.Length)
+	require.Zero(t, writer.Rename(ctx, RootInode, "old", RootInode, "new", 0, nil, nil))
+	require.Equal(t, syscall.ENOENT, m.Lookup(ctx, RootInode, "old", &found, &attr, false))
+	require.Zero(t, m.Lookup(ctx, RootInode, "new", &found, &attr, false))
+	require.Equal(t, inode, found)
+	// Missing a later prefetched record cannot append speculative entries twice.
+	require.Zero(t, writer.Mknod(ctx, RootInode, "second", TypeFile, 0644, 0, 0, "", nil, nil))
+	begin, end := fork.entryKey(RootInode, ""), nextKey(fork.entryKey(RootInode, ""))
+	keys, _, err := fork.scan(begin, end, -1, nil)
+	require.NoError(t, err)
+	require.Len(t, keys, 2)
+	head := c.observedHead.Load()
+	ck := forkCacheKey{layer: c.branch, revision: head.revision, begin: string(keys[1])}
+	c.cache.mu.Lock()
+	if e := c.cache.entries[ck]; e != nil {
+		c.cache.used -= e.Value.(forkCacheEntry).cost
+		c.cache.lru.Remove(e)
+		delete(c.cache.entries, ck)
+	}
+	c.cache.mu.Unlock()
+	keys, _, err = fork.scan(begin, end, -1, nil)
+	require.NoError(t, err)
+	require.Len(t, keys, 2)
+	require.NotEqual(t, string(keys[0]), string(keys[1]))
+	require.Zero(t, writer.Unlink(ctx, RootInode, "new"))
+	require.Equal(t, syscall.ENOENT, m.Lookup(ctx, RootInode, "new", &found, &attr, false))
+}
+
 // Opt-in metadata-only measurement. Both paths use this experimental engine;
 // it is not a benchmark of the upstream Redis driver's absolute performance.
 func TestForkRedisScaling(t *testing.T) {

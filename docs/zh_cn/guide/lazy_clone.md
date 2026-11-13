@@ -41,6 +41,10 @@ $JFS mount -d --backup-meta 0 --enable-xattr "$CHILD" /tmp/jfs-child
 
 ## 当前边界
 
+完整命中缓存的点查找、关闭 open-cache 时的 lookup 和无过滤器的目录扫描，先按同一版本收集临时结果，再用一次 Redis `HMGET` 确认分支版本及封存状态。确认成功后才返回结果、更新属性缓存。缺项或版本变化就丢弃临时结果，走原来的事务；不会自动重跑任意事务回调。未命中缓存的读取和全部写入仍保留版本登记、超时、提交检查。缓存默认仍为 16 MiB，设置 `fork_cache_bytes=0` 会关闭这条路径。
+
+`forkredis_phase_seconds_total{phase=...}` 和 `forkredis_phase_calls_total` 分别记录事务开始、数据查询、结束、提交和缓存版本确认。它们是客户端累计时间，包含网络等待；body 包含数据查询，transaction 包含其内部各段，不能重复相加。`forkredis_cached_read_hits_total` 统计确认成功的本地结果，`forkredis_cached_read_fallbacks_total` 统计回退次数。用 `python3 hack/lazy_clone_txn_report.py <结果目录>` 可从保存的原始指标生成分段表。
+
 - 支持 Redis 单节点；尚未验证 Redis HA、集群故障和跨机恢复。Redis 持久性由其 AOF/RDB 配置决定，本实现不替代数据库持久化。
 - **尚未实现共享层和对象回收**。所有对象保留，禁用自动删除与压缩；拒绝普通 `gc`、`destroy`、元数据 reset、dump/load、changelog，以及初始化后的 format/config 更改。目录墓碑和索引仍会保留。不能用于需要持续回收空间的生产卷。
 - 扫描目前会读取对应前缀的键集合，普通元数据操作多了层查询及事务登记。当前验证的是 fork 不复制元数据；没有声称运行期吞吐优于原版 JuiceFS。

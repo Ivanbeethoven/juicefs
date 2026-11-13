@@ -144,6 +144,12 @@ func (tx *forkRedisTxn) publishReads() {
 
 func (c *forkRedisClient) initMetrics(reg prometheus.Registerer) {
 	c.initTimingMetrics(reg)
+	reg.MustRegister(prometheus.NewCounterFunc(prometheus.CounterOpts{
+		Name: "forkredis_cached_read_hits_total", Help: "Complete cached reads validated with one head request.",
+	}, func() float64 { return float64(c.cachedReadHits.Load()) }))
+	reg.MustRegister(prometheus.NewCounterFunc(prometheus.CounterOpts{
+		Name: "forkredis_cached_read_fallbacks_total", Help: "Cached reads falling back because of a miss or head change.",
+	}, func() float64 { return float64(c.cachedReadFallbacks.Load()) }))
 	for kind, name := range []string{"record", "range"} {
 		reg.MustRegister(prometheus.NewCounterFunc(prometheus.CounterOpts{
 			Name: "forkredis_cache_hits_total", Help: "Versioned read cache hits.",

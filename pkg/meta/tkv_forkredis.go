@@ -56,13 +56,16 @@ type forkLayer struct {
 // Live read snapshots pin versions; commits prune older, unneeded versions.
 // Shared layer/object collection is deliberately unsupported in this prototype.
 type forkRedisClient struct {
-	rdb         *redis.Client
-	prefix      string
-	branch      string
-	parents     []forkLayer
-	cache       *forkReadCache
-	readBatches atomic.Uint64
-	phases      [forkPhaseCount]forkPhaseMetric
+	rdb                 *redis.Client
+	prefix              string
+	branch              string
+	parents             []forkLayer
+	cache               *forkReadCache
+	readBatches         atomic.Uint64
+	phases              [forkPhaseCount]forkPhaseMetric
+	observedHead        atomic.Pointer[forkLayer]
+	cachedReadHits      atomic.Uint64
+	cachedReadFallbacks atomic.Uint64
 }
 
 func (c *forkRedisClient) head(name string) string  { return c.prefix + "head:" + name }
@@ -197,6 +200,7 @@ type forkRedisTxn struct {
 	readOnly     bool
 	pending      map[forkCacheKey]forkCacheValue
 	pendingBytes int
+	cacheOnly    bool
 }
 
 func (tx *forkRedisTxn) id() uint64 { return tx.layers[0].revision }
@@ -223,6 +227,9 @@ func (tx *forkRedisTxn) readBatch(keys [][]byte) [][]byte {
 			continue
 		}
 		if bytes.Equal(key, []byte("CnextChunk")) {
+			if tx.cacheOnly {
+				panic(errForkCacheMiss)
+			}
 			if allocator == nil {
 				allocator = pipe.Get(tx.ctx, tx.c.prefix+"slice-id")
 			}
@@ -245,6 +252,9 @@ func (tx *forkRedisTxn) readBatch(keys [][]byte) [][]byte {
 					break
 				} // includes tombstones
 			} else if requests[ck] == nil {
+				if tx.cacheOnly {
+					panic(errForkCacheMiss)
+				}
 				requests[ck] = pipe.ZRevRangeByScore(tx.ctx, tx.c.record(layer.name, key), &redis.ZRangeBy{
 					Min: "-inf", Max: strconv.FormatUint(layer.revision, 10), Offset: 0, Count: 1,
 				})
@@ -324,6 +334,9 @@ func (tx *forkRedisTxn) scan(begin, end []byte, keysOnly bool, handler func(k, v
 		if value, ok := tx.cached(cacheKeys[i]); ok {
 			ranges[i] = value
 		} else {
+			if tx.cacheOnly {
+				panic(errForkCacheMiss)
+			}
 			requests[i] = pipe.ZRangeByLex(tx.ctx, tx.c.index(layer.name), &redis.ZRangeBy{Min: min, Max: max})
 		}
 	}
@@ -542,6 +555,7 @@ func (c *forkRedisClient) transaction(ctx context.Context, f func(*kvTxn) error,
 		return fmt.Errorf("invalid fork revision")
 	}
 	head := forkLayer{name: c.branch, revision: revision, sealed: values[1] == "1"}
+	c.observeHead(head)
 	layers := append([]forkLayer{head}, c.parents...)
 	tx := &forkRedisTxn{c: c, ctx: ctx, layers: layers, buffer: make(map[string][]byte), readOnly: readOnly}
 	err = func() error {
@@ -602,6 +616,7 @@ func (c *forkRedisClient) transaction(ctx context.Context, f func(*kvTxn) error,
 		return fmt.Errorf("fork write snapshot expired: %w", context.DeadlineExceeded)
 	}
 	active = false // commit atomically released this transaction's snapshot
+	c.observeHead(forkLayer{name: c.branch, revision: uint64(result)})
 	tx.publishReads()
 	return nil
 }
