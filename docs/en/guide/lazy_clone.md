@@ -37,6 +37,10 @@ separate begin, data I/O, end, commit and cached validation. These are cumulativ
 client timings, not Redis CPU time: body includes data I/O and transaction includes
 its phases. `forkredis_cached_read_hits_total` and `forkredis_cached_read_fallbacks_total`
 count validated local results and fallbacks.
+Directory pages with attributes now collect both parts under one cached-read
+validation, publishing open-file/chunk-cache updates only after it succeeds.
+Cached point reads avoid allocating an unused Redis pipeline or intermediate
+lookup maps. These changes preserve the pinned fallback and all write checks.
 It reuses JuiceFS KV metadata operations, FUSE and chunk storage. It is a new
 format, **not an in-place upgrade of an existing Redis volume**. Ordinary
 `redis://` volumes and path-based `clone SRC DST` retain their behavior.

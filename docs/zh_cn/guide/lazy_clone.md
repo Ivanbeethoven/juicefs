@@ -52,6 +52,8 @@ $JFS mount -d --backup-meta 0 --enable-xattr "$CHILD" /tmp/jfs-child
 
 ## 可复用验证
 
+[给 BrewFS 的缓存实现参考](brewfs-cache-reference.md)：代码入口、一致性条件、目录合并校验与 1 万文件复测命令。
+
 [2026-11-13 本地结果及原始记录](../../../hack/lazy_clone_results/20261113/README.zh.md)。
 
 使用专用 Redis，避免和其他性能任务混跑。需要 Linux、Go、Python 3、`/dev/fuse` 和 `fusermount3`。脚本只使用随机名称的测试卷，不 flush Redis。

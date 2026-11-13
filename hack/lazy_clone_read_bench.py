@@ -132,6 +132,8 @@ def main():
     parser.add_argument('--compare-binary', type=Path)
     parser.add_argument('--compare-commit')
     parser.add_argument('--compare-cache-bytes', type=int)
+    parser.add_argument('--metadata-cache-bytes', type=int,
+                        help='same forkredis cache budget for both binaries (default: engine default)')
     parser.add_argument('--redis-server', default='redis-server')
     parser.add_argument('--pairs', type=int, default=3)
     parser.add_argument('--client-cpus', default='8-11')
@@ -139,10 +141,11 @@ def main():
     parser.add_argument('--driver-cpu', type=int, default=13)
     parser.add_argument('--quick', action='store_true')
     parser.add_argument('--profile', choices=['both', 'default', 'diagnostic'], default='both')
-    parser.add_argument('--fixture', choices=['all', 'tiny2', 'small128', 'blocks8'], default='all')
+    parser.add_argument('--fixture', choices=['all', 'tiny2', 'small128', 'blocks8', 'many10000'], default='all')
     args = parser.parse_args()
     assert bool(args.compare_binary) == bool(args.compare_commit)
     assert args.compare_cache_bytes is None or (args.compare_binary and args.compare_cache_bytes >= 0)
+    assert args.metadata_cache_bytes is None or 0 <= args.metadata_cache_bytes <= 1 << 30
     assert args.pairs > 0 and Path('/dev/fuse').exists()
     binary, root = args.binary.resolve(), args.out.resolve()
     binaries = {'before': binary}
@@ -244,7 +247,8 @@ def main():
         result['redis_info'] = redis.command('INFO', 'server')
         lower_uri = f'forkredis://127.0.0.1:{redis_port}/0?volume={token}&branch=main'
         native_uri = f'redis://127.0.0.1:{redis_port}/1'
-        specs = fixture_specs(args.quick)
+        specs = [('many10000', [4096] * 10000, 4096, 2)] if args.fixture == 'many10000' else fixture_specs(args.quick)
+        assert not (args.quick and args.fixture == 'many10000'), '10,000-file fixture is not a quick check'
         if args.fixture != 'all':
             specs = [spec for spec in specs if spec[0] == args.fixture]
         assert specs, 'fixture unavailable in quick mode'
@@ -294,8 +298,12 @@ def main():
                         directory = root/'cells'/label
                         directory.mkdir(parents=True)
                         uri = uris[arm]
-                        if variant == 'after' and args.compare_cache_bytes is not None and arm != 'native':
-                            uri += '&fork_cache_bytes='+str(args.compare_cache_bytes)
+                        if arm != 'native':
+                            cache_bytes = args.metadata_cache_bytes
+                            if variant == 'after' and args.compare_cache_bytes is not None:
+                                cache_bytes = args.compare_cache_bytes
+                            if cache_bytes is not None:
+                                uri += '&fork_cache_bytes='+str(cache_bytes)
                         point, process, port = mount(uri, label, profile, readonly=(arm == 'native'))
                         config_path = point/'.jfs.config'
                         if not config_path.exists():

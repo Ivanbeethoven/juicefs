@@ -26,6 +26,7 @@ import (
 	"os"
 	"runtime"
 	"strings"
+	"sync"
 	"syscall"
 	"testing"
 	"time"
@@ -644,6 +645,92 @@ func TestForkRedisCachedMetadataFallback(t *testing.T) {
 	require.NotEqual(t, string(keys[0]), string(keys[1]))
 	require.Zero(t, writer.Unlink(ctx, RootInode, "new"))
 	require.Equal(t, syscall.ENOENT, m.Lookup(ctx, RootInode, "new", &found, &attr, false))
+}
+
+type forkReadHookClient struct {
+	tkvClient
+	reader tkvCachedReader
+	once   sync.Once
+	hook   func()
+}
+
+func (c *forkReadHookClient) cachedRead(ctx context.Context, collect func(*kvTxn) error) (bool, error) {
+	return c.reader.cachedRead(ctx, func(tx *kvTxn) error {
+		err := collect(tx)
+		c.once.Do(c.hook)
+		return err
+	})
+}
+
+func TestForkRedisDirectoryCachedRead(t *testing.T) {
+	_, uri := forkRedisFixture(t)
+	m := forkOpenMeta(t, uri, false)
+	require.NoError(t, m.Init(testFormat(), false))
+	fork := m.(*forkMeta)
+	c := fork.client.(*forkRedisClient)
+	ctx := Background()
+	inos := make(map[string]Ino)
+	for _, name := range []string{"a", "b", "c", "d"} {
+		var ino Ino
+		require.Zero(t, m.Mknod(ctx, RootInode, name, TypeFile, 0644, 0, 0, "", &ino, nil))
+		inos[name] = ino
+	}
+	fetch := fork.getDirFetcher()
+	_, empty, err := fetch(ctx, RootInode, nil, 0, 0, true)
+	require.NoError(t, err)
+	require.Empty(t, empty)
+	_, _, err = fetch(ctx, RootInode, nil, 0, 2, true)
+	require.NoError(t, err)
+	checks := c.phases[forkPhaseCachedValidate].calls.Load()
+	cursor, entries, err := fetch(ctx, RootInode, nil, 0, 2, true)
+	require.NoError(t, err)
+	require.Len(t, entries, 2)
+	require.Equal(t, []byte("b"), cursor)
+	require.True(t, entries[0].Attr.Full)
+	require.Equal(t, checks+1, c.phases[forkPhaseCachedValidate].calls.Load(), "one check covers names and attributes")
+	// Remove a later inode attribute while keeping the directory cached. The
+	// failed combined collection must neither lose nor duplicate entries.
+	ck := forkCacheKey{layer: c.branch, revision: c.observedHead.Load().revision, begin: string(fork.inodeKey(inos["b"]))}
+	c.cache.mu.Lock()
+	if e := c.cache.entries[ck]; e != nil {
+		c.cache.used -= e.Value.(forkCacheEntry).cost
+		c.cache.lru.Remove(e)
+		delete(c.cache.entries, ck)
+	}
+	c.cache.mu.Unlock()
+	misses := c.cachedReadFallbacks.Load()
+	_, entries, err = fetch(ctx, RootInode, nil, 0, 2, true)
+	require.NoError(t, err)
+	require.Len(t, entries, 2)
+	require.Equal(t, "a", string(entries[0].Name))
+	require.Equal(t, "b", string(entries[1].Name))
+	require.Greater(t, c.cachedReadFallbacks.Load(), misses)
+	// A concurrent change after collecting attributes must not publish stale
+	// attributes to the open-file cache before the head check rejects them.
+	writer := forkOpenMeta(t, uri, true)
+	fork.of.Open(inos["a"], &Attr{Full: true, Length: 999})
+	defer fork.of.Close(inos["a"])
+	wrapper := &forkReadHookClient{tkvClient: c, reader: c, hook: func() {
+		require.Equal(t, uint64(999), fork.of.find(inos["a"]).attr.Length)
+		require.Zero(t, writer.Truncate(ctx, inos["a"], 0, 123, nil, false))
+	}}
+	fork.client = wrapper
+	_, entries, err = fetch(ctx, RootInode, nil, 0, 2, true)
+	fork.client = c
+	require.NoError(t, err)
+	require.Equal(t, uint64(123), entries[0].Attr.Length)
+	require.Equal(t, uint64(123), fork.of.find(inos["a"]).attr.Length)
+	// Pagination must still work when a writer deletes the preceding cursor.
+	require.Zero(t, writer.Unlink(ctx, RootInode, "b"))
+	_, entries, err = fetch(ctx, RootInode, cursor, 2, 2, true)
+	require.NoError(t, err)
+	require.Len(t, entries, 2)
+	require.Equal(t, "c", string(entries[0].Name))
+	require.Equal(t, "d", string(entries[1].Name))
+	_, entries, err = fetch(ctx, RootInode, nil, 1, 2, true)
+	require.NoError(t, err)
+	require.Len(t, entries, 2)
+	require.Equal(t, "c", string(entries[0].Name))
 }
 
 // Opt-in metadata-only measurement. Both paths use this experimental engine;

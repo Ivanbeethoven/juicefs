@@ -5264,42 +5264,84 @@ func (m *kvMeta) getDirFetcher() dirFetcher {
 		startKey = m.entryKey(inode, sCursor)
 		endKey := nextKey(m.entryKey(inode, ""))
 
+		decodeEntries := func(keys, vals [][]byte) []*Entry {
+			if cursor != nil {
+				// The cursor may have been deleted concurrently
+				if len(keys) > 0 && bytes.Equal(keys[0], startKey) {
+					keys, vals = keys[1:], vals[1:]
+				} else if len(keys) > limit-1 {
+					keys, vals = keys[:limit-1], vals[:limit-1]
+				}
+			}
+
+			if total > limit && offset <= len(keys) {
+				keys, vals = keys[offset:], vals[offset:]
+			}
+
+			prefix := len(m.entryKey(inode, ""))
+			entries := make([]*Entry, 0, len(keys))
+			var name []byte
+			var typ uint8
+			var ino Ino
+			for i, buf := range vals {
+				name = keys[i]
+				typ, ino = m.parseEntry(buf)
+				if len(name) == prefix {
+					logger.Errorf("Corrupt entry with empty name: inode %d parent %d", ino, inode)
+					continue
+				}
+				entries = append(entries, &Entry{
+					Inode: ino,
+					Name:  []byte(name)[prefix:],
+					Attr:  &Attr{Typ: typ},
+				})
+			}
+			return entries
+		}
+
+		if cached, ok := m.client.(tkvCachedReader); ok && plus && total != 0 {
+			var entries []*Entry
+			handled, err := cached.cachedRead(ctx, func(tx *kvTxn) error {
+				var keys, vals [][]byte
+				tx.scan(startKey, endKey, false, func(k, v []byte) bool {
+					keys, vals = append(keys, k), append(vals, v)
+					return total < 0 || len(keys) < total
+				})
+				entries = decodeEntries(keys, vals)
+				attrKeys := make([][]byte, len(entries))
+				for i, e := range entries {
+					attrKeys[i] = m.inodeKey(e.Inode)
+				}
+				for i, value := range tx.gets(attrKeys...) {
+					if value != nil {
+						m.parseAttr(value, entries[i].Attr)
+					}
+				}
+				return nil
+			})
+			if handled {
+				if err != nil {
+					return nil, nil, err
+				}
+				// Publish attributes/chunk invalidation only after the single head
+				// check validated both the directory page and all its attributes.
+				for _, e := range entries {
+					if e.Attr.Full {
+						m.of.Update(e.Inode, e.Attr)
+					}
+				}
+				if len(entries) == 0 {
+					return nil, nil, nil
+				}
+				return entries[len(entries)-1].Name, entries, nil
+			}
+		}
+
 		keys, vals, err := m.scan(startKey, endKey, total, nil)
 		if err != nil {
 			return nil, nil, err
 		}
-
-		if cursor != nil {
-			// The cursor may have been deleted concurrently
-			if len(keys) > 0 && bytes.Equal(keys[0], startKey) {
-				keys, vals = keys[1:], vals[1:]
-			} else if len(keys) > limit-1 {
-				keys, vals = keys[:limit-1], vals[:limit-1]
-			}
-		}
-
-		if total > limit && offset <= len(keys) {
-			keys, vals = keys[offset:], vals[offset:]
-		}
-
-		prefix := len(m.entryKey(inode, ""))
-		entries := make([]*Entry, 0, len(keys))
-		var name []byte
-		var typ uint8
-		var ino Ino
-		for i, buf := range vals {
-			name = keys[i]
-			typ, ino = m.parseEntry(buf)
-			if len(name) == prefix {
-				logger.Errorf("Corrupt entry with empty name: inode %d parent %d", ino, inode)
-				continue
-			}
-			entries = append(entries, &Entry{
-				Inode: ino,
-				Name:  []byte(name)[prefix:],
-				Attr:  &Attr{Typ: typ},
-			})
-		}
+		entries := decodeEntries(keys, vals)
 
 		if plus {
 			if err = m.fillAttr(entries); err != nil {

@@ -210,6 +210,9 @@ func (tx *forkRedisTxn) get(key []byte) []byte {
 }
 
 func (tx *forkRedisTxn) gets(keys ...[]byte) [][]byte {
+	if len(keys) <= forkReadBatchKeys {
+		return tx.readBatch(keys)
+	}
 	values := make([][]byte, 0, len(keys))
 	for start := 0; start < len(keys); start += forkReadBatchKeys {
 		values = append(values, tx.readBatch(keys[start:min(start+forkReadBatchKeys, len(keys))])...)
@@ -218,6 +221,33 @@ func (tx *forkRedisTxn) gets(keys ...[]byte) [][]byte {
 }
 
 func (tx *forkRedisTxn) readBatch(keys [][]byte) [][]byte {
+	if tx.cacheOnly {
+		// This read-only path never queues I/O or consults a write buffer. Avoid
+		// allocating a pipeline and two lookup maps for every cached GetAttr.
+		values := make([][]byte, len(keys))
+		for n, key := range keys {
+			if bytes.Equal(key, []byte("CnextChunk")) {
+				panic(errForkCacheMiss)
+			}
+			for i, layer := range tx.layers {
+				if i > 0 && forkPrivateKey(key) {
+					break
+				}
+				value, ok := tx.cached(forkCacheKey{layer: layer.name, revision: layer.revision, begin: string(key)})
+				if !ok {
+					panic(errForkCacheMiss)
+				}
+				if value.data == nil {
+					continue
+				}
+				if value.data[8] != 0 {
+					values[n] = bytes.Clone(value.data[9:])
+				}
+				break // a tombstone must also hide the lower record
+			}
+		}
+		return values
+	}
 	pipe := tx.c.rdb.Pipeline()
 	records := make(map[forkCacheKey][]byte)
 	requests := make(map[forkCacheKey]*redis.StringSliceCmd)
@@ -227,9 +257,6 @@ func (tx *forkRedisTxn) readBatch(keys [][]byte) [][]byte {
 			continue
 		}
 		if bytes.Equal(key, []byte("CnextChunk")) {
-			if tx.cacheOnly {
-				panic(errForkCacheMiss)
-			}
 			if allocator == nil {
 				allocator = pipe.Get(tx.ctx, tx.c.prefix+"slice-id")
 			}
@@ -252,9 +279,6 @@ func (tx *forkRedisTxn) readBatch(keys [][]byte) [][]byte {
 					break
 				} // includes tombstones
 			} else if requests[ck] == nil {
-				if tx.cacheOnly {
-					panic(errForkCacheMiss)
-				}
 				requests[ck] = pipe.ZRevRangeByScore(tx.ctx, tx.c.record(layer.name, key), &redis.ZRangeBy{
 					Min: "-inf", Max: strconv.FormatUint(layer.revision, 10), Offset: 0, Count: 1,
 				})
